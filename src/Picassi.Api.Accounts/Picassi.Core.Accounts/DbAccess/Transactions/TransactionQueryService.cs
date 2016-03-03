@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using AutoMapper;
+using Picassi.Core.Accounts.ViewModels.Accounts;
 using Picassi.Core.Accounts.ViewModels.Transactions;
 using Picassi.Data.Accounts.Database;
 using Picassi.Data.Accounts.Models;
@@ -12,6 +13,7 @@ namespace Picassi.Core.Accounts.DbAccess.Transactions
     public interface ITransactionQueryService
     {
         IEnumerable<TransactionViewModel> Query(TransactionsQueryModel query);
+        IEnumerable<TransactionViewModel> Query(AccountPeriodViewModel view);
     }
 
     public class TransactionQueryService : ITransactionQueryService
@@ -27,6 +29,14 @@ namespace Picassi.Core.Accounts.DbAccess.Transactions
         {
             var transactions = _dbContext.Transactions.Include(x => x.Category);
             return query == null ? Mapper.Map<IEnumerable<TransactionViewModel>>(transactions) : FilterTransactions(query, transactions);
+        }
+
+        public IEnumerable<TransactionViewModel> Query(AccountPeriodViewModel view)
+        {
+            var transactions = _dbContext.Transactions
+                .Where(x => x.Date >= view.From && x.Date <= view.To)
+                .Where(x => x.FromId == view.AccountId || x.ToId == view.AccountId);
+            return Mapper.Map<IEnumerable<TransactionViewModel>>(transactions);
         }
 
         private IEnumerable<TransactionViewModel> FilterTransactions(TransactionsQueryModel query, IQueryable<Transaction> transactions)

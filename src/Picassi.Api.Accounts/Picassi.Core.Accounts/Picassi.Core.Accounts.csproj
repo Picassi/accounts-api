@@ -62,6 +62,12 @@
     <Compile Include="DbAccess\Transactions\TransactionCrudService.cs" />
     <Compile Include="DbAccess\Transactions\TransactionQueryService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\AccountBalanceService.cs" />
+    <Compile Include="Reports\StatementViewModelFactory.cs" />
+    <Compile Include="Reports\StatementService.cs" />
+    <Compile Include="Services\Accounts\AccountStatusChecker.cs" />
+    <Compile Include="Reports\AccountSummaryViewModelFactory.cs" />
+    <Compile Include="Reports\CategorySummaryViewModelFactory.cs" />
     <Compile Include="ViewModels\Accounts\AccountAutomapperProfile.cs" />
     <Compile Include="ViewModels\Accounts\AccountQueryModel.cs" />
     <Compile Include="ViewModels\Accounts\AccountSummaryViewModel.cs" />
@@ -74,6 +80,9 @@
     <Compile Include="ViewModels\Snapshots\SnapshotAutomapperProfile.cs" />
     <Compile Include="ViewModels\Snapshots\SnapshotQueryModel.cs" />
     <Compile Include="ViewModels\Snapshots\SnapshotViewModel.cs" />
+    <Compile Include="ViewModels\Statements\StatementLineViewModel.cs" />
+    <Compile Include="ViewModels\Accounts\AccountPeriodViewModel.cs" />
+    <Compile Include="ViewModels\Statements\StatementViewModel.cs" />
     <Compile Include="ViewModels\Transactions\TransactionAutomapperProfile.cs" />
     <Compile Include="ViewModels\Transactions\TransactionsQueryModel.cs" />
     <Compile Include="ViewModels\Transactions\TransactionUploadModel.cs" />
@@ -92,6 +101,9 @@
       <Project>{F86E6DB3-CC2B-40F6-95D0-D1E77CD0B3D2}</Project>
       <Name>Picassi.Data.Accounts</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\Categories\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

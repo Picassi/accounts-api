@@ -8,9 +8,9 @@ namespace Picassi.Core.Accounts.ViewModels.Accounts
 
         public DateTime? LastUpdated { get; set; }
 
-        public DateTime SnapshotDate { get; set; }
+        public DateTime? SnapshotDate { get; set; }
 
-        public DateTime ComparisonDate { get; set; }
+        public DateTime? ComparisonDate { get; set; }
 
         public decimal Balance { get; set; }
 

@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Picassi.Core.Accounts.ViewModels.Snapshots;
 using Picassi.Data.Accounts.Database;
@@ -8,6 +10,7 @@ namespace Picassi.Core.Accounts.DbAccess.Snapshots
     public interface ISnapshotQueryService
     {
         IEnumerable<SnapshotViewModel> Query(SnapshotQueryModel snapshots);
+        SnapshotViewModel GetLastSnapshotBefore(int accountId, DateTime date);
     }
 
     public class SnapshotQueryService : ISnapshotQueryService
@@ -23,6 +26,13 @@ namespace Picassi.Core.Accounts.DbAccess.Snapshots
         {			
             var queryResults = _dbContext.Snapshots; 
 			return Mapper.Map<IEnumerable<SnapshotViewModel>>(queryResults);
+        }
+
+        public SnapshotViewModel GetLastSnapshotBefore(int accountId, DateTime date)
+        {
+            var snapshotsBeforeDate = _dbContext.Snapshots.Where(x => x.AccountId == accountId && x.Date < date);
+            var lastSnapshotBeforeDate = snapshotsBeforeDate.OrderByDescending(x => x.Date).FirstOrDefault();
+            return lastSnapshotBeforeDate != null ? Mapper.Map<SnapshotViewModel>(lastSnapshotBeforeDate) : null;
         }
     }
 }
