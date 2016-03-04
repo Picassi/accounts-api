@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Picassi.Api.Accounts", "Picassi.Api.Accounts\Picassi.Api.Accounts.csproj", "{DD13B271-B1CC-4485-B3C9-73FB3381CDC2}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Picassi.Data.Accounts", "Picassi.Data.Accounts\Picassi.Data.Accounts.csproj", "{F86E6DB3-CC2B-40F6-95D0-D1E77CD0B3D2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Picassi.Core.Accounts", "Picassi.Core.Accounts\Picassi.Core.Accounts.csproj", "{AC94699B-B1AF-46EF-B657-FFEE06E52EA4}"
@@ -21,16 +19,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Picassi.Common.Data", "..\.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Picassi.Common.Helpers", "..\..\common\src\Picassi.Common\Picassi.Common.Helpers\Picassi.Common.Helpers.csproj", "{E13D663B-0479-48AD-AF4F-655008A00CF7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Picassi.Api.Accounts", "Picassi.Api.Accounts\Picassi.Api.Accounts.csproj", "{DE37A1FF-3F62-463A-9C49-0000E5155D9E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{E807A594-F4BB-4BE9-93CD-59BC607718C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DD13B271-B1CC-4485-B3C9-73FB3381CDC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DD13B271-B1CC-4485-B3C9-73FB3381CDC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DD13B271-B1CC-4485-B3C9-73FB3381CDC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DD13B271-B1CC-4485-B3C9-73FB3381CDC2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F86E6DB3-CC2B-40F6-95D0-D1E77CD0B3D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F86E6DB3-CC2B-40F6-95D0-D1E77CD0B3D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F86E6DB3-CC2B-40F6-95D0-D1E77CD0B3D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -59,11 +57,17 @@ Global
 		{E13D663B-0479-48AD-AF4F-655008A00CF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E13D663B-0479-48AD-AF4F-655008A00CF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E13D663B-0479-48AD-AF4F-655008A00CF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE37A1FF-3F62-463A-9C49-0000E5155D9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE37A1FF-3F62-463A-9C49-0000E5155D9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE37A1FF-3F62-463A-9C49-0000E5155D9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE37A1FF-3F62-463A-9C49-0000E5155D9E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{3A4DFE41-BC06-48AA-8B7F-271D8009037F} = {E807A594-F4BB-4BE9-93CD-59BC607718C6}
+		{AAFC0A72-8292-489B-83A1-490D35FE7C62} = {E807A594-F4BB-4BE9-93CD-59BC607718C6}
 		{79DE28BB-796E-4C8D-9D75-F70F6C386B57} = {C8C97346-668F-491E-A343-823723120911}
 		{B5347A7A-FBA1-4923-9AA1-E216FDF1C0CD} = {C8C97346-668F-491E-A343-823723120911}
 		{E13D663B-0479-48AD-AF4F-655008A00CF7} = {C8C97346-668F-491E-A343-823723120911}
