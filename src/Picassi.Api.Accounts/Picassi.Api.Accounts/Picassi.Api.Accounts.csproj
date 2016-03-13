@@ -158,7 +158,16 @@
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <None Include="Web.Local.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
     <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Staging.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Test.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
@@ -177,6 +186,14 @@
     <Compile Include="App_Start\Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Picassi.Common.Api\Picassi.Common.Api.csproj">
+      <Project>{79DE28BB-796E-4C8D-9D75-F70F6C386B57}</Project>
+      <Name>Picassi.Common.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Picassi.Common.Data\Picassi.Common.Data.csproj">
+      <Project>{B5347A7A-FBA1-4923-9AA1-E216FDF1C0CD}</Project>
+      <Name>Picassi.Common.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Picassi.Core.Accounts\Picassi.Core.Accounts.csproj">
       <Project>{AC94699B-B1AF-46EF-B657-FFEE06E52EA4}</Project>
       <Name>Picassi.Core.Accounts</Name>
@@ -189,6 +206,15 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Staging|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Local|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
