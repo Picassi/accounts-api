@@ -60,12 +60,6 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\common\src\Picassi.Common\Picassi.Common.Data\Picassi.Common.Data.csproj">
-      <Project>{B5347A7A-FBA1-4923-9AA1-E216FDF1C0CD}</Project>
-      <Name>Picassi.Common.Data</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
