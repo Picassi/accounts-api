@@ -24,6 +24,9 @@ namespace Picassi.Api.Accounts
             ConfigureOAuth(app);
 
             var config = new HttpConfiguration();
+
+            config.EnableSwagger(c => c.SingleApiVersion("v1", "Picassi Accounts API")).EnableSwaggerUi();
+
             StartupHelper.Configure(config, Assembly.GetExecutingAssembly(), GetAssemblyDependencies());
 
             var json = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
@@ -35,26 +38,6 @@ namespace Picassi.Api.Accounts
             };
             jSettings.Converters.Add(new IsoDateTimeConverter());
             json.SerializerSettings = jSettings;
-
-            /*
-            config.EnableSwagger(c =>
-            {
-                c.OAuth2("oauth2")
-                    .Description("OAuth2 Implicit Grant")
-                    .Flow("implicit")
-                    .AuthorizationUrl("http://petstore.swagger.wordnik.com/api/oauth/dialog")
-                    //.TokenUrl("https://tempuri.org/token")
-                    .Scopes(scopes =>
-                    {
-                        scopes.Add("read", "Read access to protected resources");
-                        scopes.Add("write", "Write access to protected resources");
-                    });
-            })
-            .EnableSwaggerUi(c =>
-            {
-                c.EnableOAuth2Support("test-client-id", "test-realm", "Swagger UI");
-            });
-            */
 
             config.Filters.Add(new ApiExceptionHandlingAttribute());
             app.UseWebApi(config);
