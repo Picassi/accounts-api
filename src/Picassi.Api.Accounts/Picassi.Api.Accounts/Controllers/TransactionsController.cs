@@ -1,12 +1,14 @@
 using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using Picassi.Common.Api.Attributes;
 using Picassi.Core.Accounts.DbAccess.Transactions;
 using Picassi.Core.Accounts.ViewModels.Transactions;
 
 namespace Picassi.Api.Accounts.Controllers
 {
 	[EnableCors(origins: "*", headers: "*", methods: "*")]
+    [PicassiApiAuthorise]
     public class TransactionsController : ApiController
     {
         private readonly ITransactionCrudService _crudService;

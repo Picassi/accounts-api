@@ -1,12 +1,14 @@
 using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using Picassi.Common.Api.Attributes;
 using Picassi.Core.Accounts.DbAccess.Snapshots;
 using Picassi.Core.Accounts.ViewModels.Snapshots;
 
 namespace Picassi.Api.Accounts.Controllers
 {
 	[EnableCors(origins: "*", headers: "*", methods: "*")]
+    [PicassiApiAuthorise]
     public class SnapshotController : ApiController
     {
         private readonly ISnapshotCrudService _crudService;

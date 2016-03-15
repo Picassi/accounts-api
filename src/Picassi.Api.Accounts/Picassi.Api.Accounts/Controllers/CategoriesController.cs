@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using Picassi.Common.Api.Attributes;
 using Picassi.Common.Data.Enums;
 using Picassi.Core.Accounts.DbAccess.Categories;
 using Picassi.Core.Accounts.Reports;
@@ -10,6 +11,7 @@ using Picassi.Core.Accounts.ViewModels.Categories;
 namespace Picassi.Api.Accounts.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
+    [PicassiApiAuthorise]
     public class CategoriesController : ApiController
     {
         private readonly ICategoryCrudService _crudService;

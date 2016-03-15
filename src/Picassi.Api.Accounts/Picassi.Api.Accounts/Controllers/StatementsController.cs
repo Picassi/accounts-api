@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using Picassi.Common.Api.Attributes;
 using Picassi.Core.Accounts.Reports;
 using Picassi.Core.Accounts.ViewModels.Accounts;
 using Picassi.Core.Accounts.ViewModels.Statements;
@@ -8,6 +9,7 @@ using Picassi.Core.Accounts.ViewModels.Statements;
 namespace Picassi.Api.Accounts.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
+    [PicassiApiAuthorise]
     public class StatementController : ApiController
     {
         private readonly IStatementService _statementService;
