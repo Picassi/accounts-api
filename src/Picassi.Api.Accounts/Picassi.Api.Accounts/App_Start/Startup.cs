@@ -1,9 +1,6 @@
-﻿using System.Reflection;
-using System.Web.Http;
+﻿using System.Net;
+using System.Reflection;
 using Microsoft.Owin;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Serialization;
 using Owin;
 using Picassi.Api.Accounts;
 using Picassi.Common.Api;
@@ -11,8 +8,6 @@ using Picassi.Common.Api.Init;
 using Picassi.Common.Data;
 using Picassi.Core.Accounts.DbAccess.Accounts;
 using Picassi.Data.Accounts.Database;
-using Swashbuckle.Application;
-using Thinktecture.IdentityServer.AccessTokenValidation;
 
 [assembly: OwinStartup(typeof(Startup))]
 namespace Picassi.Api.Accounts
@@ -22,6 +17,7 @@ namespace Picassi.Api.Accounts
         public void Configuration(IAppBuilder app)
         {
             StartupHelper.Configure(app, Assembly.GetExecutingAssembly(), GetAssemblyDependencies());
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
         }
 
         private Assembly[] GetAssemblyDependencies()
