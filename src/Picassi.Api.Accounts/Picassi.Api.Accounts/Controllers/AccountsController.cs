@@ -11,12 +11,15 @@ namespace Picassi.Api.Accounts.Controllers
 	[EnableCors(origins: "*", headers: "*", methods: "*")]
     [PicassiApiAuthorise]
     public class AccountsController : ApiController
-    {
+	{
         private readonly IAccountCrudService _crudService;
         private readonly IAccountQueryService _queryService;
 	    private readonly IAccountSummariser _accountSummariser;
 
-        public AccountsController(IAccountCrudService crudService, IAccountQueryService queryService, IAccountSummariser accountSummariser)
+        public AccountsController(
+            IAccountCrudService crudService, 
+            IAccountQueryService queryService, 
+            IAccountSummariser accountSummariser)
         {
             _crudService = crudService;
             _queryService = queryService;

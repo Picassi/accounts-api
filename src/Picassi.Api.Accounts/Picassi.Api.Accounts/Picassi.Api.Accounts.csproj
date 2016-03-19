@@ -191,6 +191,7 @@
   <ItemGroup>
     <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
+    <Compile Include="Controllers\DatabaseController.cs" />
     <Compile Include="Controllers\SnapshotController.cs" />
     <Compile Include="Controllers\StatementsController.cs" />
     <Compile Include="Controllers\TransactionsController.cs" />
