@@ -24,10 +24,7 @@ namespace Picassi.Core.Accounts.DbAccess.Categories
         {			
             var queryResults = _dbContext.Categories.AsQueryable();
 
-            if (accounts?.Name != null)
-            {
-                queryResults = queryResults.Where(x => x.Name.Contains(accounts.Name));
-            }
+            if (accounts?.Name != null) queryResults = queryResults.Where(x => x.Name.Contains(accounts.Name));
 
             return Mapper.Map<IEnumerable<CategoryViewModel>>(queryResults);
         }

@@ -56,5 +56,5 @@ namespace Picassi.Api.Accounts.Controllers
         {
             return _crudService.DeleteTransaction(id);
         }
-	}
+    }
 }

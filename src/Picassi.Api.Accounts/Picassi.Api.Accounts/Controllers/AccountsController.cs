@@ -1,10 +1,13 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using Picassi.Common.Api.Attributes;
 using Picassi.Core.Accounts.DbAccess.Accounts;
 using Picassi.Core.Accounts.Reports;
+using Picassi.Core.Accounts.Services.Transactions;
 using Picassi.Core.Accounts.ViewModels.Accounts;
+using Picassi.Core.Accounts.ViewModels.Transactions;
 
 namespace Picassi.Api.Accounts.Controllers
 {
@@ -15,15 +18,18 @@ namespace Picassi.Api.Accounts.Controllers
         private readonly IAccountCrudService _crudService;
         private readonly IAccountQueryService _queryService;
 	    private readonly IAccountSummariser _accountSummariser;
+	    private readonly ITransactionUploadService _transactionUploadService;
 
         public AccountsController(
             IAccountCrudService crudService, 
             IAccountQueryService queryService, 
-            IAccountSummariser accountSummariser)
+            IAccountSummariser accountSummariser, 
+            ITransactionUploadService transactionUploadService)
         {
             _crudService = crudService;
             _queryService = queryService;
             _accountSummariser = accountSummariser;
+            _transactionUploadService = transactionUploadService;
         }
 
         [HttpGet]
@@ -47,13 +53,6 @@ namespace Picassi.Api.Accounts.Controllers
             return _crudService.GetAccount(id);            
         }
 
-        [HttpGet]
-        [Route("accounts/{id}/summary")]
-        public AccountSummaryViewModel GetAccountSummary([FromUri]AccountPeriodViewModel period)
-        {
-            return _accountSummariser.GetAccountSummary(period);
-        }
-
 	    [HttpPut]
         [Route("accounts/{id}")]
         public AccountViewModel UpdateAccount(int id, [FromBody]AccountViewModel accountViewModel)
@@ -67,5 +66,19 @@ namespace Picassi.Api.Accounts.Controllers
         {
             return _crudService.DeleteAccount(id);
         }
-	}
+
+        [HttpGet]
+        [Route("accounts/{id}/summary")]
+        public AccountSummaryViewModel GetAccountSummary([FromUri]AccountPeriodViewModel period)
+        {
+            return _accountSummariser.GetAccountSummary(period);
+        }
+
+        [HttpPost]
+        [Route("accounts/{id}/transactions/upload")]
+        public void UploadProcessedTransactions(int id, [FromBody]TransactionUploadModel[] transactions)
+        {
+            _transactionUploadService.AddTransactionsToAccount(id, transactions.ToList());
+        }
+    }
 }

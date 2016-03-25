@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Picassi.Common.Data.Enums;
+using Picassi.Core.Accounts.Time;
 using Picassi.Data.Accounts.Database;
 using Picassi.Data.Accounts.Models;
 
@@ -9,79 +8,57 @@ namespace Picassi.Core.Accounts.ViewModels.Categories
 {
     public interface ICategorySummaryViewModelFactory
     {
-        CategorySummaryViewModel GetSummary(CategoryViewModel category, Frequency period, int periodsToSummarise);
+        CategorySummaryViewModel GetSummary(CategorySummaryQueryModel query);
     }
 
     public class CategorySummaryViewModelFactory : ICategorySummaryViewModelFactory
     {
         private readonly IAccountsDataContext _dataContext;
+        private readonly IPeriodCalculator _periodCalculator;
 
-        public CategorySummaryViewModelFactory(IAccountsDataContext dataContext)
+        public CategorySummaryViewModelFactory(IAccountsDataContext dataContext, IPeriodCalculator periodCalculator)
         {
             _dataContext = dataContext;
+            _periodCalculator = periodCalculator;
         }
 
-        public CategorySummaryViewModel GetSummary(CategoryViewModel category, Frequency period, int periodsToSummarise)
+        public CategorySummaryViewModel GetSummary(CategorySummaryQueryModel query)
         {
-            var startDate = GetStartDate(period, periodsToSummarise);
-            var transactions = category == null
-                ? _dataContext.Transactions.Where(x => x.CategoryId == null && x.Date > startDate)
-                : _dataContext.Transactions.Where(x => x.CategoryId == category.Id && x.Date > startDate);
-                
-            var report = GetReport(startDate, transactions.ToList(), period, periodsToSummarise);
+            var transactionsForCategory = query.DateRange != null ? GetFilteredTransactions(query) : null;
+
+            var averageSpend = transactionsForCategory != null ? GetAverageSpend(query, transactionsForCategory) : (decimal?)null;
 
             return new CategorySummaryViewModel
             {
-                Id = category?.Id,
-                Name = category?.Name ?? "Uncategorised",
-                SpendingReport = report,
-                AverageSpend = report.Where(x => x.Value != null).ToList().Any() ?
-                    report.Where(x => x.Value != null).Average(x => (decimal)x.Value) : 0
+                Id = query.Category?.Id,
+                Name = query.Category?.Name ?? "Uncategorised",
+                AverageSpend = averageSpend
             };
         }
 
-        private Dictionary<int, decimal?> GetReport(DateTime startDate, List<Transaction> transactions, Frequency period, int periodsToSummarise)
+        private IEnumerable<Transaction> GetFilteredTransactions(CategorySummaryQueryModel query)
         {
-            var reportDictionary = Enumerable.Range(1, periodsToSummarise).ToDictionary(x => x, x => (decimal?)null);
-            foreach (var group in transactions.GroupBy(x => GetPeriodRelatedTo(startDate, x.Date, period, periodsToSummarise)))
-            {
-                reportDictionary[periodsToSummarise - group.Key] = group.Sum(x => x.Amount);
-            }
-            return reportDictionary;
+            var transactions = _dataContext.Transactions.AsQueryable();
+            transactions = FilterTransactionsByCategory(transactions, query.Category?.Id);
+            transactions = FilterTransactionsByDateRange(transactions, query.DateRange);
+            return transactions.ToList();
         }
 
-        private int GetPeriodRelatedTo(DateTime startDate, DateTime date, Frequency period, int periodsToSummarise)
+        private static IQueryable<Transaction> FilterTransactionsByCategory(IQueryable<Transaction> transactions, int? categoryId)
         {
-            switch (period)
-            {
-                case Frequency.Daily:
-                    return (int)(date - startDate).TotalDays;
-                case Frequency.Weekly:
-                    return (int)((date - startDate).TotalDays / 7);
-                case Frequency.Monthly:
-                    return date.Month;
-                case Frequency.Annually:
-                    return date.Year;
-                default:
-                    return date.Month;
-            }
+            return categoryId == null ? transactions.Where(x => x.CategoryId == null) : transactions.Where(x => x.CategoryId == categoryId);
         }
 
-        private DateTime GetStartDate(Frequency period, int periodsToSummarise)
+        private static IQueryable<Transaction> FilterTransactionsByDateRange(IQueryable<Transaction> transactions, DateRange range)
         {
-            var currentDate = DateTime.Now;
+            return transactions.Where(x => x.Date >= range.Start && x.Date < range.End);
+        }
 
-            switch (period)
-            {
-                case Frequency.Daily:
-                    return currentDate.AddDays(-periodsToSummarise);
-                case Frequency.Weekly:
-                    return currentDate.AddDays(-periodsToSummarise * 7);
-                case Frequency.Monthly:
-                    return currentDate.AddMonths(-periodsToSummarise);
-                default:
-                    return currentDate.AddYears(-periodsToSummarise);
-            }
+        private decimal GetAverageSpend(CategorySummaryQueryModel query, IEnumerable<Transaction> transactions)
+        {
+            var totalSpend = transactions.Sum(x => x.Amount);
+            var numberOfPeriods = _periodCalculator.GetNumberOfPeriods(query.AverageSpendPeriod, query.DateRange);
+            return totalSpend / numberOfPeriods;
         }
     }
 }

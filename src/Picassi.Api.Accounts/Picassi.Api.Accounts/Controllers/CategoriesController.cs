@@ -6,6 +6,7 @@ using Picassi.Common.Api.Attributes;
 using Picassi.Common.Data.Enums;
 using Picassi.Core.Accounts.DbAccess.Categories;
 using Picassi.Core.Accounts.Reports;
+using Picassi.Core.Accounts.Time.Periods;
 using Picassi.Core.Accounts.ViewModels.Categories;
 
 namespace Picassi.Api.Accounts.Controllers
@@ -36,8 +37,8 @@ namespace Picassi.Api.Accounts.Controllers
         [Route("categories/summary/{frequency}")]
         public IEnumerable<CategorySummaryViewModel> GetCategoriesSumary(string frequency, [FromUri]CategoriesQueryModel query)
         {
-            var frequencyValue = (Frequency)Enum.Parse(typeof (Frequency), frequency, true);
-            return _categorySummaryService.GetCategorySummaries(query, frequencyValue, 6);
+            var frequencyValue = (PeriodType)Enum.Parse(typeof (PeriodType), frequency, true);
+            return _categorySummaryService.GetCategorySummaries(query, frequencyValue);
         }
 
         [HttpPost]
