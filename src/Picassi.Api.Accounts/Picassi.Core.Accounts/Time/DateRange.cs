@@ -8,6 +8,8 @@ namespace Picassi.Core.Accounts.Time
 
         public DateTime End { get; set; }
 
+        public DateRange() {  }
+
         public DateRange(DateTime start, DateTime end)
         {
             Start = start;

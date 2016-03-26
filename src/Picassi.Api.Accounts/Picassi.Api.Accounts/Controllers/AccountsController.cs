@@ -6,6 +6,7 @@ using Picassi.Common.Api.Attributes;
 using Picassi.Core.Accounts.DbAccess.Accounts;
 using Picassi.Core.Accounts.Reports;
 using Picassi.Core.Accounts.Services.Transactions;
+using Picassi.Core.Accounts.Time;
 using Picassi.Core.Accounts.ViewModels.Accounts;
 using Picassi.Core.Accounts.ViewModels.Transactions;
 
@@ -69,9 +70,9 @@ namespace Picassi.Api.Accounts.Controllers
 
         [HttpGet]
         [Route("accounts/{id}/summary")]
-        public AccountSummaryViewModel GetAccountSummary([FromUri]AccountPeriodViewModel period)
+        public AccountSummaryViewModel GetAccountSummary(int id, [FromUri]DateRange period)
         {
-            return _accountSummariser.GetAccountSummary(period);
+            return _accountSummariser.GetAccountSummary(new AccountPeriodViewModel { AccountId = id, From = period.Start, To = period.End });
         }
 
         [HttpPost]
