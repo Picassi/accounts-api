@@ -20,10 +20,10 @@ namespace Picassi.Api.Accounts.Controllers
         }
 
         [HttpGet]
-        [Route("accounts/{accountId}/statement/{groupBy}")]
-        public StatementViewModel GetTransactions([FromUri]AccountPeriodViewModel query, string groupBy)
+        [Route("accounts/{accountId}/statement")]
+        public StatementViewModel GetTransactions(int accountId, [FromUri]StatementQueryModel query)
         {
-            return _statementService.GetStatement(query, groupBy);
+            return _statementService.GetStatement(accountId, query);
         }
     }
 }

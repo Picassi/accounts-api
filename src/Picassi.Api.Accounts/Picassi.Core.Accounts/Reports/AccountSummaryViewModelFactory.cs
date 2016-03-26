@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Picassi.Core.Accounts.Services.Accounts;
 using Picassi.Core.Accounts.ViewModels.Accounts;
+using Picassi.Core.Accounts.ViewModels.Statements;
 
 namespace Picassi.Core.Accounts.Reports
 {
@@ -22,9 +23,9 @@ namespace Picassi.Core.Accounts.Reports
 
         public AccountSummaryViewModel GetAccountSummary(AccountPeriodViewModel view)
         {
-            var statement = _statementService.GetStatement(view, "transaction");
-            var credit = statement.Lines.Sum(x => x.AmountIn);
-            var debit = statement.Lines.Sum(x => x.AmountOut);
+            var statement = _statementService.GetStatement(view.AccountId, new StatementQueryModel { DateFrom = view.From, DateTo = view.To });
+            var credit = statement.Lines.Sum(x => x.Credit);
+            var debit = statement.Lines.Sum(x => x.Debit);
             var lastTransactions = statement.Lines.OrderBy(x => x.Date).LastOrDefault();
 
             return new AccountSummaryViewModel

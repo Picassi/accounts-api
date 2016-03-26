@@ -107,6 +107,8 @@
     <Compile Include="ViewModels\Statements\StatementLineViewModel.cs" />
     <Compile Include="ViewModels\Accounts\AccountPeriodViewModel.cs" />
     <Compile Include="ViewModels\Statements\StatementViewModel.cs" />
+    <Compile Include="ViewModels\Statements\StatementQueryModel.cs" />
+    <Compile Include="ViewModels\Transactions\SimpleTransactionQueryModel.cs" />
     <Compile Include="ViewModels\Transactions\TransactionAutomapperProfile.cs" />
     <Compile Include="ViewModels\Transactions\TransactionsQueryModel.cs" />
     <Compile Include="ViewModels\Transactions\TransactionUploadModel.cs" />

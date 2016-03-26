@@ -3,6 +3,7 @@ using System.Linq;
 using Picassi.Core.Accounts.DbAccess.Snapshots;
 using Picassi.Core.Accounts.DbAccess.Transactions;
 using Picassi.Core.Accounts.ViewModels.Accounts;
+using Picassi.Core.Accounts.ViewModels.Transactions;
 
 namespace Picassi.Core.Accounts.Reports
 {
@@ -32,7 +33,8 @@ namespace Picassi.Core.Accounts.Reports
 
         private decimal TransactionTotal(int accountId, AccountPeriodViewModel period)
         {
-            var transactions = _transactionQueryService.Query(period).ToList();
+            var query = new SimpleTransactionQueryModel { AccountId = accountId, DateFrom = period.From, DateTo = period.To };
+            var transactions = _transactionQueryService.Query(query).ToList();
             var totalCredited = transactions.Where(x => x.ToId == accountId).Select(x => x.Amount).DefaultIfEmpty(0).Sum();
             var totalDebited = transactions.Where(x => x.FromId == accountId).Select(x => x.Amount).DefaultIfEmpty(0).Sum();
             return totalCredited - totalDebited;

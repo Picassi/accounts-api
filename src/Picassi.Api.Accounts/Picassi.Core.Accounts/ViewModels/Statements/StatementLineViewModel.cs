@@ -12,11 +12,11 @@ namespace Picassi.Core.Accounts.ViewModels.Statements
 
         public string Description { get; set; }
 
-        public decimal TransactionValue { get; set; }
+        public decimal Amount { get; set; }
 
-        public decimal AmountIn { get; set; }
+        public decimal Credit { get; set; }
 
-        public decimal AmountOut { get; set; }
+        public decimal Debit { get; set; }
 
         public decimal Balance { get; set; }
     }
