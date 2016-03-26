@@ -36,8 +36,8 @@ namespace Picassi.Core.Accounts.Services.Transactions
                 Date = DateTime.ParseExact(transaction.Date, "dd/MM/yyyy", CultureInfo.CurrentCulture),
                 Description = transaction.Description,
                 CategoryId = transaction.CategoryId,
-                FromId = transaction.Amount < 0 ? baseAccountId : (int?)null,
-                ToId = transaction.Amount > 0 ? baseAccountId : (int?)null,
+                FromId = (transaction.Amount < 0 || transaction.Amount == 0 && transaction.Debit > 0) ? baseAccountId : (int?)null,
+                ToId = (transaction.Amount > 0 || transaction.Amount == 0 && transaction.Credit > 0) ? baseAccountId : (int?)null,
                 Status = TransactionStatus.Provisional
             };
         }
@@ -45,7 +45,7 @@ namespace Picassi.Core.Accounts.Services.Transactions
         private static decimal GetTransactionAmount(TransactionUploadModel transaction)
         {
             return transaction.Amount == 0
-                ? (transaction.Credit - transaction.Debit)
+                ? transaction.Credit + transaction.Debit
                 : (transaction.Amount > 0 ? transaction.Amount : -transaction.Amount);
         }
     }

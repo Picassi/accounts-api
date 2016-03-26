@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Picassi.Core.Accounts.ViewModels.Statements;
 using Picassi.Core.Accounts.ViewModels.Transactions;
 
 namespace Picassi.Core.Accounts.Reports
 {
-    public interface IStatementCompilerService
+    public interface IStatementViewModelFactory
     {
         StatementViewModel CompileStatement(int accountId, decimal startBalance, IEnumerable<TransactionViewModel> transactions);
     }
 
-    public class StatementViewModelFactory : IStatementCompilerService
+    public class StatementViewModelFactory : IStatementViewModelFactory
     {
         public StatementViewModel CompileStatement(int accountId, decimal startBalance, IEnumerable<TransactionViewModel> transactions)
         {

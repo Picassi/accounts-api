@@ -1,7 +1,6 @@
 ﻿using System;
 using Picassi.Core.Accounts.DbAccess.Transactions;
 using Picassi.Core.Accounts.ViewModels.Statements;
-using Picassi.Core.Accounts.ViewModels.Transactions;
 
 namespace Picassi.Core.Accounts.Reports
 {
@@ -14,13 +13,13 @@ namespace Picassi.Core.Accounts.Reports
     {
         private readonly IAccountBalanceService _accountBalanceService;
         private readonly ITransactionQueryService _transactionQueryService;
-        private readonly IStatementCompilerService _statementCompilerService;
+        private readonly IStatementViewModelFactory _statementViewModelFactory;
 
-        public StatementService(IAccountBalanceService accountBalanceService, ITransactionQueryService transactionQueryService, IStatementCompilerService statementCompilerService)
+        public StatementService(IAccountBalanceService accountBalanceService, ITransactionQueryService transactionQueryService, IStatementViewModelFactory statementViewModelFactory)
         {
             _accountBalanceService = accountBalanceService;
             _transactionQueryService = transactionQueryService;
-            _statementCompilerService = statementCompilerService;
+            _statementViewModelFactory = statementViewModelFactory;
         }
 
         public StatementViewModel GetStatement(int accountId, StatementQueryModel query)
@@ -29,7 +28,7 @@ namespace Picassi.Core.Accounts.Reports
                 ? _accountBalanceService.GetAccountBalance(accountId, (DateTime)query.DateFrom)
                 : 0;
             var transactions = _transactionQueryService.Query(query.GetTransactionQuery(accountId));                
-            return _statementCompilerService.CompileStatement(accountId, startBalance, transactions);
+            return _statementViewModelFactory.CompileStatement(accountId, startBalance, transactions);
         }
     }
 }
