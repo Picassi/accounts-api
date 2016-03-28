@@ -20,5 +20,10 @@ namespace Picassi.Data.Accounts.Database
         public DbSet<Category> Categories { get; set; }
 
         public AccountsDataContext() : base("Accounts") { }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.HasDefaultSchema("accounts");
+        }
     }
 }
