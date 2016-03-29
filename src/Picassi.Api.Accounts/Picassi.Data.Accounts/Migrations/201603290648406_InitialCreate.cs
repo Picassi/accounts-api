@@ -8,7 +8,7 @@ namespace Picassi.Data.Accounts.Migrations
         public override void Up()
         {
             CreateTable(
-                "dbo.Accounts",
+                "accounts.Accounts",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -17,7 +17,7 @@ namespace Picassi.Data.Accounts.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.Categories",
+                "accounts.Categories",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -26,7 +26,7 @@ namespace Picassi.Data.Accounts.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.Snapshots",
+                "accounts.Snapshots",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -35,11 +35,11 @@ namespace Picassi.Data.Accounts.Migrations
                         Amount = c.Decimal(nullable: false, precision: 18, scale: 2),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Accounts", t => t.AccountId, cascadeDelete: true)
+                .ForeignKey("accounts.Accounts", t => t.AccountId, cascadeDelete: true)
                 .Index(t => t.AccountId);
             
             CreateTable(
-                "dbo.Transactions",
+                "accounts.Transactions",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -52,9 +52,9 @@ namespace Picassi.Data.Accounts.Migrations
                         Status = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Categories", t => t.CategoryId)
-                .ForeignKey("dbo.Accounts", t => t.FromId)
-                .ForeignKey("dbo.Accounts", t => t.ToId)
+                .ForeignKey("accounts.Categories", t => t.CategoryId)
+                .ForeignKey("accounts.Accounts", t => t.FromId)
+                .ForeignKey("accounts.Accounts", t => t.ToId)
                 .Index(t => t.FromId)
                 .Index(t => t.ToId)
                 .Index(t => t.CategoryId);
@@ -63,18 +63,18 @@ namespace Picassi.Data.Accounts.Migrations
         
         public override void Down()
         {
-            DropForeignKey("dbo.Transactions", "ToId", "dbo.Accounts");
-            DropForeignKey("dbo.Transactions", "FromId", "dbo.Accounts");
-            DropForeignKey("dbo.Transactions", "CategoryId", "dbo.Categories");
-            DropForeignKey("dbo.Snapshots", "AccountId", "dbo.Accounts");
-            DropIndex("dbo.Transactions", new[] { "CategoryId" });
-            DropIndex("dbo.Transactions", new[] { "ToId" });
-            DropIndex("dbo.Transactions", new[] { "FromId" });
-            DropIndex("dbo.Snapshots", new[] { "AccountId" });
-            DropTable("dbo.Transactions");
-            DropTable("dbo.Snapshots");
-            DropTable("dbo.Categories");
-            DropTable("dbo.Accounts");
+            DropForeignKey("accounts.Transactions", "ToId", "accounts.Accounts");
+            DropForeignKey("accounts.Transactions", "FromId", "accounts.Accounts");
+            DropForeignKey("accounts.Transactions", "CategoryId", "accounts.Categories");
+            DropForeignKey("accounts.Snapshots", "AccountId", "accounts.Accounts");
+            DropIndex("accounts.Transactions", new[] { "CategoryId" });
+            DropIndex("accounts.Transactions", new[] { "ToId" });
+            DropIndex("accounts.Transactions", new[] { "FromId" });
+            DropIndex("accounts.Snapshots", new[] { "AccountId" });
+            DropTable("accounts.Transactions");
+            DropTable("accounts.Snapshots");
+            DropTable("accounts.Categories");
+            DropTable("accounts.Accounts");
         }
     }
 }

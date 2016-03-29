@@ -13,7 +13,7 @@ namespace Picassi.Data.Accounts.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201603131116094_InitialCreate"; }
+            get { return "201603290648406_InitialCreate"; }
         }
         
         string IMigrationMetadata.Source
