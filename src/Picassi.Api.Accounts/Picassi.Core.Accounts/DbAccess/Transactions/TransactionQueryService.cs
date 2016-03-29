@@ -79,8 +79,8 @@ namespace Picassi.Core.Accounts.DbAccess.Transactions
 
         private static IQueryable<Transaction> FilterProvisional(IQueryable<Transaction> transactions, bool? includeProvisional, bool? includeConfirmed)
         {
-            var provisional = includeProvisional != false;
-            var confirmed = includeConfirmed != false;
+            var provisional = includeProvisional == true;
+            var confirmed = includeConfirmed == true;
 
             if (provisional && confirmed) return transactions;
 
