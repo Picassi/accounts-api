@@ -79,7 +79,7 @@ namespace Picassi.Api.Accounts.Controllers
         [Route("accounts/{id}/transactions/upload")]
         public void UploadProcessedTransactions(int id, [FromBody]TransactionUploadModel[] transactions)
         {
-            _transactionUploadService.AddTransactionsToAccount(id, transactions.ToList());
+           _transactionUploadService.AddTransactionsToAccount(id, transactions.ToList());
         }
     }
 }

@@ -28,14 +28,14 @@ namespace Picassi.Core.Accounts.Services.Transactions
             _dbContext.SaveChanges();
         }
 
-        private static Transaction CreateTransaction(int baseAccountId, TransactionUploadModel transaction)
+        private Transaction CreateTransaction(int baseAccountId, TransactionUploadModel transaction)
         {
             return new Transaction
             {
                 Amount = GetTransactionAmount(transaction),
                 Date = DateTime.ParseExact(transaction.Date, "dd/MM/yyyy", CultureInfo.CurrentCulture),
                 Description = transaction.Description,
-                CategoryId = transaction.CategoryId,
+                CategoryId = _dbContext.Categories.SingleOrDefault(x => x.Name == transaction.CategoryName)?.Id,
                 FromId = (transaction.Amount < 0 || transaction.Amount == 0 && transaction.Debit > 0) ? baseAccountId : (int?)null,
                 ToId = (transaction.Amount > 0 || transaction.Amount == 0 && transaction.Credit > 0) ? baseAccountId : (int?)null,
                 Status = TransactionStatus.Provisional
