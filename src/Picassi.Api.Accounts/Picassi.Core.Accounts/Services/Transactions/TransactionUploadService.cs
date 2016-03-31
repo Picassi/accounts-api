@@ -10,7 +10,8 @@ namespace Picassi.Core.Accounts.Services.Transactions
 {
     public interface ITransactionUploadService
     {
-        void AddTransactionsToAccount(int accountId, List<TransactionUploadModel> transactions);
+        void AddTransactionsToAccount(int accountId, IEnumerable<TransactionUploadModel> transactions);
+        void ConfirmTransactions(int accountId, IEnumerable<int> transactionids);
     }
 
     public class TransactionUploadService : ITransactionUploadService
@@ -22,9 +23,18 @@ namespace Picassi.Core.Accounts.Services.Transactions
             _dbContext = dbContext;
         }
 
-        public void AddTransactionsToAccount(int accountId, List<TransactionUploadModel> transactions)
+        public void AddTransactionsToAccount(int accountId, IEnumerable<TransactionUploadModel> transactions)
         {
             _dbContext.Transactions.AddRange(transactions.Select(x => CreateTransaction(accountId, x)).Where(x => x != null));
+            _dbContext.SaveChanges();
+        }
+
+        public void ConfirmTransactions(int accountId, IEnumerable<int> transactionids)
+        {
+            foreach (var transaction in _dbContext.Transactions.Where(x => transactionids.Contains(x.Id)))
+            {
+                transaction.Status = TransactionStatus.Confirmed;
+            }
             _dbContext.SaveChanges();
         }
 

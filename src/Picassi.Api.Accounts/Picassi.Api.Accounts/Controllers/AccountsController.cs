@@ -81,5 +81,12 @@ namespace Picassi.Api.Accounts.Controllers
         {
            _transactionUploadService.AddTransactionsToAccount(id, transactions.ToList());
         }
+
+        [HttpPost]
+        [Route("accounts/{id}/transactions/confirm")]
+        public void Confirm(int id, [FromBody]int[] transactionids)
+        {
+            _transactionUploadService.ConfirmTransactions(id, transactionids);
+        }
     }
 }
