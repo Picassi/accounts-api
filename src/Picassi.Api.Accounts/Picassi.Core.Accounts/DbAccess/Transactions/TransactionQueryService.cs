@@ -28,7 +28,7 @@ namespace Picassi.Core.Accounts.DbAccess.Transactions
         {
             var transactions = _dbContext.Transactions.Where(x => x.FromId == query.AccountId || x.ToId == query.AccountId);
             if (query.DateFrom != null) transactions = transactions.Where(x => x.Date >= query.DateFrom);
-            if (query.DateTo != null) transactions = transactions.Where(x => x.Date <= query.DateTo);
+            if (query.DateTo != null) transactions = transactions.Where(x => x.Date < query.DateTo);
             return Mapper.Map<IEnumerable<TransactionViewModel>>(transactions);
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Picassi.Core.Accounts.DbAccess.Transactions;
 using Picassi.Core.Accounts.ViewModels.Statements;
 
@@ -24,10 +25,9 @@ namespace Picassi.Core.Accounts.Reports
 
         public StatementViewModel GetStatement(int accountId, StatementQueryModel query)
         {
-            var startBalance = (query.DateFrom != null)
-                ? _accountBalanceService.GetAccountBalance(accountId, (DateTime)query.DateFrom)
-                : 0;
-            var transactions = _transactionQueryService.Query(query.GetTransactionQuery(accountId));                
+            var transactions = _transactionQueryService.Query(query.GetTransactionQuery(accountId)).ToList();
+            var startDate = query.DateFrom ?? (transactions.Any() ? transactions.Min(x => x.Date) : (DateTime?) null);
+            var startBalance = startDate == null ? 0 : _accountBalanceService.GetAccountBalance(accountId, (DateTime)startDate);
             return _statementViewModelFactory.CompileStatement(accountId, startBalance, transactions);
         }
     }
