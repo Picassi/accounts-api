@@ -34,11 +34,10 @@ namespace Picassi.Api.Accounts.Controllers
         }
 
         [HttpGet]
-        [Route("categories/summary/{frequency}")]
-        public IEnumerable<CategorySummaryViewModel> GetCategoriesSumary(string frequency, [FromUri]CategoriesQueryModel query)
+        [Route("categories/summary")]
+        public IEnumerable<CategorySummaryViewModel> GetCategoriesSumary([FromUri]CategoriesQueryModel query)
         {
-            var frequencyValue = (PeriodType)Enum.Parse(typeof (PeriodType), frequency, true);
-            return _categorySummaryService.GetCategorySummaries(query, frequencyValue);
+            return _categorySummaryService.GetCategorySummaries(query);
         }
 
         [HttpPost]

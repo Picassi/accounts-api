@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Picassi.Common.Data.Enums;
 using Picassi.Core.Accounts.DbAccess.Categories;
 using Picassi.Core.Accounts.Time;
 using Picassi.Core.Accounts.Time.Periods;
@@ -11,7 +10,7 @@ namespace Picassi.Core.Accounts.Reports
 {
     public interface ICategorySummaryService
     {
-        IEnumerable<CategorySummaryViewModel> GetCategorySummaries(CategoriesQueryModel query, PeriodType periodType);
+        IEnumerable<CategorySummaryViewModel> GetCategorySummaries(CategoriesQueryModel query);
     }
 
     public class CategorySummaryService : ICategorySummaryService
@@ -25,14 +24,14 @@ namespace Picassi.Core.Accounts.Reports
             _categoryQueryService = categoryQueryService;
         }
 
-        public IEnumerable<CategorySummaryViewModel> GetCategorySummaries(CategoriesQueryModel query, PeriodType periodType)
+        public IEnumerable<CategorySummaryViewModel> GetCategorySummaries(CategoriesQueryModel query)
         {
             var categories = _categoryQueryService.Query(query);
             var categoriesPlusUncategorised = AddPlaceholderForUncategorised(categories);
             var dateRange = query.DateFrom != null && query.DateTo != null
                 ? new DateRange((DateTime) query.DateFrom, (DateTime) query.DateTo)
                 : null;
-            return BuildCategorySummaries(categoriesPlusUncategorised, periodType, dateRange);
+            return BuildCategorySummaries(categoriesPlusUncategorised, query.Frequency, dateRange);
         }
 
         private IEnumerable<CategorySummaryViewModel> BuildCategorySummaries(IEnumerable<CategoryViewModel> categories, PeriodType periodType, DateRange range)
