@@ -31,13 +31,14 @@ namespace Picassi.Core.Accounts.Reports
             var dateRange = query.DateFrom != null && query.DateTo != null
                 ? new DateRange((DateTime) query.DateFrom, (DateTime) query.DateTo)
                 : null;
-            return BuildCategorySummaries(categoriesPlusUncategorised, query.Frequency, dateRange);
+            return BuildCategorySummaries(categoriesPlusUncategorised, query.AccountIds, query.Frequency, dateRange);
         }
 
-        private IEnumerable<CategorySummaryViewModel> BuildCategorySummaries(IEnumerable<CategoryViewModel> categories, PeriodType periodType, DateRange range)
+        private IEnumerable<CategorySummaryViewModel> BuildCategorySummaries(IEnumerable<CategoryViewModel> categories, int[] referenceAccountIds, PeriodType periodType, DateRange range)
         {
             return categories.Select(x => _categorySummaryViewModelFactory.GetSummary(new CategorySummaryQueryModel
             {
+                AccountIds = referenceAccountIds.ToList(),
                 AverageSpendPeriod = new PeriodDefinition { Quantity = 1, Type =periodType },
                 Category = x,
                 DateRange = range

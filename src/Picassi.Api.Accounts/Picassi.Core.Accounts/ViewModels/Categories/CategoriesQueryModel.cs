@@ -11,5 +11,6 @@ namespace Picassi.Core.Accounts.ViewModels.Categories
         public string PageSize { get; set; }
         public string PageNumber { get; set; }
         public PeriodType Frequency { get; set; }
+        public int[] AccountIds { get; set; }
     }
 }

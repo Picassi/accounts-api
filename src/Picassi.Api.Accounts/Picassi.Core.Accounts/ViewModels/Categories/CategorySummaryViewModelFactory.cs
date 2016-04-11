@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Picassi.Core.Accounts.Time;
 using Picassi.Data.Accounts.Database;
@@ -26,7 +27,7 @@ namespace Picassi.Core.Accounts.ViewModels.Categories
         {
             var transactionsForCategory = query.DateRange != null ? GetFilteredTransactions(query) : null;
 
-            var averageSpend = transactionsForCategory != null ? GetAverageSpend(query, transactionsForCategory) : (decimal?)null;
+            var averageSpend = transactionsForCategory != null ? GetAverageSpend(query, transactionsForCategory.ToList()) : (decimal?)null;
 
             return new CategorySummaryViewModel
             {
@@ -54,11 +55,13 @@ namespace Picassi.Core.Accounts.ViewModels.Categories
             return transactions.Where(x => x.Date >= range.Start && x.Date < range.End);
         }
 
-        private decimal GetAverageSpend(CategorySummaryQueryModel query, IEnumerable<Transaction> transactions)
+        private decimal GetAverageSpend(CategorySummaryQueryModel query, IReadOnlyCollection<Transaction> transactions)
         {
-            var totalSpend = transactions.Sum(x => x.Amount);
+            var totalIn = transactions.Where(x => x.ToId != null && query.AccountIds.Contains((int)x.ToId)).Sum(x => x.Amount);
+            var totalOut = transactions.Where(x => x.FromId != null && query.AccountIds.Contains((int)x.FromId)).Sum(x => x.Amount);
             var numberOfPeriods = _periodCalculator.GetNumberOfPeriods(query.AverageSpendPeriod, query.DateRange);
-            return totalSpend / numberOfPeriods;
+            var total = (totalIn - totalOut) / numberOfPeriods;
+            return Math.Round(total, 2);
         }
     }
 }

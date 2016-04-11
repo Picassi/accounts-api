@@ -6,7 +6,7 @@
 
         public decimal GetQuantityBetweenPoints(DateRange range)
         {
-            return (decimal)(range.Start - range.End).TotalDays / (Constants.DaysPerYear / Constants.MonthsPerYear);
+            return (decimal)(range.End - range.Start).TotalDays / (Constants.DaysPerYear / Constants.MonthsPerYear);
         }
     }
 }

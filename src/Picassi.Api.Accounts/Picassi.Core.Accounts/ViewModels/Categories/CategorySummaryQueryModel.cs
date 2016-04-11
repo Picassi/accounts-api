@@ -1,4 +1,5 @@
-﻿using Picassi.Core.Accounts.Time;
+﻿using System.Collections.Generic;
+using Picassi.Core.Accounts.Time;
 
 namespace Picassi.Core.Accounts.ViewModels.Categories
 {
@@ -7,5 +8,6 @@ namespace Picassi.Core.Accounts.ViewModels.Categories
         public CategoryViewModel Category { get; set; }        
         public DateRange DateRange { get; set; }
         public PeriodDefinition AverageSpendPeriod { get; set; }
+        public List<int> AccountIds { get; set; }
     }
 }
