@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Picassi.Core.Accounts.Enums;
 using Picassi.Core.Accounts.Time;
 using Picassi.Data.Accounts.Database;
 using Picassi.Data.Accounts.Models;
@@ -26,14 +27,13 @@ namespace Picassi.Core.Accounts.ViewModels.Categories
         public CategorySummaryViewModel GetSummary(CategorySummaryQueryModel query)
         {
             var transactionsForCategory = query.DateRange != null ? GetFilteredTransactions(query) : null;
-
-            var averageSpend = transactionsForCategory != null ? GetAverageSpend(query, transactionsForCategory.ToList()) : (decimal?)null;
+            var spend = transactionsForCategory != null ? GetSpend(query, transactionsForCategory.ToList()) : (decimal?)null;
 
             return new CategorySummaryViewModel
             {
                 Id = query.Category?.Id,
                 Name = query.Category?.Name ?? "Uncategorised",
-                AverageSpend = averageSpend
+                Spend = spend
             };
         }
 
@@ -55,13 +55,19 @@ namespace Picassi.Core.Accounts.ViewModels.Categories
             return transactions.Where(x => x.Date >= range.Start && x.Date < range.End);
         }
 
-        private decimal GetAverageSpend(CategorySummaryQueryModel query, IReadOnlyCollection<Transaction> transactions)
+        private decimal GetSpend(CategorySummaryQueryModel query, IReadOnlyCollection<Transaction> transactions)
         {
             var totalIn = transactions.Where(x => x.ToId != null && query.AccountIds.Contains((int)x.ToId)).Sum(x => x.Amount);
             var totalOut = transactions.Where(x => x.FromId != null && query.AccountIds.Contains((int)x.FromId)).Sum(x => x.Amount);
+            var total = totalIn - totalOut;
+            var reportedValue = query.ReportType == CategorySummaryReportType.Total ? total : GetAverage(query, total);
+            return Math.Round(reportedValue, 2);
+        }
+
+        private decimal GetAverage(CategorySummaryQueryModel query, decimal total)
+        {
             var numberOfPeriods = _periodCalculator.GetNumberOfPeriods(query.AverageSpendPeriod, query.DateRange);
-            var total = (totalIn - totalOut) / numberOfPeriods;
-            return Math.Round(total, 2);
+            return total / numberOfPeriods;            
         }
     }
 }

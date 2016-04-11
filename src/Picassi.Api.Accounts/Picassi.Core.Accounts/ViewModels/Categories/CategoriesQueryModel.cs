@@ -1,4 +1,5 @@
 ﻿using System;
+using Picassi.Core.Accounts.Enums;
 using Picassi.Core.Accounts.Time.Periods;
 
 namespace Picassi.Core.Accounts.ViewModels.Categories
@@ -10,7 +11,8 @@ namespace Picassi.Core.Accounts.ViewModels.Categories
         public DateTime? DateTo { get; set; }
         public string PageSize { get; set; }
         public string PageNumber { get; set; }
-        public PeriodType Frequency { get; set; }
-        public int[] AccountIds { get; set; }
+        public int[] AccountIds { get; set; }        
+        public CategorySummaryReportType ReportType { get; set; }
+        public PeriodType Frequency { get; set; }    
     }
 }

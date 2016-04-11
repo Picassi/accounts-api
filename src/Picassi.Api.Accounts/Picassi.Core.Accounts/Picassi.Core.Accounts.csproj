@@ -70,6 +70,7 @@
     <Compile Include="DbAccess\Snapshots\SnapshotQueryService.cs" />
     <Compile Include="DbAccess\Transactions\TransactionCrudService.cs" />
     <Compile Include="DbAccess\Transactions\TransactionQueryService.cs" />
+    <Compile Include="Enums\CategorySummaryReportType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reports\AccountBalanceService.cs" />
     <Compile Include="Reports\StatementViewModelFactory.cs" />
