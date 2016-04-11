@@ -44,7 +44,7 @@ namespace Picassi.Core.Accounts.Reports
         {
             return categories.Select(x => _categorySummaryViewModelFactory.GetSummary(new CategorySummaryQueryModel
             {
-                AccountIds = referenceAccountIds.ToList(),
+                AccountIds = referenceAccountIds?.ToList() ?? new List<int>(),
                 ReportType = reportType,
                 AverageSpendPeriod = new PeriodDefinition { Quantity = 1, Type =periodType },
                 Category = x,
