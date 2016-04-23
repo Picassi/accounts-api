@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using Picassi.Common.Api.Attributes;
-using Picassi.Common.Data.Enums;
 using Picassi.Core.Accounts.DbAccess.Categories;
 using Picassi.Core.Accounts.Reports;
-using Picassi.Core.Accounts.Time.Periods;
 using Picassi.Core.Accounts.ViewModels.Categories;
 
 namespace Picassi.Api.Accounts.Controllers

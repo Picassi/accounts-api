@@ -8,7 +8,6 @@ using Picassi.Core.Accounts.Reports;
 using Picassi.Core.Accounts.Tests.Dummies;
 using Picassi.Core.Accounts.ViewModels.Snapshots;
 using Picassi.Core.Accounts.ViewModels.Transactions;
-using Picassi.Data.Accounts.Models;
 
 namespace Picassi.Core.Accounts.Tests.Reports
 {

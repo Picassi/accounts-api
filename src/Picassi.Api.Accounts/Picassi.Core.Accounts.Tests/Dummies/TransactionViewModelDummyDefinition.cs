@@ -2,7 +2,6 @@
 using System.Diagnostics.CodeAnalysis;
 using FakeItEasy;
 using Picassi.Core.Accounts.ViewModels.Transactions;
-using Picassi.Data.Accounts.Models;
 
 namespace Picassi.Core.Accounts.Tests.Dummies
 {
