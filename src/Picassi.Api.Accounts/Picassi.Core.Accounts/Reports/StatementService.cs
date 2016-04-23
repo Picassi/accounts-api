@@ -28,7 +28,7 @@ namespace Picassi.Core.Accounts.Reports
             var transactions = _transactionQueryService.Query(query.GetTransactionQuery(accountId)).ToList();
             var startDate = query.DateFrom ?? (transactions.Any() ? transactions.Min(x => x.Date) : (DateTime?) null);
             var startBalance = startDate == null ? 0 : _accountBalanceService.GetAccountBalance(accountId, (DateTime)startDate);
-            return _statementViewModelFactory.CompileStatement(accountId, startBalance, transactions);
+            return _statementViewModelFactory.CompileStatement(accountId, startBalance, transactions, query.PageNumber, query.PageSize);
         }
     }
 }

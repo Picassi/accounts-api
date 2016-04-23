@@ -19,6 +19,8 @@ namespace Picassi.Data.Accounts.Models
 
         public decimal Amount { get; set; }
 
+        public decimal Balance { get; set; }
+
         public DateTime Date { get; set; }        
 
         public virtual Account From { get; set; }

@@ -8,6 +8,8 @@ namespace Picassi.Core.Accounts.ViewModels.Statements
 
         public decimal StartBalance { get; set; }
 
+        public int TotalLines { get; set; }
+
         public IEnumerable<StatementLineViewModel> Lines { get; set; }
         
     }

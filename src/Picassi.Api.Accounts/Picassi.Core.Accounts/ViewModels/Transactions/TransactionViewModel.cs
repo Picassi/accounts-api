@@ -11,7 +11,8 @@ namespace Picassi.Core.Accounts.ViewModels.Transactions
         public int? CategoryId { get; set; }
         public string CategoryName { get; set; }
         public decimal Amount { get; set; }
-		public DateTime Date { get; set; }
+        public decimal Balance { get; set; }
+        public DateTime Date { get; set; }
         public decimal In { get; set; }
         public decimal Out { get; set; }
         public string Status { get; set; }

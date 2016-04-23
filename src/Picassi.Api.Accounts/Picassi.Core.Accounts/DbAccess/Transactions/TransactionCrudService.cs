@@ -1,4 +1,5 @@
 using AutoMapper;
+using Picassi.Core.Accounts.Reports;
 using Picassi.Core.Accounts.ViewModels.Transactions;
 using Picassi.Data.Accounts.Database;
 using Picassi.Data.Accounts.Models;
@@ -16,10 +17,12 @@ namespace Picassi.Core.Accounts.DbAccess.Transactions
     public class TransactionCrudService : ITransactionCrudService
     {
         private readonly IAccountsDataContext _dbContext;
+        private IAccountBalanceService _accountBalanceService;
 
-        public TransactionCrudService(IAccountsDataContext dataContext)
+        public TransactionCrudService(IAccountsDataContext dataContext, IAccountBalanceService accountBalanceService)
         {
             _dbContext = dataContext;
+            _accountBalanceService = accountBalanceService;
         }
 
         public TransactionViewModel CreateTransaction(TransactionViewModel transaction)
@@ -27,6 +30,10 @@ namespace Picassi.Core.Accounts.DbAccess.Transactions
             var dataModel = Mapper.Map<Transaction>(transaction);
             _dbContext.Transactions.Add(dataModel);
             _dbContext.SaveChanges();
+            if (transaction.FromId != null)
+                _accountBalanceService.SetTransactionBalances((int) transaction.FromId, transaction.Date);
+            if (transaction.ToId != null)
+                _accountBalanceService.SetTransactionBalances((int)transaction.FromId, transaction.Date);
             return Mapper.Map<TransactionViewModel>(dataModel);
         }
 

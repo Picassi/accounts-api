@@ -68,6 +68,10 @@
     <Compile Include="Migrations\201603290648406_InitialCreate.Designer.cs">
       <DependentUpon>201603290648406_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604231616460_AddBalanceToAccount.cs" />
+    <Compile Include="Migrations\201604231616460_AddBalanceToAccount.Designer.cs">
+      <DependentUpon>201604231616460_AddBalanceToAccount.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Category.cs" />
@@ -88,6 +92,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201603290648406_InitialCreate.resx">
       <DependentUpon>201603290648406_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604231616460_AddBalanceToAccount.resx">
+      <DependentUpon>201604231616460_AddBalanceToAccount.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

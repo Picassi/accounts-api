@@ -19,5 +19,7 @@ namespace Picassi.Core.Accounts.ViewModels.Statements
         public decimal Debit { get; set; }
 
         public decimal Balance { get; set; }
+
+        public int? CategoryId { get; set; }
     }
 }
