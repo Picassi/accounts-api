@@ -12,7 +12,7 @@ namespace Picassi.Core.Accounts.DbAccess.Transactions
     public interface ITransactionQueryService
     {
         IEnumerable<TransactionViewModel> Query(SimpleTransactionQueryModel query);
-        IEnumerable<TransactionViewModel> Query(TransactionsQueryModel query);
+        TransactionsResultsViewModel Query(TransactionsQueryModel query);
     }
 
     public class TransactionQueryService : ITransactionQueryService
@@ -32,22 +32,35 @@ namespace Picassi.Core.Accounts.DbAccess.Transactions
             return Mapper.Map<IEnumerable<TransactionViewModel>>(transactions);
         }
 
-        public IEnumerable<TransactionViewModel> Query(TransactionsQueryModel query)
+        public TransactionsResultsViewModel Query(TransactionsQueryModel query)
         {
             var transactions = _dbContext.Transactions.Include(x => x.Category);
-            return query == null ? Mapper.Map<IEnumerable<TransactionViewModel>>(transactions) : FilterTransactions(query, transactions);
+            var results = (query == null ? Mapper.Map<IEnumerable<TransactionViewModel>>(transactions) : FilterTransactions(query, transactions)).ToList();
+            var count = query == null ? results.Count : FilterTransactionsWithoutPaging(query, transactions).Count();
+
+            return new TransactionsResultsViewModel
+            {
+                TotalLines = count,
+                Lines = results
+            };
         }
 
         private IEnumerable<TransactionViewModel> FilterTransactions(TransactionsQueryModel query, IQueryable<Transaction> transactions)
+        {
+            transactions = FilterTransactionsWithoutPaging(query, transactions);
+            transactions = OrderResults(transactions);
+            transactions = PageResults(transactions, query.PageNumber, query.PageSize);
+            return Mapper.Map<IEnumerable<TransactionViewModel>>(transactions);
+        }
+
+        private static IQueryable<Transaction> FilterTransactionsWithoutPaging(TransactionsQueryModel query, IQueryable<Transaction> transactions)
         {
             transactions = FilterText(transactions, query.Text);
             transactions = FilterAccounts(transactions, query.Accounts);
             transactions = FilterCategories(transactions, query.ShowUncategorised, query.Categories);
             transactions = FilterDate(transactions, query.DateFrom, query.DateTo);
             transactions = FilterProvisional(transactions, query.IncludeProvisional, query.IncludeConfirmed);
-            transactions = OrderResults(transactions);
-            transactions = PageResults(transactions, query.PageNumber, query.PageSize);
-            return Mapper.Map<IEnumerable<TransactionViewModel>>(transactions);
+            return transactions;
         }
 
         private static IQueryable<Transaction> FilterText(IQueryable<Transaction> transactions, string text)

@@ -8,6 +8,7 @@ using Picassi.Core.Accounts.Reports;
 using Picassi.Core.Accounts.Tests.Dummies;
 using Picassi.Core.Accounts.ViewModels.Snapshots;
 using Picassi.Core.Accounts.ViewModels.Transactions;
+using Picassi.Data.Accounts.Database;
 
 namespace Picassi.Core.Accounts.Tests.Reports
 {
@@ -17,13 +18,15 @@ namespace Picassi.Core.Accounts.Tests.Reports
         private AccountBalanceService balanceService;
         private ISnapshotQueryService snapshotQueryService;
         private ITransactionQueryService transactionQueryService;
+        private IAccountsDataContext accountsDataContext;
 
         [SetUp]
         public void SetUp()
         {
             snapshotQueryService = A.Fake<ISnapshotQueryService>();
             transactionQueryService = A.Fake<ITransactionQueryService>();
-            balanceService = new AccountBalanceService(snapshotQueryService, transactionQueryService);
+            accountsDataContext = A.Fake<IAccountsDataContext>();
+            balanceService = new AccountBalanceService(snapshotQueryService, transactionQueryService, accountsDataContext);
         }
 
 

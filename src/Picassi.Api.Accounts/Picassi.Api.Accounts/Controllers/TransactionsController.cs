@@ -24,7 +24,7 @@ namespace Picassi.Api.Accounts.Controllers
 
         [HttpGet]
         [Route("transactions")]
-        public IEnumerable<TransactionViewModel> GetTransactions([FromUri]TransactionsQueryModel query)
+        public TransactionsResultsViewModel GetTransactions([FromUri]TransactionsQueryModel query)
         {
             return _queryService.Query(query);
         }

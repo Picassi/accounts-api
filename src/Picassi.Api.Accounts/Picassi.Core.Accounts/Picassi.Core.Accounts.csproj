@@ -112,6 +112,7 @@
     <Compile Include="ViewModels\Transactions\SimpleTransactionQueryModel.cs" />
     <Compile Include="ViewModels\Transactions\TransactionAutomapperProfile.cs" />
     <Compile Include="ViewModels\Transactions\TransactionsQueryModel.cs" />
+    <Compile Include="ViewModels\Transactions\TransactionsResultsViewModel.cs" />
     <Compile Include="ViewModels\Transactions\TransactionUploadModel.cs" />
     <Compile Include="ViewModels\Transactions\TransactionViewModel.cs" />
   </ItemGroup>
