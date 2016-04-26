@@ -10,6 +10,10 @@ namespace Picassi.Data.Accounts.Database
         DbSet<Snapshot> Snapshots { get; set; }
         DbSet<Transaction> Transactions { get; set; }
         DbSet<Category> Categories { get; set; }
+        DbSet<Group> Groups { get; set; }
+        DbSet<Tag> Tags { get; set; }
+        DbSet<Report> Reports { get; set; }
+        DbSet<ReportLineDefinition> ReportLines { get; set; }
     }
 
     public class AccountsDataContext : DbContext, IAccountsDataContext
@@ -18,6 +22,10 @@ namespace Picassi.Data.Accounts.Database
         public DbSet<Snapshot> Snapshots { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Group> Groups { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<Report> Reports { get; set; }
+        public DbSet<ReportLineDefinition> ReportLines { get; set; }
 
         public AccountsDataContext() : base("Accounts") { }
 

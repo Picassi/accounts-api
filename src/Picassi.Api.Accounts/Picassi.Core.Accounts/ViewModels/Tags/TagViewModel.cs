@@ -1,6 +1,6 @@
-﻿namespace Picassi.Core.Accounts.ViewModels.Categories
+﻿namespace Picassi.Core.Accounts.ViewModels.Tags
 {
-    public class CategoryViewModel
+    public class TagViewModel
     {
         public int Id { get; set; }
 

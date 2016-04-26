@@ -1,6 +1,6 @@
-﻿namespace Picassi.Core.Accounts.ViewModels.Categories
+﻿namespace Picassi.Core.Accounts.ViewModels.Groups
 {
-    public class CategoryViewModel
+    public class GroupViewModel
     {
         public int Id { get; set; }
 

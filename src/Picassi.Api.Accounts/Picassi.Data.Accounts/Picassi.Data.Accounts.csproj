@@ -64,6 +64,8 @@
   <ItemGroup>
     <Compile Include="Database\AccountsDataContext.cs" />
     <Compile Include="Database\Migrator.cs" />
+    <Compile Include="Enums\ReportSource.cs" />
+    <Compile Include="Enums\ReportType.cs" />
     <Compile Include="Migrations\201603290648406_InitialCreate.cs" />
     <Compile Include="Migrations\201603290648406_InitialCreate.Designer.cs">
       <DependentUpon>201603290648406_InitialCreate.cs</DependentUpon>
@@ -72,8 +74,16 @@
     <Compile Include="Migrations\201604231616460_AddBalanceToAccount.Designer.cs">
       <DependentUpon>201604231616460_AddBalanceToAccount.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604262119158_AddedCategoriesTagsAndReporting.cs" />
+    <Compile Include="Migrations\201604262119158_AddedCategoriesTagsAndReporting.Designer.cs">
+      <DependentUpon>201604262119158_AddedCategoriesTagsAndReporting.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\Report.cs" />
+    <Compile Include="Models\ReportLineDefinition.cs" />
+    <Compile Include="Models\Tag.cs" />
+    <Compile Include="Models\Group.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Snapshot.cs" />
     <Compile Include="Models\Transaction.cs" />
@@ -95,6 +105,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604231616460_AddBalanceToAccount.resx">
       <DependentUpon>201604231616460_AddBalanceToAccount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604262119158_AddedCategoriesTagsAndReporting.resx">
+      <DependentUpon>201604262119158_AddedCategoriesTagsAndReporting.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
