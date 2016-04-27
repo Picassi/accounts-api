@@ -3,7 +3,7 @@ namespace Picassi.Data.Accounts.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class AddedCategoriesTagsAndReporting : DbMigration
+    public partial class AddCategoriesTagsAndReports : DbMigration
     {
         public override void Up()
         {

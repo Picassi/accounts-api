@@ -7,13 +7,13 @@ namespace Picassi.Data.Accounts.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class AddedCategoriesTagsAndReporting : IMigrationMetadata
+    public sealed partial class AddCategoriesTagsAndReports : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddedCategoriesTagsAndReporting));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddCategoriesTagsAndReports));
         
         string IMigrationMetadata.Id
         {
-            get { return "201604262119158_AddedCategoriesTagsAndReporting"; }
+            get { return "201604270628214_AddCategoriesTagsAndReports"; }
         }
         
         string IMigrationMetadata.Source
