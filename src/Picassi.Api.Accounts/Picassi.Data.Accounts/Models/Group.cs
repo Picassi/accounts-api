@@ -8,6 +8,6 @@ namespace Picassi.Data.Accounts.Models
 
         public string Name { get; set; }
 
-        public virtual IEnumerable<Category> Categories { get; set; }
+        public virtual IEnumerable<ReportLineDefinition> ReportLines { get; set; }
     }
 }

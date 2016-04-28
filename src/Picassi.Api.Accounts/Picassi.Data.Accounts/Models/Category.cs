@@ -9,5 +9,8 @@ namespace Picassi.Data.Accounts.Models
         public string Name { get; set; }
 
         public virtual IEnumerable<Transaction> Transactions { get; set; }
+
+        public virtual IEnumerable<ReportLineDefinition> ReportLines { get; set; }
+
     }
 }

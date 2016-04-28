@@ -110,6 +110,7 @@
     <Compile Include="ViewModels\Groups\GroupAutomapperProfile.cs" />
     <Compile Include="ViewModels\Groups\GroupsQueryModel.cs" />
     <Compile Include="ViewModels\Reports\ReportLineDefinitionViewModel.cs" />
+    <Compile Include="ViewModels\Reports\ReportResultsQueryModel.cs" />
     <Compile Include="ViewModels\Reports\ReportViewModel.cs" />
     <Compile Include="ViewModels\Snapshots\SnapshotAutomapperProfile.cs" />
     <Compile Include="ViewModels\Snapshots\SnapshotQueryModel.cs" />

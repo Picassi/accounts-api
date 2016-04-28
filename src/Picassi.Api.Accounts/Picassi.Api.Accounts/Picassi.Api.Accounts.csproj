@@ -192,6 +192,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountsController.cs" />
+    <Compile Include="Controllers\ReportLinesController.cs" />
+    <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\TagsController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />

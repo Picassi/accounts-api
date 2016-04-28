@@ -10,7 +10,7 @@
 
         public int ReportId { get; set; }
 
-        public int? GroupedId { get; set; }
+        public int? GroupId { get; set; }
 
         public int? CategoryId { get; set; }
 

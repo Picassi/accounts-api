@@ -13,6 +13,6 @@ namespace Picassi.Data.Accounts.Models
 
         public ReportSource ReportSource { get; set; }
 
-        public virtual IEnumerable<ReportLineDefinition> Lines { get; set; }
+        public virtual IEnumerable<ReportLineDefinition> ReportLines { get; set; }
     }
 }
