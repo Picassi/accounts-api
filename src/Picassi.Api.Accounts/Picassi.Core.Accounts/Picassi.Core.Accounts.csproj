@@ -114,6 +114,7 @@
     <Compile Include="ViewModels\Reports\ReportLineDefinitionViewModel.cs" />
     <Compile Include="ViewModels\Reports\ReportQueryModel.cs" />
     <Compile Include="ViewModels\Reports\ReportResultsQueryModel.cs" />
+    <Compile Include="ViewModels\Reports\ReportDefinitionViewModel.cs" />
     <Compile Include="ViewModels\Reports\ReportViewModel.cs" />
     <Compile Include="ViewModels\Reports\ReportAutomapperProfile.cs" />
     <Compile Include="ViewModels\Snapshots\SnapshotAutomapperProfile.cs" />

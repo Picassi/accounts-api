@@ -1,6 +1,8 @@
-﻿namespace Picassi.Data.Accounts.Models
+﻿using Picassi.Common.Data;
+
+namespace Picassi.Data.Accounts.Models
 {
-    public class ReportLineDefinition
+    public class ReportLineDefinition : IModel
     {
         public int Id { get; set; }
 

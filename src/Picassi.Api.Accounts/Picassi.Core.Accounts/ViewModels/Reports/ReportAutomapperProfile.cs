@@ -9,6 +9,8 @@ namespace Picassi.Core.Accounts.ViewModels.Reports
         {
             CreateMap<ReportViewModel, Report>();
             CreateMap<Report, ReportViewModel>();
+            CreateMap<ReportDefinitionViewModel, Report>();
+            CreateMap<Report, ReportDefinitionViewModel>();
         }
     }
 }

@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using Picassi.Common.Data;
 using Picassi.Data.Accounts.Enums;
 
 namespace Picassi.Data.Accounts.Models
 {
-    public class Report
+    public class Report : IModel
     {
         public int Id { get; set; }
 
@@ -13,6 +14,6 @@ namespace Picassi.Data.Accounts.Models
 
         public ReportSource ReportSource { get; set; }
 
-        public virtual IEnumerable<ReportLineDefinition> ReportLines { get; set; }
+        public virtual ICollection<ReportLineDefinition> ReportLines { get; set; }
     }
 }

@@ -9,12 +9,12 @@ namespace Picassi.Api.Accounts.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     [PicassiApiAuthorise]
-    public class ReportController : ApiController
+    public class ReportsController : ApiController
     {
         private readonly IReportCrudService _crudService;
         private readonly IReportQueryService _queryService;
 
-        public ReportController(IReportCrudService crudService, IReportQueryService queryService)
+        public ReportsController(IReportCrudService crudService, IReportQueryService queryService)
         {
             _crudService = crudService;
             _queryService = queryService;
@@ -29,28 +29,28 @@ namespace Picassi.Api.Accounts.Controllers
 
         [HttpPost]
         [Route("reports")]
-        public ReportViewModel CreateReport([FromBody]ReportViewModel reportViewModel)
+        public ReportDefinitionViewModel CreateReport([FromBody]ReportDefinitionViewModel reportViewModel)
         {
             return _crudService.CreateReport(reportViewModel);
         }
 
         [HttpGet]
         [Route("reports/{id}")]
-        public ReportViewModel GetReport(int id)
+        public ReportDefinitionViewModel GetReport(int id)
         {
             return _crudService.GetReport(id);
         }
 
         [HttpPut]
         [Route("reports/{id}")]
-        public ReportViewModel UpdateReport(int id, [FromBody]ReportViewModel reportViewModel)
+        public ReportDefinitionViewModel UpdateReport(int id, [FromBody]ReportDefinitionViewModel reportViewModel)
         {
             return _crudService.UpdateReport(id, reportViewModel);
         }
 
         [HttpDelete]
         [Route("reports/{id}")]
-        public bool DeleteAccount(int id)
+        public bool DeleteReport(int id)
         {
             return _crudService.DeleteReport(id);
         }
