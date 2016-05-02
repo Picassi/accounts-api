@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Picassi.Core.Accounts.ViewModels.Groups
+namespace Picassi.Core.Accounts.ViewModels.ReportGroups
 {
-    public class GroupsQueryModel
+    public class ReportGroupsQueryModel
     {
         public string Name { get; set; }
         public DateTime? DateFrom { get; set; }

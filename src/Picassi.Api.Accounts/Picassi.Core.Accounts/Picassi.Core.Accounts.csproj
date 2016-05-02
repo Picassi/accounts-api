@@ -64,14 +64,16 @@
   <ItemGroup>
     <Compile Include="DbAccess\Accounts\AccountCrudService.cs" />
     <Compile Include="DbAccess\Accounts\AccountQueryService.cs" />
+    <Compile Include="DbAccess\ReportGroups\ReportGroupCategoryCompiler.cs" />
     <Compile Include="DbAccess\Reports\ReportCrudService.cs" />
+    <Compile Include="DbAccess\Reports\ReportGroupCompiler.cs" />
     <Compile Include="DbAccess\Reports\ReportQueryService.cs" />
     <Compile Include="DbAccess\Snapshots\SnapshotCrudService.cs" />
     <Compile Include="DbAccess\Snapshots\SnapshotQueryService.cs" />
     <Compile Include="DbAccess\Tags\TagCrudService.cs" />
     <Compile Include="DbAccess\Tags\TagQueryService.cs" />
-    <Compile Include="DbAccess\Groups\GroupCrudService.cs" />
-    <Compile Include="DbAccess\Groups\GroupQueryService.cs" />
+    <Compile Include="DbAccess\ReportGroups\ReportGroupCrudService.cs" />
+    <Compile Include="DbAccess\ReportGroups\ReportGroupQueryService.cs" />
     <Compile Include="DbAccess\Categories\CategoryCrudService.cs" />
     <Compile Include="DbAccess\Categories\CategoryQueryService.cs" />
     <Compile Include="DbAccess\Transactions\TransactionCrudService.cs" />
@@ -108,9 +110,9 @@
     <Compile Include="ViewModels\Categories\CategorySummaryViewModel.cs" />
     <Compile Include="ViewModels\Categories\CategorySummaryViewModelFactory.cs" />
     <Compile Include="ViewModels\Categories\CategoryViewModel.cs" />
-    <Compile Include="ViewModels\Groups\GroupViewModel.cs" />
-    <Compile Include="ViewModels\Groups\GroupAutomapperProfile.cs" />
-    <Compile Include="ViewModels\Groups\GroupsQueryModel.cs" />
+    <Compile Include="ViewModels\ReportGroups\ReportGroupAutomapperProfile.cs" />
+    <Compile Include="ViewModels\ReportGroups\ReportGroupsQueryModel.cs" />
+    <Compile Include="ViewModels\ReportGroups\ReportGroupViewModel.cs" />
     <Compile Include="ViewModels\Reports\ReportLineDefinitionViewModel.cs" />
     <Compile Include="ViewModels\Reports\ReportQueryModel.cs" />
     <Compile Include="ViewModels\Reports\ReportResultsQueryModel.cs" />
@@ -148,7 +150,9 @@
       <Name>Picassi.Data.Accounts</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ViewModels\Groups\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

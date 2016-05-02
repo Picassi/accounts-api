@@ -10,7 +10,7 @@ namespace Picassi.Data.Accounts.Models
 
         public virtual IEnumerable<Transaction> Transactions { get; set; }
 
-        public virtual IEnumerable<ReportLineDefinition> ReportLines { get; set; }
+        public virtual IEnumerable<ReportGroupCategory> ReportGroups { get; set; }
 
     }
 }

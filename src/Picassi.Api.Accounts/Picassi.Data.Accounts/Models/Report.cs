@@ -14,6 +14,6 @@ namespace Picassi.Data.Accounts.Models
 
         public ReportSource ReportSource { get; set; }
 
-        public virtual ICollection<ReportLineDefinition> ReportLines { get; set; }
+        public virtual ICollection<ReportGroupReport> ReportGroups { get; set; }
     }
 }

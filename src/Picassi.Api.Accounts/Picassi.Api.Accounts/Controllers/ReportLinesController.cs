@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using Picassi.Common.Api.Attributes;
-using Picassi.Core.Accounts.ViewModels.Groups;
 using Picassi.Core.Accounts.ViewModels.Reports;
 
 namespace Picassi.Api.Accounts.Controllers
