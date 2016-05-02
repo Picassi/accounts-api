@@ -123,6 +123,7 @@ namespace Picassi.Core.Accounts.DbAccess.Reports
             {
                 Id = null,
                 Name = "Unused",
+                Editable = false,
                 Categories = _dbContext.Categories
                     .Where(x => !categoryIds.Contains(x.Id))
                     .Select(x => new ReportGroupCategoryViewModel
@@ -142,6 +143,7 @@ namespace Picassi.Core.Accounts.DbAccess.Reports
                 {
                     Id = x.Key.Id,
                     Name = x.Key.Name,
+                    Editable = true,
                     Categories = x.Select(y => new ReportGroupCategoryViewModel { Id = y.Category.Id, Name = y.Category.Name }).ToList()
                 }).ToList();
         }

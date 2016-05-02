@@ -21,6 +21,8 @@ namespace Picassi.Core.Accounts.ViewModels.Reports
 
         public string Name { get; set; }
 
+        public bool Editable { get; set; }
+
         public List<ReportGroupCategoryViewModel> Categories { get; set; } 
     }
 
