@@ -27,6 +27,8 @@ namespace Picassi.Core.Accounts.DbAccess.ReportGroups
 
         public IEnumerable<int> CompileReportLines(int groupId, List<int> categoryIds)
         {
+            if (categoryIds == null) return new List<int>();
+
             var categoryLines = categoryIds.Select((t, i) => GetReportLine(groupId, t, i)).ToList();
             _dataContext.SaveChanges();
             return categoryLines.Select(x => x.Id);
@@ -46,7 +48,9 @@ namespace Picassi.Core.Accounts.DbAccess.ReportGroups
 
         private ReportGroupCategory GetNew(int groupId, int categoryId)
         {
-            return new ReportGroupCategory { CategoryId = categoryId, GroupId = groupId };
+            var reportCategory = new ReportGroupCategory { CategoryId = categoryId, GroupId = groupId };
+            _dataContext.ReportGroupCategories.Add(reportCategory);
+            return reportCategory;
         }
     }
 }

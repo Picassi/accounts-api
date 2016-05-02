@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using AutoMapper;
 using Picassi.Common.Data.Services;
 using Picassi.Core.Accounts.ViewModels.ReportGroups;
 using Picassi.Data.Accounts.Database;
@@ -18,20 +19,26 @@ namespace Picassi.Core.Accounts.DbAccess.ReportGroups
     {
         private readonly IAccountsDataContext _dbContext;
         private readonly IReportGroupCategoryCompiler _reportGroupCategoryCompiler;
+        private readonly IReportGroupReportCompiler _reportGroupReportCompiler;
 
-        public ReportGroupCrudService(IAccountsDataContext dataContext, IReportGroupCategoryCompiler reportGroupCategoryCompiler)
+        public ReportGroupCrudService(IAccountsDataContext dataContext, IReportGroupCategoryCompiler reportGroupCategoryCompiler, IReportGroupReportCompiler reportGroupReportCompiler)
         {
             _dbContext = dataContext;
             _reportGroupCategoryCompiler = reportGroupCategoryCompiler;
+            _reportGroupReportCompiler = reportGroupReportCompiler;
         }
 
         public ReportGroupViewModel CreateGroup(int reportId, ReportGroupViewModel group)
         {
             var dataModel = Mapper.Map<ReportGroup>(group);
+            dataModel.Categories = new List<ReportGroupCategory>();
+            dataModel.Reports = new List<ReportGroupReport>();
             _dbContext.ReportGroups.Add(dataModel);
-            var categories = _reportGroupCategoryCompiler.CompileReportLines(group.Id, group.CategoryIds);
+            _dbContext.SaveChanges();
+            var categories = _reportGroupCategoryCompiler.CompileReportLines(dataModel.Id, group.CategoryIds);
             _dbContext.SyncManyToManyRelationship(dataModel, d => d.Categories, categories);
-            _dbContext.SyncManyToManyRelationship(dataModel, d => d.Reports, new [] { reportId });
+            var reports = _reportGroupReportCompiler.CompileReportLines(dataModel.Id, new List<int> { reportId });
+            _dbContext.SyncManyToManyRelationship(dataModel, d => d.Reports, reports);
             _dbContext.SaveChanges();
             return Mapper.Map<ReportGroupViewModel>(dataModel);
         }
@@ -50,7 +57,8 @@ namespace Picassi.Core.Accounts.DbAccess.ReportGroups
             Mapper.Map(group, dataModel);
             var categories = _reportGroupCategoryCompiler.CompileReportLines(group.Id, group.CategoryIds);
             _dbContext.SyncManyToManyRelationship(dataModel, d => d.Categories, categories);
-            _dbContext.SyncManyToManyRelationship(dataModel, d => d.Reports, new[] { reportId });
+            var reports = _reportGroupReportCompiler.CompileReportLines(group.Id, new List<int> { reportId });
+            _dbContext.SyncManyToManyRelationship(dataModel, d => d.Reports, reports);
             _dbContext.SaveChanges();
             return Mapper.Map<ReportGroupViewModel>(dataModel);
         }

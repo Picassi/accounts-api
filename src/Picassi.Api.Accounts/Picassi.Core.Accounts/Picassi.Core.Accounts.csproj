@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="DbAccess\Accounts\AccountCrudService.cs" />
     <Compile Include="DbAccess\Accounts\AccountQueryService.cs" />
+    <Compile Include="DbAccess\ReportGroups\ReportGroupReportCompiler.cs" />
     <Compile Include="DbAccess\ReportGroups\ReportGroupCategoryCompiler.cs" />
     <Compile Include="DbAccess\Reports\ReportCrudService.cs" />
     <Compile Include="DbAccess\Reports\ReportGroupCompiler.cs" />
@@ -150,9 +151,7 @@
       <Name>Picassi.Data.Accounts</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\Groups\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
