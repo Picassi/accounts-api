@@ -64,14 +64,16 @@
   <ItemGroup>
     <Compile Include="DbAccess\Accounts\AccountCrudService.cs" />
     <Compile Include="DbAccess\Accounts\AccountQueryService.cs" />
+    <Compile Include="DbAccess\Reports\ReportCrudService.cs" />
+    <Compile Include="DbAccess\Reports\ReportQueryService.cs" />
+    <Compile Include="DbAccess\Snapshots\SnapshotCrudService.cs" />
+    <Compile Include="DbAccess\Snapshots\SnapshotQueryService.cs" />
     <Compile Include="DbAccess\Tags\TagCrudService.cs" />
     <Compile Include="DbAccess\Tags\TagQueryService.cs" />
     <Compile Include="DbAccess\Groups\GroupCrudService.cs" />
     <Compile Include="DbAccess\Groups\GroupQueryService.cs" />
     <Compile Include="DbAccess\Categories\CategoryCrudService.cs" />
     <Compile Include="DbAccess\Categories\CategoryQueryService.cs" />
-    <Compile Include="DbAccess\Snapshots\SnapshotCrudService.cs" />
-    <Compile Include="DbAccess\Snapshots\SnapshotQueryService.cs" />
     <Compile Include="DbAccess\Transactions\TransactionCrudService.cs" />
     <Compile Include="DbAccess\Transactions\TransactionQueryService.cs" />
     <Compile Include="Enums\CategorySummaryReportType.cs" />
@@ -110,8 +112,10 @@
     <Compile Include="ViewModels\Groups\GroupAutomapperProfile.cs" />
     <Compile Include="ViewModels\Groups\GroupsQueryModel.cs" />
     <Compile Include="ViewModels\Reports\ReportLineDefinitionViewModel.cs" />
+    <Compile Include="ViewModels\Reports\ReportQueryModel.cs" />
     <Compile Include="ViewModels\Reports\ReportResultsQueryModel.cs" />
     <Compile Include="ViewModels\Reports\ReportViewModel.cs" />
+    <Compile Include="ViewModels\Reports\ReportAutomapperProfile.cs" />
     <Compile Include="ViewModels\Snapshots\SnapshotAutomapperProfile.cs" />
     <Compile Include="ViewModels\Snapshots\SnapshotQueryModel.cs" />
     <Compile Include="ViewModels\Snapshots\SnapshotViewModel.cs" />

@@ -1,57 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using Picassi.Common.Api.Attributes;
-using Picassi.Core.Accounts.ViewModels.Groups;
+using Picassi.Core.Accounts.DbAccess.Reports;
 using Picassi.Core.Accounts.ViewModels.Reports;
 
 namespace Picassi.Api.Accounts.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     [PicassiApiAuthorise]
-    public class ReportsController : ApiController
+    public class ReportController : ApiController
     {
-        [HttpGet]
-        [Route("report")]
-        public IEnumerable<GroupViewModel> GetReportDefinitions([FromUri]GroupsQueryModel query)
+        private readonly IReportCrudService _crudService;
+        private readonly IReportQueryService _queryService;
+
+        public ReportController(IReportCrudService crudService, IReportQueryService queryService)
         {
-            throw new NotImplementedException();
+            _crudService = crudService;
+            _queryService = queryService;
         }
 
         [HttpGet]
-        [Route("reports/{reportId}")]
-        public ReportViewModel GetReport(int reportId)
+        [Route("reports")]
+        public IEnumerable<ReportViewModel> GetReports([FromUri]ReportQueryModel query)
         {
-            throw new NotImplementedException();
+            return _queryService.Query(query);
         }
 
         [HttpPost]
         [Route("reports")]
-        public ReportViewModel CreateReport([FromBody]ReportViewModel report)
+        public ReportViewModel CreateReport([FromBody]ReportViewModel reportViewModel)
         {
-            throw new NotImplementedException();
-        }
-
-        [HttpPut]
-        [Route("reports/{reportId}")]
-        public ReportViewModel UpdateReport(int reportId, [FromBody]ReportViewModel report)
-        {
-            throw new NotImplementedException();
-        }
-
-        [HttpDelete]
-        [Route("reports/{reportId}")]
-        public bool DeleteReport(int reportId)
-        {
-            throw new NotImplementedException();
+            return _crudService.CreateReport(reportViewModel);
         }
 
         [HttpGet]
-        [Route("reports/{reportId}/results")]
-        public bool GetReportResults(int reportId, [FromUri]ReportResultsQueryModel query)
+        [Route("reports/{id}")]
+        public ReportViewModel GetReport(int id)
         {
-            throw new NotImplementedException();
+            return _crudService.GetReport(id);
+        }
+
+        [HttpPut]
+        [Route("reports/{id}")]
+        public ReportViewModel UpdateReport(int id, [FromBody]ReportViewModel reportViewModel)
+        {
+            return _crudService.UpdateReport(id, reportViewModel);
+        }
+
+        [HttpDelete]
+        [Route("reports/{id}")]
+        public bool DeleteAccount(int id)
+        {
+            return _crudService.DeleteReport(id);
         }
     }
 }
