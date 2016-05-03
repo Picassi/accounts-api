@@ -87,6 +87,7 @@
     <Compile Include="Services\Accounts\AccountStatusChecker.cs" />
     <Compile Include="Reports\AccountSummaryViewModelFactory.cs" />
     <Compile Include="Reports\CategorySummaryService.cs" />
+    <Compile Include="Services\Reports\ReportResultsService.cs" />
     <Compile Include="Services\Transactions\TransactionUploadService.cs" />
     <Compile Include="Time\DateRange.cs" />
     <Compile Include="Time\PeriodCalculator.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="ViewModels\ReportGroups\ReportGroupAutomapperProfile.cs" />
     <Compile Include="ViewModels\ReportGroups\ReportGroupsQueryModel.cs" />
     <Compile Include="ViewModels\ReportGroups\ReportGroupViewModel.cs" />
+    <Compile Include="ViewModels\Reports\ReportResultsViewModel.cs" />
     <Compile Include="ViewModels\Reports\ReportLineDefinitionViewModel.cs" />
     <Compile Include="ViewModels\Reports\ReportQueryModel.cs" />
     <Compile Include="ViewModels\Reports\ReportResultsQueryModel.cs" />

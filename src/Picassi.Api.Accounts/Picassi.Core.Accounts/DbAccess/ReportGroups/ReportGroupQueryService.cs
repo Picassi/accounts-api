@@ -14,10 +14,12 @@ namespace Picassi.Core.Accounts.DbAccess.ReportGroups
     public class ReportGroupQueryService : IReportGroupQueryService
     {
         private readonly IAccountsDataContext _dbContext;
+        private readonly IReportGroupCrudService _crudService;
         
-        public ReportGroupQueryService(IAccountsDataContext dataContext)
+        public ReportGroupQueryService(IAccountsDataContext dataContext, IReportGroupCrudService crudService)
         {
             _dbContext = dataContext;
+            _crudService = crudService;
         }
 
         public IEnumerable<ReportGroupViewModel> Query(int reportId, ReportGroupsQueryModel accounts)
@@ -26,7 +28,7 @@ namespace Picassi.Core.Accounts.DbAccess.ReportGroups
 
             if (accounts?.Name != null) queryResults = queryResults.Where(x => x.Name.Contains(accounts.Name));
 
-            return Mapper.Map<IEnumerable<ReportGroupViewModel>>(queryResults);
+            return queryResults.ToList().Select(x => _crudService.GetGroup(reportId, x.Id));
         }
     }
 }

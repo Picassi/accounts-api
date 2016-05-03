@@ -3,6 +3,7 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using Picassi.Common.Api.Attributes;
 using Picassi.Core.Accounts.DbAccess.Reports;
+using Picassi.Core.Accounts.Services.Reports;
 using Picassi.Core.Accounts.ViewModels.Reports;
 
 namespace Picassi.Api.Accounts.Controllers
@@ -13,11 +14,13 @@ namespace Picassi.Api.Accounts.Controllers
     {
         private readonly IReportCrudService _crudService;
         private readonly IReportQueryService _queryService;
+        private readonly IReportResultsService _resultsService;
 
-        public ReportsController(IReportCrudService crudService, IReportQueryService queryService)
+        public ReportsController(IReportCrudService crudService, IReportQueryService queryService, IReportResultsService resultsService)
         {
             _crudService = crudService;
             _queryService = queryService;
+            _resultsService = resultsService;
         }
 
         [HttpGet]
@@ -53,6 +56,13 @@ namespace Picassi.Api.Accounts.Controllers
         public bool DeleteReport(int id)
         {
             return _crudService.DeleteReport(id);
+        }
+
+        [HttpGet]
+        [Route("reports/{id}/query")]
+        public ReportResultsViewModel GetReportResults(int id, [FromUri]ReportResultsQueryModel query)
+        {
+            return _resultsService.GetResults(id, query);
         }
     }
 }

@@ -40,7 +40,7 @@ namespace Picassi.Core.Accounts.DbAccess.ReportGroups
             var reports = _reportGroupReportCompiler.CompileReportLines(dataModel.Id, new List<int> { reportId });
             _dbContext.SyncManyToManyRelationship(dataModel, d => d.Reports, reports);
             _dbContext.SaveChanges();
-            return Mapper.Map<ReportGroupViewModel>(dataModel);
+            return GetGroup(reportId, dataModel.Id);
         }
 
         public ReportGroupViewModel GetGroup(int reportId, int id)
@@ -60,7 +60,7 @@ namespace Picassi.Core.Accounts.DbAccess.ReportGroups
             var reports = _reportGroupReportCompiler.CompileReportLines(group.Id, new List<int> { reportId });
             _dbContext.SyncManyToManyRelationship(dataModel, d => d.Reports, reports);
             _dbContext.SaveChanges();
-            return Mapper.Map<ReportGroupViewModel>(dataModel);
+            return GetGroup(reportId, dataModel.Id);
         }
 
         public bool DeleteGroup(int reportId, int id)
