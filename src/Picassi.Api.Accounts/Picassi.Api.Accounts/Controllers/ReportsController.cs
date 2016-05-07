@@ -59,7 +59,7 @@ namespace Picassi.Api.Accounts.Controllers
         }
 
         [HttpGet]
-        [Route("reports/{id}/query")]
+        [Route("reports/{id}/results")]
         public ReportResultsViewModel GetReportResults(int id, [FromUri]ReportResultsQueryModel query)
         {
             return _resultsService.GetResults(id, query);
