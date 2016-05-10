@@ -33,14 +33,50 @@ namespace Picassi.Core.Accounts.Services.Reports
 
         private List<ReportResultsGroupViewModel> GetReportGroups(int id, ReportResultsQueryModel query)
         {
-            return GetReportLinks(id).Select(link => new ReportResultsGroupViewModel()).ToList();
+            var reportLines = GetReportLines(query);
+            var data = _dbContext.ReportGroupReports.Where(x => x.ReportId == id)
+                .Select(group => new
+                {
+                    Name = group.ReportGroup.Name,
+                    Categories = group.ReportGroup.Categories.Select(x => x.CategoryId),
+                })
+                .ToList();
+            return data
+                .Select(group => new ReportResultsGroupViewModel
+                {
+                    Title = group.Name,
+                    ReportLines = reportLines.Where(line => group.Categories.Contains(line.CategoryId)).ToList()
+                })
+                .ToList();
         }
-        
-        private IQueryable<ReportGroupReport> GetReportLinks(int id)
+
+        private IEnumerable<ReportResultsLineViewModel> GetReportLines(ReportResultsQueryModel query)
         {
-            return _dbContext.ReportGroupReports.Where(link => link.ReportId == id).OrderBy(link => link.Ordinal);
-        } 
+            var matchingDebits = _dbContext.Transactions.Where(x => x.Date >= query.DateFrom && x.Date < query.DateTo && x.FromId != null);
+            var matchingCredits = _dbContext.Transactions.Where(x => x.Date >= query.DateFrom && x.Date < query.DateTo && x.ToId != null);
 
+            /*if (query.Accounts != null)
+            {
+                matchingDebits = matchingDebits.Where(x => query.Accounts.Contains((int)x.FromId));
+                matchingCredits = matchingDebits.Where(x => query.Accounts.Contains((int)x.ToId));
+            } */               
 
+            var summaryAmounts = _dbContext.Categories.Select(category => new
+            {
+                CategoryId = category.Id,
+                Name = category.Name,
+                Credit = matchingCredits.Where(transaction => transaction.CategoryId == category.Id)
+                    .Select(x => x.Amount).DefaultIfEmpty(0).Sum(),
+                Debit = matchingDebits.Where(transaction => transaction.CategoryId == category.Id)
+                    .Select(x => x.Amount).DefaultIfEmpty(0).Sum()
+            });
+
+            return summaryAmounts.Select(summary => new ReportResultsLineViewModel
+            {
+                CategoryId = summary.CategoryId,
+                Name = summary.Name,
+                Amount = summary.Credit - summary.Debit
+            }).ToList();
+        }
     }
 }
