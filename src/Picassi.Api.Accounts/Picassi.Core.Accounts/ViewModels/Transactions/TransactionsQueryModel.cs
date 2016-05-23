@@ -13,6 +13,9 @@ namespace Picassi.Core.Accounts.ViewModels.Transactions
         public DateTime? DateFrom { get; set; }
         public DateTime? DateTo { get; set; }
         public bool? IncludeProvisional { get; set; }
-        public bool? IncludeConfirmed { get; set; }        
+        public bool? IncludeConfirmed { get; set; }  
+        public string SortBy { get; set; }      
+        public bool SortAscending { get; set; }
+
     }
 }

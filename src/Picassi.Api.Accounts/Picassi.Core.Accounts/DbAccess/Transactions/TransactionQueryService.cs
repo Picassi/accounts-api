@@ -6,6 +6,7 @@ using AutoMapper;
 using Picassi.Core.Accounts.ViewModels.Transactions;
 using Picassi.Data.Accounts.Database;
 using Picassi.Data.Accounts.Models;
+using Picassi.Common.Data.Extensions;
 
 namespace Picassi.Core.Accounts.DbAccess.Transactions
 {
@@ -48,7 +49,7 @@ namespace Picassi.Core.Accounts.DbAccess.Transactions
         private IEnumerable<TransactionViewModel> FilterTransactions(TransactionsQueryModel query, IQueryable<Transaction> transactions)
         {
             transactions = FilterTransactionsWithoutPaging(query, transactions);
-            transactions = OrderResults(transactions);
+            transactions = OrderResults(transactions, query.SortBy, query.SortAscending);
             transactions = PageResults(transactions, query.PageNumber, query.PageSize);
             return Mapper.Map<IEnumerable<TransactionViewModel>>(transactions);
         }
@@ -105,9 +106,15 @@ namespace Picassi.Core.Accounts.DbAccess.Transactions
             return transactions.Skip(((pageNumber ?? 1) - 1) * (pageSize ?? 20)).Take(pageSize ?? 20);
         }
 
-        private static IQueryable<Transaction> OrderResults(IQueryable<Transaction> transactions)
+        private static IQueryable<Transaction> OrderResults(IQueryable<Transaction> transactions, string field, bool ascending)
         {
-            return transactions.OrderByDescending(x => x.Date);
-        }
+            if (field == null)
+            {
+                field = "Id";
+                ascending = true;
+            }
+
+            return transactions.OrderBy(field, @ascending);
+        }      
     }
 }
