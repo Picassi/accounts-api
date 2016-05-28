@@ -57,7 +57,7 @@ namespace Picassi.Core.Accounts.DbAccess.Transactions
             return new ResultsViewModel<AccountTransactionViewModel>
             {
                 TotalLines = count,
-                Lines = GetAccountLines(accountId, transactions)
+                Lines = GetAccountLines(accountId, results.ToList())
             };
         }
 
@@ -155,7 +155,7 @@ namespace Picassi.Core.Accounts.DbAccess.Transactions
             return transactions.OrderBy(field, @ascending);
         }
 
-        private static IEnumerable<AccountTransactionViewModel> GetAccountLines(int accountId, IQueryable<Transaction> transactions)
+        private static IEnumerable<AccountTransactionViewModel> GetAccountLines(int accountId, IEnumerable<Transaction> transactions)
         {
             return transactions.Select(transaction => new AccountTransactionViewModel
             {
@@ -164,7 +164,7 @@ namespace Picassi.Core.Accounts.DbAccess.Transactions
                 AccountId = accountId,
                 LinkedAccountId = transaction.FromId == accountId ? transaction.ToId : transaction.FromId,
                 CategoryId = transaction.CategoryId,
-                CategoryName = transaction.Category.Name,
+                CategoryName = transaction.Category?.Name,
                 Amount = transaction.FromId == accountId ? -transaction.Amount : transaction.Amount,
                 Balance = transaction.Balance,
                 Date = transaction.Date,
