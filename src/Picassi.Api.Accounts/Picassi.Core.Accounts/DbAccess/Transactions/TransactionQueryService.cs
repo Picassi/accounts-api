@@ -7,13 +7,15 @@ using Picassi.Core.Accounts.ViewModels.Transactions;
 using Picassi.Data.Accounts.Database;
 using Picassi.Data.Accounts.Models;
 using Picassi.Common.Data.Extensions;
+using Picassi.Core.Accounts.ViewModels;
 
 namespace Picassi.Core.Accounts.DbAccess.Transactions
 {
     public interface ITransactionQueryService
     {
         IEnumerable<TransactionViewModel> Query(SimpleTransactionQueryModel query);
-        TransactionsResultsViewModel Query(TransactionsQueryModel query);
+        ResultsViewModel<TransactionViewModel> Query(TransactionsQueryModel query);
+        ResultsViewModel<AccountTransactionViewModel> Query(int id, AccountTransactionsQueryModel query);
     }
 
     public class TransactionQueryService : ITransactionQueryService
@@ -33,31 +35,62 @@ namespace Picassi.Core.Accounts.DbAccess.Transactions
             return Mapper.Map<IEnumerable<TransactionViewModel>>(transactions);
         }
 
-        public TransactionsResultsViewModel Query(TransactionsQueryModel query)
+        public ResultsViewModel<TransactionViewModel> Query(TransactionsQueryModel query)
         {
             var transactions = _dbContext.Transactions.Include(x => x.Category);
-            var results = (query == null ? Mapper.Map<IEnumerable<TransactionViewModel>>(transactions) : FilterTransactions(query, transactions)).ToList();
+            var results = (query == null ? transactions : FilterTransactions(query, transactions)).ToList();
             var count = query == null ? results.Count : FilterTransactionsWithoutPaging(query, transactions).Count();
 
-            return new TransactionsResultsViewModel
+            return new ResultsViewModel<TransactionViewModel>
             {
                 TotalLines = count,
-                Lines = results
+                Lines = Mapper.Map<IEnumerable<TransactionViewModel>>(results)
             };
         }
 
-        private IEnumerable<TransactionViewModel> FilterTransactions(TransactionsQueryModel query, IQueryable<Transaction> transactions)
+        public ResultsViewModel<AccountTransactionViewModel> Query(int accountId, AccountTransactionsQueryModel query)
+        {
+            var transactions = _dbContext.Transactions.Include(x => x.Category);
+            var results = (query == null ? transactions : FilterTransactions(accountId, query, transactions)).ToList();
+            var count = query == null ? results.Count : FilterTransactionsWithoutPaging(accountId, query, transactions).Count();
+
+            return new ResultsViewModel<AccountTransactionViewModel>
+            {
+                TotalLines = count,
+                Lines = GetAccountLines(accountId, transactions)
+            };
+        }
+
+        private static IEnumerable<Transaction> FilterTransactions(TransactionsQueryModel query, IQueryable<Transaction> transactions)
         {
             transactions = FilterTransactionsWithoutPaging(query, transactions);
             transactions = OrderResults(transactions, query.SortBy, query.SortAscending);
             transactions = PageResults(transactions, query.PageNumber, query.PageSize);
-            return Mapper.Map<IEnumerable<TransactionViewModel>>(transactions);
+            return transactions;
+        }
+
+        private static IEnumerable<Transaction> FilterTransactions(int accountId, AccountTransactionsQueryModel query, IQueryable<Transaction> transactions)
+        {
+            transactions = FilterTransactionsWithoutPaging(accountId, query, transactions);
+            transactions = OrderResults(transactions, query.SortBy, query.SortAscending);
+            transactions = PageResults(transactions, query.PageNumber, query.PageSize);
+            return transactions;
         }
 
         private static IQueryable<Transaction> FilterTransactionsWithoutPaging(TransactionsQueryModel query, IQueryable<Transaction> transactions)
         {
             transactions = FilterText(transactions, query.Text);
             transactions = FilterAccounts(transactions, query.Accounts);
+            transactions = FilterCategories(transactions, query.ShowUncategorised, query.Categories);
+            transactions = FilterDate(transactions, query.DateFrom, query.DateTo);
+            transactions = FilterProvisional(transactions, query.IncludeProvisional, query.IncludeConfirmed);
+            return transactions;
+        }
+
+        private static IQueryable<Transaction> FilterTransactionsWithoutPaging(int accountId, AccountTransactionsQueryModel query, IQueryable<Transaction> transactions)
+        {
+            transactions = FilterText(transactions, query.Text);
+            transactions = FilterAccounts(transactions, accountId);
             transactions = FilterCategories(transactions, query.ShowUncategorised, query.Categories);
             transactions = FilterDate(transactions, query.DateFrom, query.DateTo);
             transactions = FilterProvisional(transactions, query.IncludeProvisional, query.IncludeConfirmed);
@@ -80,6 +113,11 @@ namespace Picassi.Core.Accounts.DbAccess.Transactions
                 transactions.Where(x => 
                 (x.FromId != null && accountIds.Contains((int)x.FromId)) || 
                 (x.ToId != null && accountIds.Contains((int)x.ToId)));
+        }
+
+        private static IQueryable<Transaction> FilterAccounts(IQueryable<Transaction> transactions, int accountId)
+        {
+            return transactions.Where(x => x.FromId == accountId || x.ToId == accountId);
         }
 
         private static IQueryable<Transaction> FilterCategories(IQueryable<Transaction> transactions, bool showUncategorised, int[] categoryIds)
@@ -115,6 +153,23 @@ namespace Picassi.Core.Accounts.DbAccess.Transactions
             }
 
             return transactions.OrderBy(field, @ascending);
-        }      
+        }
+
+        private static IEnumerable<AccountTransactionViewModel> GetAccountLines(int accountId, IQueryable<Transaction> transactions)
+        {
+            return transactions.Select(transaction => new AccountTransactionViewModel
+            {
+                Id = transaction.Id,
+                Description = transaction.Description,
+                AccountId = accountId,
+                LinkedAccountId = transaction.FromId == accountId ? transaction.ToId : transaction.FromId,
+                CategoryId = transaction.CategoryId,
+                CategoryName = transaction.Category.Name,
+                Amount = transaction.FromId == accountId ? -transaction.Amount : transaction.Amount,
+                Balance = transaction.Balance,
+                Date = transaction.Date,
+                Status = transaction.Status.ToString(),
+            }).ToList();
+        }
     }
 }

@@ -4,9 +4,11 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using Picassi.Common.Api.Attributes;
 using Picassi.Core.Accounts.DbAccess.Accounts;
+using Picassi.Core.Accounts.DbAccess.Transactions;
 using Picassi.Core.Accounts.Reports;
 using Picassi.Core.Accounts.Services.Transactions;
 using Picassi.Core.Accounts.Time;
+using Picassi.Core.Accounts.ViewModels;
 using Picassi.Core.Accounts.ViewModels.Accounts;
 using Picassi.Core.Accounts.ViewModels.Transactions;
 
@@ -19,17 +21,20 @@ namespace Picassi.Api.Accounts.Controllers
         private readonly IAccountCrudService _crudService;
         private readonly IAccountQueryService _queryService;
 	    private readonly IAccountSummariser _accountSummariser;
-	    private readonly ITransactionUploadService _transactionUploadService;
+        private readonly ITransactionQueryService _transactionQueryService;
+        private readonly ITransactionUploadService _transactionUploadService;
 
         public AccountsController(
             IAccountCrudService crudService, 
             IAccountQueryService queryService, 
             IAccountSummariser accountSummariser, 
+            ITransactionQueryService transactionQueryService,
             ITransactionUploadService transactionUploadService)
         {
             _crudService = crudService;
             _queryService = queryService;
             _accountSummariser = accountSummariser;
+            _transactionQueryService = transactionQueryService;
             _transactionUploadService = transactionUploadService;
         }
 
@@ -73,6 +78,13 @@ namespace Picassi.Api.Accounts.Controllers
         public AccountSummaryViewModel GetAccountSummary(int id, [FromUri]DateRange period)
         {
             return _accountSummariser.GetAccountSummary(new AccountPeriodViewModel { AccountId = id, From = period.Start, To = period.End });
+        }
+
+        [HttpGet]
+        [Route("accounts/{id}/transactions")]
+        public ResultsViewModel<AccountTransactionViewModel> GetTransactionsForAccount(int id, [FromUri]AccountTransactionsQueryModel query)
+        {
+            return _transactionQueryService.Query(id, query);
         }
 
         [HttpPost]

@@ -122,6 +122,7 @@
     <Compile Include="ViewModels\Reports\ReportDefinitionViewModel.cs" />
     <Compile Include="ViewModels\Reports\ReportViewModel.cs" />
     <Compile Include="ViewModels\Reports\ReportAutomapperProfile.cs" />
+    <Compile Include="ViewModels\ResultsViewModel.cs" />
     <Compile Include="ViewModels\Snapshots\SnapshotAutomapperProfile.cs" />
     <Compile Include="ViewModels\Snapshots\SnapshotQueryModel.cs" />
     <Compile Include="ViewModels\Snapshots\SnapshotViewModel.cs" />
@@ -134,9 +135,10 @@
     <Compile Include="ViewModels\Tags\TagViewModel.cs" />
     <Compile Include="ViewModels\Transactions\SimpleTransactionQueryModel.cs" />
     <Compile Include="ViewModels\Transactions\TransactionAutomapperProfile.cs" />
+    <Compile Include="ViewModels\Transactions\AccountTransactionsQueryModel.cs" />
     <Compile Include="ViewModels\Transactions\TransactionsQueryModel.cs" />
-    <Compile Include="ViewModels\Transactions\TransactionsResultsViewModel.cs" />
     <Compile Include="ViewModels\Transactions\TransactionUploadModel.cs" />
+    <Compile Include="ViewModels\Transactions\AccountTransactionViewModel.cs" />
     <Compile Include="ViewModels\Transactions\TransactionViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
