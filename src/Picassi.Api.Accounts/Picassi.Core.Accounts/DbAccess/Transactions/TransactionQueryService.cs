@@ -153,7 +153,7 @@ namespace Picassi.Core.Accounts.DbAccess.Transactions
                 ascending = true;
             }
 
-            return transactions.OrderBy(field, @ascending);
+            return field == "Id" ? transactions.OrderBy(field, @ascending) : transactions.OrderBy(field, @ascending).ThenBy("Id", @ascending);
         }
 
         private static IEnumerable<AccountTransactionViewModel> GetAccountLines(int accountId, IEnumerable<Transaction> transactions)

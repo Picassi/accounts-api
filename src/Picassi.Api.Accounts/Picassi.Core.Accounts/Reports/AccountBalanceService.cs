@@ -5,6 +5,7 @@ using Picassi.Core.Accounts.DbAccess.Transactions;
 using Picassi.Core.Accounts.ViewModels.Accounts;
 using Picassi.Core.Accounts.ViewModels.Transactions;
 using Picassi.Data.Accounts.Database;
+using Picassi.Data.Accounts.Models;
 
 namespace Picassi.Core.Accounts.Reports
 {
@@ -12,7 +13,7 @@ namespace Picassi.Core.Accounts.Reports
     {
         decimal GetAccountBalance(int accountId, DateTime date);
         void SetTransactionBalances(int accountId, DateTime date);
-        void SetTransactionBalances(int accountId, DateTime date, decimal initialBalance);
+        void SetTransactionBalances(int accountId, DateTime date, Transaction transaction, decimal initialBalance);
     }
 
     public class AccountBalanceService : IAccountBalanceService
@@ -38,20 +39,53 @@ namespace Picassi.Core.Accounts.Reports
 
         public void SetTransactionBalances(int accountId, DateTime date)
         {
-            var initialBalance = GetAccountBalance(accountId, date);
-            SetTransactionBalances(accountId, date, initialBalance);
+            var initialBalance = GetAccountBalance(accountId, date);            
+            var transaction = GetFirstTransactionFromDate(date) ?? GetFirstTransactionBeforeDate(date);
+
+            SetTransactionBalances(accountId, date, transaction, initialBalance);
         }
 
-        public void SetTransactionBalances(int accountId, DateTime date, decimal initialBalance)
+        private Transaction GetFirstTransactionBeforeDate(DateTime date)
         {
-            var nextSnapshot = _dataContext.Snapshots.Where(x => x.AccountId == accountId && x.Date > date)
-                    .OrderByDescending(x => x.Date).FirstOrDefault();
-            var endDate = nextSnapshot?.Date;
+            return _dataContext.Transactions.Where(x => x.Date < date)
+                .OrderByDescending(x => x.Date).ThenByDescending(x => x.Id).FirstOrDefault();
+        }
 
-            var transactions = _dataContext.Transactions.Where(x => x.Date >= date);
-            if (endDate != null) transactions = transactions.Where(x => x.Date < endDate);
-            transactions = transactions.Where(x => x.FromId == accountId || x.ToId == accountId).OrderBy(x => x.Date).ThenBy(x => x.Id);
+        private Transaction GetFirstTransactionFromDate(DateTime date)
+        {
+            return _dataContext.Transactions.Where(x => x.Date >= date)
+                .OrderBy(x => x.Date).ThenBy(x => x.Id).FirstOrDefault();
+        }
 
+        public void SetTransactionBalances(int accountId, DateTime date, Transaction transaction, decimal initialBalance)
+        {
+            if (transaction == null) return;
+
+            SetBalanceForward(GetTransactionsAfterTransaction(accountId, transaction), accountId, initialBalance);
+            SetBalanceBackwards(GetTransactionBeforeTransaction(accountId, transaction), accountId, initialBalance);
+
+            _dataContext.SaveChanges();
+        }
+
+        private IQueryable<Transaction> GetTransactionsAfterTransaction(int accountId, Transaction transaction)
+        {
+            return _dataContext.Transactions                
+                .Where(x => x.FromId == accountId || x.ToId == accountId)
+                .Where(x => x.Date > transaction.Date || x.Date == transaction.Date && x.Id > transaction.Id)
+                .OrderBy(x => x.Date).ThenBy(x => x.Id);
+        }
+
+        private IQueryable<Transaction> GetTransactionBeforeTransaction(int accountId, Transaction transaction)
+        {
+            return _dataContext.Transactions
+                .Where(x => x.FromId == accountId || x.ToId == accountId)
+                .Where(x => x.Date < transaction.Date || x.Date == transaction.Date && x.Id < transaction.Id)
+                .OrderByDescending(x => x.Date).ThenByDescending(x => x.Id);
+
+        }
+
+        private static void SetBalanceForward(IQueryable<Transaction> transactions, int accountId, decimal initialBalance)
+        {
             foreach (var transaction in transactions)
             {
                 if (transaction.FromId == accountId)
@@ -60,7 +94,18 @@ namespace Picassi.Core.Accounts.Reports
                     initialBalance = initialBalance + transaction.Amount;
                 transaction.Balance = initialBalance;
             }
-            _dataContext.SaveChanges();
+        }
+
+        private static void SetBalanceBackwards(IQueryable<Transaction> transactions, int accountId, decimal initialBalance)
+        {
+            foreach (var transaction in transactions)
+            {
+                if (transaction.FromId == accountId)
+                    initialBalance = initialBalance + transaction.Amount;
+                else if (transaction.ToId == accountId)
+                    initialBalance = initialBalance - transaction.Amount;
+                transaction.Balance = initialBalance;
+            }
         }
 
         private decimal TransactionTotal(int accountId, AccountPeriodViewModel period)
