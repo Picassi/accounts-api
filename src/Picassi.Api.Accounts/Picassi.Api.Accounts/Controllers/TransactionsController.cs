@@ -1,8 +1,8 @@
-using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using Picassi.Common.Api.Attributes;
 using Picassi.Core.Accounts.DbAccess.Transactions;
+using Picassi.Core.Accounts.ViewModels;
 using Picassi.Core.Accounts.ViewModels.Transactions;
 
 namespace Picassi.Api.Accounts.Controllers
@@ -24,7 +24,7 @@ namespace Picassi.Api.Accounts.Controllers
 
         [HttpGet]
         [Route("transactions")]
-        public TransactionsResultsViewModel GetTransactions([FromUri]TransactionsQueryModel query)
+        public ResultsViewModel<TransactionViewModel> GetTransactions([FromUri]TransactionsQueryModel query)
         {
             return _queryService.Query(query);
         }

@@ -12,6 +12,7 @@ namespace Picassi.Core.Accounts.Reports
     {
         decimal GetAccountBalance(int accountId, DateTime date);
         void SetTransactionBalances(int accountId, DateTime date);
+        void SetTransactionBalances(int accountId, DateTime date, decimal initialBalance);
     }
 
     public class AccountBalanceService : IAccountBalanceService
@@ -38,16 +39,21 @@ namespace Picassi.Core.Accounts.Reports
         public void SetTransactionBalances(int accountId, DateTime date)
         {
             var initialBalance = GetAccountBalance(accountId, date);
+            SetTransactionBalances(accountId, date, initialBalance);
+        }
+
+        public void SetTransactionBalances(int accountId, DateTime date, decimal initialBalance)
+        {
             var nextSnapshot = _dataContext.Snapshots.Where(x => x.AccountId == accountId && x.Date > date)
                     .OrderByDescending(x => x.Date).FirstOrDefault();
             var endDate = nextSnapshot?.Date;
 
             var transactions = _dataContext.Transactions.Where(x => x.Date >= date);
-            if (endDate != null) transactions = transactions.Where(x => x.Date < (DateTime) endDate);
+            if (endDate != null) transactions = transactions.Where(x => x.Date < endDate);
             transactions = transactions.Where(x => x.FromId == accountId || x.ToId == accountId).OrderBy(x => x.Date).ThenBy(x => x.Id);
 
             foreach (var transaction in transactions)
-            {                
+            {
                 if (transaction.FromId == accountId)
                     initialBalance = initialBalance - transaction.Amount;
                 else if (transaction.ToId == accountId)

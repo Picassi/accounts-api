@@ -2,12 +2,11 @@
 
 namespace Picassi.Core.Accounts.ViewModels.Transactions
 {
-    public class TransactionsQueryModel
+    public class AccountTransactionsQueryModel
     {
         public int? PageSize { get; set; }
         public int? PageNumber { get; set; }
         public string Text { get; set; }
-        public int[] Accounts { get; set; }
         public int[] Categories { get; set; }
         public bool ShowUncategorised { get; set; }
         public DateTime? DateFrom { get; set; }
