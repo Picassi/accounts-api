@@ -81,7 +81,7 @@ namespace Picassi.Core.Accounts.DbAccess.Transactions
         {
             transactions = FilterText(transactions, query.Text);
             transactions = FilterAccounts(transactions, query.Accounts);
-            transactions = FilterCategories(transactions, query.ShowUncategorised, query.Categories);
+            transactions = FilterCategories(transactions, query.ShowAllCategorised, query.ShowUncategorised, query.Categories);
             transactions = FilterDate(transactions, query.DateFrom, query.DateTo);
             transactions = FilterProvisional(transactions, query.IncludeProvisional, query.IncludeConfirmed);
             return transactions;
@@ -91,7 +91,7 @@ namespace Picassi.Core.Accounts.DbAccess.Transactions
         {
             transactions = FilterText(transactions, query.Text);
             transactions = FilterAccounts(transactions, accountId);
-            transactions = FilterCategories(transactions, query.ShowUncategorised, query.Categories);
+            transactions = FilterCategories(transactions, query.ShowAllCategorised, query.ShowUncategorised, query.Categories);
             transactions = FilterDate(transactions, query.DateFrom, query.DateTo);
             transactions = FilterProvisional(transactions, query.IncludeProvisional, query.IncludeConfirmed);
             return transactions;
@@ -120,13 +120,14 @@ namespace Picassi.Core.Accounts.DbAccess.Transactions
             return transactions.Where(x => x.FromId == accountId || x.ToId == accountId);
         }
 
-        private static IQueryable<Transaction> FilterCategories(IQueryable<Transaction> transactions, bool showUncategorised, int[] categoryIds)
+        private static IQueryable<Transaction> FilterCategories(IQueryable<Transaction> transactions, bool showAllCategories, bool showUncategorised, int[] categoryIds)
         {
-            if (showUncategorised)
-            {
-                return transactions.Where(x => x.CategoryId == null);
-            }
-            return categoryIds == null ? transactions : transactions.Where(x => (x.CategoryId != null && categoryIds.Contains((int)x.CategoryId)));
+            if (categoryIds == null) categoryIds = new int[0];
+            return transactions.Where(x =>
+                (showUncategorised && x.CategoryId == null) ||
+                (showAllCategories && x.CategoryId != null) ||
+                (x.CategoryId != null && categoryIds.Contains((int) x.CategoryId)));
+
         }
 
         private static IQueryable<Transaction> FilterProvisional(IQueryable<Transaction> transactions, bool? includeProvisional, bool? includeConfirmed)

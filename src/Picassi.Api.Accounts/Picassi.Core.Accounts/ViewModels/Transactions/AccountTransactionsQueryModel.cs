@@ -8,6 +8,7 @@ namespace Picassi.Core.Accounts.ViewModels.Transactions
         public int? PageNumber { get; set; }
         public string Text { get; set; }
         public int[] Categories { get; set; }
+        public bool ShowAllCategorised { get; set; }
         public bool ShowUncategorised { get; set; }
         public DateTime? DateFrom { get; set; }
         public DateTime? DateTo { get; set; }
@@ -15,6 +16,5 @@ namespace Picassi.Core.Accounts.ViewModels.Transactions
         public bool? IncludeConfirmed { get; set; }  
         public string SortBy { get; set; }      
         public bool SortAscending { get; set; }
-
     }
 }
