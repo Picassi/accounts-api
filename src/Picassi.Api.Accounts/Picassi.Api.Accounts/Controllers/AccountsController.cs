@@ -1,16 +1,11 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using Picassi.Common.Api.Attributes;
 using Picassi.Core.Accounts.DbAccess.Accounts;
-using Picassi.Core.Accounts.DbAccess.Transactions;
 using Picassi.Core.Accounts.Reports;
-using Picassi.Core.Accounts.Services.Transactions;
 using Picassi.Core.Accounts.Time;
-using Picassi.Core.Accounts.ViewModels;
 using Picassi.Core.Accounts.ViewModels.Accounts;
-using Picassi.Core.Accounts.ViewModels.Transactions;
 
 namespace Picassi.Api.Accounts.Controllers
 {
@@ -21,21 +16,15 @@ namespace Picassi.Api.Accounts.Controllers
         private readonly IAccountCrudService _crudService;
         private readonly IAccountQueryService _queryService;
 	    private readonly IAccountSummariser _accountSummariser;
-        private readonly ITransactionQueryService _transactionQueryService;
-        private readonly ITransactionUploadService _transactionUploadService;
 
         public AccountsController(
             IAccountCrudService crudService, 
             IAccountQueryService queryService, 
-            IAccountSummariser accountSummariser, 
-            ITransactionQueryService transactionQueryService,
-            ITransactionUploadService transactionUploadService)
+            IAccountSummariser accountSummariser)
         {
             _crudService = crudService;
             _queryService = queryService;
             _accountSummariser = accountSummariser;
-            _transactionQueryService = transactionQueryService;
-            _transactionUploadService = transactionUploadService;
         }
 
         [HttpGet]
@@ -79,26 +68,5 @@ namespace Picassi.Api.Accounts.Controllers
         {
             return _accountSummariser.GetAccountSummary(new AccountPeriodViewModel { AccountId = id, From = period.Start, To = period.End });
         }
-
-        [HttpGet]
-        [Route("accounts/{id}/transactions")]
-        public ResultsViewModel<AccountTransactionViewModel> GetTransactionsForAccount(int id, [FromUri]AccountTransactionsQueryModel query)
-        {
-            return _transactionQueryService.Query(id, query);
-        }
-
-        [HttpPost]
-        [Route("accounts/{id}/transactions/upload")]
-        public void UploadProcessedTransactions(int id, [FromBody]TransactionUploadModel[] transactions)
-        {
-           _transactionUploadService.AddTransactionsToAccount(id, transactions.ToList());
-        }
-
-        [HttpPost]
-        [Route("accounts/{id}/transactions/confirm")]
-        public void Confirm(int id, [FromBody]int[] transactionids)
-        {
-            _transactionUploadService.ConfirmTransactions(id, transactionids);
-        }
-    }
+   }
 }

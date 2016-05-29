@@ -3,7 +3,6 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using Picassi.Common.Api.Attributes;
 using Picassi.Core.Accounts.DbAccess.Tags;
-using Picassi.Core.Accounts.Reports;
 using Picassi.Core.Accounts.ViewModels.Tags;
 
 namespace Picassi.Api.Accounts.Controllers
