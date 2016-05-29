@@ -44,8 +44,15 @@ namespace Picassi.Core.Accounts.DbAccess.Transactions
         public AccountTransactionViewModel UpdateTransaction(int accountId, int transactionId, AccountTransactionViewModel transaction)
         {
             var dataModel = _dbContext.Transactions.Find(transactionId);
+            var existingBalance = dataModel.Balance;
             ConvertToDataModel(accountId, transaction, dataModel);
             _dbContext.SaveChanges();
+
+            if (dataModel.Balance != existingBalance)
+            {
+                _accountBalanceService.SetTransactionBalances(transaction.AccountId, transaction.Date, transaction.Balance - transaction.Amount);
+            }
+
             return ConvertToViewModel(accountId, dataModel);
         }
 
