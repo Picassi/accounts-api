@@ -40,21 +40,27 @@ namespace Picassi.Core.Accounts.Reports
         public void SetTransactionBalances(int accountId, DateTime date)
         {
             var initialBalance = GetAccountBalance(accountId, date);            
-            var transaction = GetFirstTransactionFromDate(date) ?? GetFirstTransactionBeforeDate(date);
+            var transaction = GetFirstTransactionFromDate(accountId, date) ?? GetFirstTransactionBeforeDate(accountId, date);
 
             SetTransactionBalances(accountId, date, transaction, initialBalance);
         }
 
-        private Transaction GetFirstTransactionBeforeDate(DateTime date)
+        private Transaction GetFirstTransactionBeforeDate(int accountId, DateTime date)
         {
-            return _dataContext.Transactions.Where(x => x.Date < date)
-                .OrderByDescending(x => x.Date).ThenByDescending(x => x.Id).FirstOrDefault();
+            return _dataContext.Transactions
+                .Where(x => x.FromId == accountId || x.ToId == accountId)
+                .Where(x => x.Date < date)
+                .OrderByDescending(x => x.Date).ThenByDescending(x => x.Id)
+                .FirstOrDefault();
         }
 
-        private Transaction GetFirstTransactionFromDate(DateTime date)
+        private Transaction GetFirstTransactionFromDate(int accountId, DateTime date)
         {
-            return _dataContext.Transactions.Where(x => x.Date >= date)
-                .OrderBy(x => x.Date).ThenBy(x => x.Id).FirstOrDefault();
+            return _dataContext.Transactions
+                .Where(x => x.FromId == accountId || x.ToId == accountId)
+                .Where(x => x.Date >= date)
+                .OrderBy(x => x.Date).ThenBy(x => x.Id)
+                .FirstOrDefault();
         }
 
         public void SetTransactionBalances(int accountId, DateTime date, Transaction transaction, decimal initialBalance)
@@ -100,11 +106,11 @@ namespace Picassi.Core.Accounts.Reports
         {
             foreach (var transaction in transactions)
             {
+                transaction.Balance = initialBalance;
                 if (transaction.FromId == accountId)
                     initialBalance = initialBalance + transaction.Amount;
                 else if (transaction.ToId == accountId)
                     initialBalance = initialBalance - transaction.Amount;
-                transaction.Balance = initialBalance;
             }
         }
 
