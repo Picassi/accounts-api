@@ -8,9 +8,9 @@ namespace Picassi.Data.Accounts.Models
 
         public string Name { get; set; }
 
-        public virtual IEnumerable<Transaction> Transactions { get; set; }
+        public virtual ICollection<Transaction> Transactions { get; set; }
 
-        public virtual IEnumerable<ReportGroupCategory> ReportGroups { get; set; }
+        public virtual ICollection<ReportGroupCategory> ReportGroups { get; set; }
 
     }
 }

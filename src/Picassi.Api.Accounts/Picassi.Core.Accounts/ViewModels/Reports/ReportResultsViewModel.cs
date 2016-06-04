@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Picassi.Core.Accounts.ViewModels.Reports
 {
@@ -13,7 +14,7 @@ namespace Picassi.Core.Accounts.ViewModels.Reports
     {
         public string Title { get; set; }
 
-        public List<ReportResultsLineViewModel> ReportLines { get; set; }
+        public IEnumerable<ReportResultsLineViewModel> ReportLines { get; set; }
     }
 
     public class ReportResultsLineViewModel

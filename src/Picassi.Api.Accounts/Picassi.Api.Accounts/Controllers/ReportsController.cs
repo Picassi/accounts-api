@@ -14,13 +14,13 @@ namespace Picassi.Api.Accounts.Controllers
     {
         private readonly IReportCrudService _crudService;
         private readonly IReportQueryService _queryService;
-        private readonly IReportResultsService _resultsService;
+        private readonly IReportResultsServiceProvider _resultsServiceProvider;
 
-        public ReportsController(IReportCrudService crudService, IReportQueryService queryService, IReportResultsService resultsService)
+        public ReportsController(IReportCrudService crudService, IReportQueryService queryService, IReportResultsServiceProvider resultsServiceProvider)
         {
             _crudService = crudService;
             _queryService = queryService;
-            _resultsService = resultsService;
+            _resultsServiceProvider = resultsServiceProvider;
         }
 
         [HttpGet]
@@ -62,7 +62,7 @@ namespace Picassi.Api.Accounts.Controllers
         [Route("reports/{id}/results")]
         public ReportResultsViewModel GetReportResults(int id, [FromUri]ReportResultsQueryModel query)
         {
-            return _resultsService.GetResults(id, query);
+            return _resultsServiceProvider.GetService(query.Type).GetResults(id, query);
         }
     }
 }
