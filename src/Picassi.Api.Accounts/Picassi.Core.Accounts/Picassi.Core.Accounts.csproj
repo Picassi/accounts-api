@@ -110,6 +110,7 @@
     <Compile Include="ViewModels\Categories\CategorySummaryQueryModel.cs" />
     <Compile Include="ViewModels\Categories\CategoriesQueryModel.cs" />
     <Compile Include="ViewModels\Categories\CategoryAutomapperProfile.cs" />
+    <Compile Include="ViewModels\Categories\CategorySummaryResultsViewModel.cs" />
     <Compile Include="ViewModels\Categories\CategorySummaryViewModel.cs" />
     <Compile Include="ViewModels\Categories\CategorySummaryViewModelFactory.cs" />
     <Compile Include="ViewModels\Categories\CategoryViewModel.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="ViewModels\Transactions\TransactionAutomapperProfile.cs" />
     <Compile Include="ViewModels\Transactions\AccountTransactionsQueryModel.cs" />
     <Compile Include="ViewModels\Transactions\TransactionsQueryModel.cs" />
+    <Compile Include="ViewModels\Transactions\TransactionsResultsViewModel.cs" />
     <Compile Include="ViewModels\Transactions\TransactionUploadModel.cs" />
     <Compile Include="ViewModels\Transactions\AccountTransactionViewModel.cs" />
     <Compile Include="ViewModels\Transactions\TransactionViewModel.cs" />

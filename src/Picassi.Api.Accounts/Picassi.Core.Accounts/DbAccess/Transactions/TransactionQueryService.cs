@@ -14,7 +14,7 @@ namespace Picassi.Core.Accounts.DbAccess.Transactions
     public interface ITransactionQueryService
     {
         IEnumerable<TransactionViewModel> Query(SimpleTransactionQueryModel query);
-        ResultsViewModel<TransactionViewModel> Query(TransactionsQueryModel query);
+        TransactionsResultsViewModel Query(TransactionsQueryModel query);
         ResultsViewModel<AccountTransactionViewModel> Query(int id, AccountTransactionsQueryModel query);
     }
 
@@ -35,15 +35,16 @@ namespace Picassi.Core.Accounts.DbAccess.Transactions
             return Mapper.Map<IEnumerable<TransactionViewModel>>(transactions);
         }
 
-        public ResultsViewModel<TransactionViewModel> Query(TransactionsQueryModel query)
+        public TransactionsResultsViewModel Query(TransactionsQueryModel query)
         {
             var transactions = _dbContext.Transactions.Include(x => x.Category);
             var results = (query == null ? transactions : FilterTransactions(query, transactions)).ToList();
             var count = query == null ? results.Count : FilterTransactionsWithoutPaging(query, transactions).Count();
 
-            return new ResultsViewModel<TransactionViewModel>
+            return new TransactionsResultsViewModel
             {
                 TotalLines = count,
+                Total = results.Sum(x => x.Amount),
                 Lines = Mapper.Map<IEnumerable<TransactionViewModel>>(results)
             };
         }

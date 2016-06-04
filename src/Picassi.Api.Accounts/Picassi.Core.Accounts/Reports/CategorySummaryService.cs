@@ -12,7 +12,7 @@ namespace Picassi.Core.Accounts.Reports
 {
     public interface ICategorySummaryService
     {
-        ResultsViewModel<CategorySummaryViewModel> GetCategorySummaries(CategoriesQueryModel query);
+        CategorySummaryResultsViewModel GetCategorySummaries(CategoriesQueryModel query);
     }
 
     public class CategorySummaryService : ICategorySummaryService
@@ -26,7 +26,7 @@ namespace Picassi.Core.Accounts.Reports
             _categoryQueryService = categoryQueryService;
         }
 
-        public ResultsViewModel<CategorySummaryViewModel> GetCategorySummaries(CategoriesQueryModel query)
+        public CategorySummaryResultsViewModel GetCategorySummaries(CategoriesQueryModel query)
         {
             var categories = _categoryQueryService.Query(query);
             var categoriesPlusUncategorised = AddPlaceholderForUncategorised(categories);
@@ -34,9 +34,10 @@ namespace Picassi.Core.Accounts.Reports
                 ? new DateRange((DateTime) query.DateFrom, (DateTime) query.DateTo)
                 : null;
             var lines = BuildCategorySummaries(categoriesPlusUncategorised, query.AccountIds, query.ReportType, query.Frequency, dateRange);
-            return new ResultsViewModel<CategorySummaryViewModel>
+            return new CategorySummaryResultsViewModel
             {
                 TotalLines = lines.Count,
+                Total = lines.Where(x => x.Spend != null).Sum(x => (decimal)x.Spend),
                 Lines = lines
             };
         }
