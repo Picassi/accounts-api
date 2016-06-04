@@ -5,13 +5,14 @@ using Picassi.Core.Accounts.DbAccess.Categories;
 using Picassi.Core.Accounts.Enums;
 using Picassi.Core.Accounts.Time;
 using Picassi.Core.Accounts.Time.Periods;
+using Picassi.Core.Accounts.ViewModels;
 using Picassi.Core.Accounts.ViewModels.Categories;
 
 namespace Picassi.Core.Accounts.Reports
 {
     public interface ICategorySummaryService
     {
-        IEnumerable<CategorySummaryViewModel> GetCategorySummaries(CategoriesQueryModel query);
+        ResultsViewModel<CategorySummaryViewModel> GetCategorySummaries(CategoriesQueryModel query);
     }
 
     public class CategorySummaryService : ICategorySummaryService
@@ -25,17 +26,22 @@ namespace Picassi.Core.Accounts.Reports
             _categoryQueryService = categoryQueryService;
         }
 
-        public IEnumerable<CategorySummaryViewModel> GetCategorySummaries(CategoriesQueryModel query)
+        public ResultsViewModel<CategorySummaryViewModel> GetCategorySummaries(CategoriesQueryModel query)
         {
             var categories = _categoryQueryService.Query(query);
             var categoriesPlusUncategorised = AddPlaceholderForUncategorised(categories);
             var dateRange = query.DateFrom != null && query.DateTo != null
                 ? new DateRange((DateTime) query.DateFrom, (DateTime) query.DateTo)
                 : null;
-            return BuildCategorySummaries(categoriesPlusUncategorised, query.AccountIds, query.ReportType, query.Frequency, dateRange);
+            var lines = BuildCategorySummaries(categoriesPlusUncategorised, query.AccountIds, query.ReportType, query.Frequency, dateRange);
+            return new ResultsViewModel<CategorySummaryViewModel>
+            {
+                TotalLines = lines.Count,
+                Lines = lines
+            };
         }
 
-        private IEnumerable<CategorySummaryViewModel> BuildCategorySummaries(
+        private List<CategorySummaryViewModel> BuildCategorySummaries(
             IEnumerable<CategoryViewModel> categories, 
             IEnumerable<int> referenceAccountIds, 
             CategorySummaryReportType reportType,
@@ -49,7 +55,7 @@ namespace Picassi.Core.Accounts.Reports
                 AverageSpendPeriod = new PeriodDefinition { Quantity = 1, Type =periodType },
                 Category = x,
                 DateRange = range
-            }));
+            })).ToList();
         }
 
         private static IEnumerable<CategoryViewModel> AddPlaceholderForUncategorised(IEnumerable<CategoryViewModel> categories)

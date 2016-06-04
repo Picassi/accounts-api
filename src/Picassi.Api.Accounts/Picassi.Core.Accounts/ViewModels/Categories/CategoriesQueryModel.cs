@@ -14,6 +14,8 @@ namespace Picassi.Core.Accounts.ViewModels.Categories
         public int[] AccountIds { get; set; }
         public int[] GroupIds { get; set; }
         public CategorySummaryReportType ReportType { get; set; }
-        public PeriodType Frequency { get; set; }    
+        public PeriodType Frequency { get; set; }
+        public string SortBy { get; set; }
+        public bool SortAscending { get; set; }
     }
 }

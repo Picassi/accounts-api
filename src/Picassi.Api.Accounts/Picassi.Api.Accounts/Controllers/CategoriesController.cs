@@ -4,6 +4,7 @@ using System.Web.Http.Cors;
 using Picassi.Common.Api.Attributes;
 using Picassi.Core.Accounts.DbAccess.Categories;
 using Picassi.Core.Accounts.Reports;
+using Picassi.Core.Accounts.ViewModels;
 using Picassi.Core.Accounts.ViewModels.Categories;
 
 namespace Picassi.Api.Accounts.Controllers
@@ -32,7 +33,7 @@ namespace Picassi.Api.Accounts.Controllers
 
         [HttpGet]
         [Route("categories/summary")]
-        public IEnumerable<CategorySummaryViewModel> GetCategoriesSumary([FromUri]CategoriesQueryModel query)
+        public ResultsViewModel<CategorySummaryViewModel> GetCategoriesSumary([FromUri]CategoriesQueryModel query)
         {
             return _categorySummaryService.GetCategorySummaries(query);
         }
