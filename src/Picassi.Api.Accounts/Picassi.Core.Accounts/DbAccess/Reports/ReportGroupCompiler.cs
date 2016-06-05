@@ -27,9 +27,11 @@ namespace Picassi.Core.Accounts.DbAccess.Reports
 
         public IEnumerable<int> CompileReportLines(int groupId, List<int> reportIds)
         {
+            if (reportIds == null) return new List<int>();
+
             var reportLines = reportIds.Select((t, i) => GetReportLine(groupId, t, i)).ToList();
             _dataContext.SaveChanges();
-            return reportLines.Select(x => x.Id);
+            return reportLines.Select(x => x.Id).ToList();
         }
 
         private ReportGroupReport GetReportLine(int groupId, int reportId, int index)
