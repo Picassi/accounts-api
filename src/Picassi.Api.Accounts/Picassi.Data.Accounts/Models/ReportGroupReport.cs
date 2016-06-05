@@ -8,7 +8,7 @@ namespace Picassi.Data.Accounts.Models
 
         public int Ordinal { get; set; }
 
-        public int GroupId { get; set; }
+        public int ReportGroupId { get; set; }
 
         public int ReportId { get; set; }
 

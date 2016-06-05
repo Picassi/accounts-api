@@ -21,6 +21,7 @@ namespace Picassi.Core.Accounts.Services.Reports
                 ReportGroups = reportGroups
                     .Select(group => new ReportResultsGroupViewModel
                     {
+                        Title = @group.Name,
                         ReportLines = @group.Categories
                             .OrderBy(category => category.Ordinal)
                             .Select(category => transactionSummaries.FirstOrDefault(x => x.CategoryId == category.CategoryId) 

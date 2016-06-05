@@ -27,7 +27,7 @@ namespace Picassi.Core.Accounts.Services.Reports
 
         private static Expression<Func<ReportGroup, bool>> IsLinkedToReport(int id)
         {
-            return group => group.Reports.Any(report => report.Id == id);
+            return group => group.Reports.Any(report => report.ReportId == id);
         }
 
     }

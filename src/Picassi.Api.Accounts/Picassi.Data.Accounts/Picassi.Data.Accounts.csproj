@@ -70,6 +70,14 @@
     <Compile Include="Migrations\201605021541458_InitialCreate.Designer.cs">
       <DependentUpon>201605021541458_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201606052008154_RemoveAdditionalIdFromReportGroupCategory.cs" />
+    <Compile Include="Migrations\201606052008154_RemoveAdditionalIdFromReportGroupCategory.Designer.cs">
+      <DependentUpon>201606052008154_RemoveAdditionalIdFromReportGroupCategory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201606052016441_RemoveAdditionalIdFromReportGroupReport.cs" />
+    <Compile Include="Migrations\201606052016441_RemoveAdditionalIdFromReportGroupReport.Designer.cs">
+      <DependentUpon>201606052016441_RemoveAdditionalIdFromReportGroupReport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Report.cs" />
@@ -95,6 +103,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201605021541458_InitialCreate.resx">
       <DependentUpon>201605021541458_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606052008154_RemoveAdditionalIdFromReportGroupCategory.resx">
+      <DependentUpon>201606052008154_RemoveAdditionalIdFromReportGroupCategory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606052016441_RemoveAdditionalIdFromReportGroupReport.resx">
+      <DependentUpon>201606052016441_RemoveAdditionalIdFromReportGroupReport.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

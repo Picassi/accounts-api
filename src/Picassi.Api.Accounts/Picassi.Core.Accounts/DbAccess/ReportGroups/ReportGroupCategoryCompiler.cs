@@ -43,12 +43,12 @@ namespace Picassi.Core.Accounts.DbAccess.ReportGroups
 
         private ReportGroupCategory GetExisting(int groupId, int categoryId)
         {
-            return _dataContext.ReportGroupCategories.FirstOrDefault(x => x.GroupId == groupId && x.CategoryId == categoryId);
+            return _dataContext.ReportGroupCategories.FirstOrDefault(x => x.ReportGroupId == groupId && x.CategoryId == categoryId);
         }
 
         private ReportGroupCategory GetNew(int groupId, int categoryId)
         {
-            var reportCategory = new ReportGroupCategory { CategoryId = categoryId, GroupId = groupId };
+            var reportCategory = new ReportGroupCategory { CategoryId = categoryId, ReportGroupId = groupId };
             _dataContext.ReportGroupCategories.Add(reportCategory);
             return reportCategory;
         }

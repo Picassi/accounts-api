@@ -43,12 +43,12 @@ namespace Picassi.Core.Accounts.DbAccess.ReportGroups
 
         private ReportGroupReport GetExisting(int groupId, int categoryId)
         {
-            return _dataContext.ReportGroupReports.FirstOrDefault(x => x.GroupId == groupId && x.ReportId == categoryId);
+            return _dataContext.ReportGroupReports.FirstOrDefault(x => x.ReportGroupId == groupId && x.ReportId == categoryId);
         }
 
         private ReportGroupReport GetNew(int groupId, int categoryId)
         {
-            var reportGroupReport = new ReportGroupReport { ReportId = categoryId, GroupId = groupId };
+            var reportGroupReport = new ReportGroupReport { ReportId = categoryId, ReportGroupId = groupId };
             _dataContext.ReportGroupReports.Add(reportGroupReport);
             return reportGroupReport;
         }

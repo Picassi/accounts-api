@@ -14,6 +14,8 @@ namespace Picassi.Core.Accounts.ViewModels.Reports
     {
         public string Title { get; set; }
 
+        public decimal Total { get { return ReportLines.Sum(x => x.Amount);  } }
+
         public IEnumerable<ReportResultsLineViewModel> ReportLines { get; set; }
     }
 

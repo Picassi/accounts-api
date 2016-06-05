@@ -24,7 +24,7 @@ namespace Picassi.Core.Accounts.DbAccess.ReportGroups
 
         public IEnumerable<ReportGroupViewModel> Query(int reportId, ReportGroupsQueryModel accounts)
         {
-            var queryResults = _dbContext.ReportGroups.Where(x => x.Reports.Any(y => y.Id == reportId));
+            var queryResults = _dbContext.ReportGroups.Where(x => x.Reports.Any(y => y.ReportId == reportId));
 
             if (accounts?.Name != null) queryResults = queryResults.Where(x => x.Name.Contains(accounts.Name));
 
