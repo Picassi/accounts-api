@@ -30,8 +30,9 @@ namespace Picassi.Core.Accounts.Services.Reports
         {
             return _reportGroupsProvider.GetReportGroups(id)
                 .SelectMany(groups => groups.Categories)
-                .SelectMany(categories => categories.Category.Transactions
-                .Where(transaction => transaction.Date >= query.DateFrom && transaction.Date < query.DateTo));
+                .SelectMany(categories => categories.Category.Transactions.Where(
+                    transaction => transaction.Date >= query.DateFrom && transaction.Date < query.DateTo))
+                .Distinct();
         }
 
         private static IEnumerable<ReportResultsLineViewModel> GetResultsForAllAccounts(IQueryable<Transaction> transactions)
