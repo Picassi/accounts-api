@@ -14,6 +14,7 @@ namespace Picassi.Core.Accounts.Reports
         decimal GetAccountBalance(int accountId, DateTime date);
         void SetTransactionBalances(int accountId, DateTime date);
         void SetTransactionBalances(int accountId, DateTime date, Transaction transaction, decimal initialBalance);
+        
     }
 
     public class AccountBalanceService : IAccountBalanceService

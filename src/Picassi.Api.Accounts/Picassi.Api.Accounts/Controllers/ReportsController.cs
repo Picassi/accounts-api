@@ -4,6 +4,7 @@ using System.Web.Http.Cors;
 using Picassi.Common.Api.Attributes;
 using Picassi.Core.Accounts.DbAccess.Reports;
 using Picassi.Core.Accounts.Services.Reports;
+using Picassi.Core.Accounts.ViewModels;
 using Picassi.Core.Accounts.ViewModels.Reports;
 
 namespace Picassi.Api.Accounts.Controllers
@@ -25,7 +26,7 @@ namespace Picassi.Api.Accounts.Controllers
 
         [HttpGet]
         [Route("reports")]
-        public IEnumerable<ReportViewModel> GetReports([FromUri]ReportQueryModel query)
+        public ResultsViewModel<ReportViewModel> GetReports([FromUri]ReportQueryModel query)
         {
             return _queryService.Query(query);
         }

@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
+using Picassi.Core.Accounts.ViewModels;
 using Picassi.Core.Accounts.ViewModels.Reports;
 using Picassi.Data.Accounts.Database;
 
@@ -7,7 +9,7 @@ namespace Picassi.Core.Accounts.DbAccess.Reports
 {
     public interface IReportQueryService
     {
-        IEnumerable<ReportViewModel> Query(ReportQueryModel reports);
+        ResultsViewModel<ReportViewModel> Query(ReportQueryModel reports);
     }
 
     public class ReportQueryService : IReportQueryService
@@ -19,10 +21,15 @@ namespace Picassi.Core.Accounts.DbAccess.Reports
             _dbContext = dataContext;
         }
 
-        public IEnumerable<ReportViewModel> Query(ReportQueryModel reports)
+        public ResultsViewModel<ReportViewModel> Query(ReportQueryModel reports)
         {			
-            var queryResults = _dbContext.Reports; 
-			return Mapper.Map<IEnumerable<ReportViewModel>>(queryResults);
+            var queryResults = _dbContext.Reports;
+            var results = Mapper.Map<IEnumerable<ReportViewModel>>(queryResults).ToList();
+            return new ResultsViewModel<ReportViewModel>
+            {
+                Lines = results,
+                TotalLines = results.Count
+            };
         }
     }
 }

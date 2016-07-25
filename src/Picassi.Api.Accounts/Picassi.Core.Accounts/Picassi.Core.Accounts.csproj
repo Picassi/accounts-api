@@ -54,6 +54,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -88,6 +89,7 @@
     <Compile Include="Services\Accounts\AccountStatusChecker.cs" />
     <Compile Include="Reports\AccountSummaryViewModelFactory.cs" />
     <Compile Include="Reports\CategorySummaryService.cs" />
+    <Compile Include="Services\Meta\MetaDataService.cs" />
     <Compile Include="Services\Reports\ReportGroupsProvider.cs" />
     <Compile Include="Services\Reports\CategoryTotalReportResultsService.cs" />
     <Compile Include="Services\Reports\IReportResultsService.cs" />
@@ -123,6 +125,7 @@
     <Compile Include="ViewModels\Categories\CategorySummaryViewModel.cs" />
     <Compile Include="ViewModels\Categories\CategorySummaryViewModelFactory.cs" />
     <Compile Include="ViewModels\Categories\CategoryViewModel.cs" />
+    <Compile Include="ViewModels\Meta\MetaDataViewModel.cs" />
     <Compile Include="ViewModels\ReportGroups\ReportGroupAutomapperProfile.cs" />
     <Compile Include="ViewModels\ReportGroups\ReportGroupsQueryModel.cs" />
     <Compile Include="ViewModels\ReportGroups\ReportGroupViewModel.cs" />
