@@ -69,9 +69,9 @@ namespace Picassi.Api.Accounts.Controllers
 
         [HttpPost]
         [Route("accounts/{accountId}/transactions/confirm")]
-        public void Confirm(int accountId, [FromBody]int[] transactionids)
+        public void Confirm(int accountId, [FromBody]int[] transactionIds)
         {
-            _transactionUploadService.ConfirmTransactions(accountId, transactionids);
+            _transactionUploadService.ConfirmTransactions(accountId, transactionIds);
         }
     }
 }
