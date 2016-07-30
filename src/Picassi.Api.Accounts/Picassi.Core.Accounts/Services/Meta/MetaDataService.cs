@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web;
-using Picassi.Common.Data.Connection;
+using Picassi.Common.Data.Identity;
 using Picassi.Core.Accounts.Reports;
 using Picassi.Core.Accounts.ViewModels.Meta;
 using Picassi.Data.Accounts.Database;
@@ -28,10 +28,11 @@ namespace Picassi.Core.Accounts.Services.Meta
         {
             var accountIds = _dataContext.Accounts.Select(account => account.Id).ToList();
             var balance = accountIds.Sum(id => _accountBalanceService.GetAccountBalance(id, DateTime.Now));
+            var identityProvider = HttpContext.Current.Items[UserIdentityProvider.UserIdentityProviderKey] as UserIdentityProvider;
 
             return new MetaDataViewModel
             {
-                Username = "User",
+                Username = identityProvider?.DisplayName ?? "Unknown user",
                 Total = $"{balance:0.00}"
             };
         }
