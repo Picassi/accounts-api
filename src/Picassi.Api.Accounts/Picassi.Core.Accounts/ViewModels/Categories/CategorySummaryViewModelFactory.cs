@@ -26,14 +26,16 @@ namespace Picassi.Core.Accounts.ViewModels.Categories
 
         public CategorySummaryViewModel GetSummary(CategorySummaryQueryModel query)
         {
-            var transactionsForCategory = query.DateRange != null ? GetFilteredTransactions(query) : null;
-            var spend = transactionsForCategory != null ? GetSpend(query, transactionsForCategory.ToList()) : (decimal?)null;
+            var transactionsForCategory = query.DateRange != null ? GetFilteredTransactions(query).ToList() : null;
+            var spend = transactionsForCategory != null ? GetSpend(query, transactionsForCategory) : (decimal?)null;
+            var transactionCount = GetTransactionCount(query, transactionsForCategory);
 
             return new CategorySummaryViewModel
             {
                 Id = query.Category?.Id,
                 Name = query.Category == null ? "Uncategorised" : query.Category.Name ?? "Unnamed",
-                Spend = spend
+                Spend = spend,
+                TransactionCount = transactionCount
             };
         }
 
@@ -62,6 +64,12 @@ namespace Picassi.Core.Accounts.ViewModels.Categories
             var total = totalIn - totalOut;
             var reportedValue = query.ReportType == CategorySummaryReportType.Total ? total : GetAverage(query, total);
             return Math.Round(reportedValue, 2);
+        }
+
+        private decimal GetTransactionCount(CategorySummaryQueryModel query, IReadOnlyCollection<Transaction> transactionsForCategory)
+        {
+            if (transactionsForCategory == null) return 0;
+            return query.ReportType == CategorySummaryReportType.Total ? transactionsForCategory.Count : GetAverage(query, transactionsForCategory.Count);
         }
 
         private decimal GetAverage(CategorySummaryQueryModel query, decimal total)

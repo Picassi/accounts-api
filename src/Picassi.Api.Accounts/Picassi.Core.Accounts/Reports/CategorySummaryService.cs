@@ -37,6 +37,7 @@ namespace Picassi.Core.Accounts.Reports
             {
                 TotalLines = lines.Count,
                 Total = lines.Where(x => x.Spend != null).Sum(x => (decimal)x.Spend),
+                TotalTransactions = lines.Sum(x => x.TransactionCount),
                 Lines = lines
             };
         }
@@ -60,7 +61,7 @@ namespace Picassi.Core.Accounts.Reports
 
         private static IEnumerable<CategoryViewModel> AddPlaceholderForUncategorised(IEnumerable<CategoryViewModel> categories)
         {
-            return new List<CategoryViewModel> { null }.Union(categories).ToList();
+            return categories.Union(new List<CategoryViewModel> { null }).ToList();
         }
     }
 }
