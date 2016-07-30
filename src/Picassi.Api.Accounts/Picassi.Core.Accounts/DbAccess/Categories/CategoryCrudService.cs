@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using AutoMapper;
 using Picassi.Core.Accounts.ViewModels.Categories;
 using Picassi.Data.Accounts.Database;
 using Picassi.Data.Accounts.Models;
@@ -47,6 +48,10 @@ namespace Picassi.Core.Accounts.DbAccess.Categories
         public bool DeleteCategory(int id)
         {
             var dataModel = _dbContext.Categories.Find(id);
+            foreach (var transaction in _dbContext.Transactions.Where(transaction => transaction.CategoryId == id))
+                transaction.CategoryId = null;
+            _dbContext.SaveChanges();
+
             _dbContext.Categories.Remove(dataModel);
             _dbContext.SaveChanges();
             return true;

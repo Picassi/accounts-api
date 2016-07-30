@@ -32,7 +32,7 @@ namespace Picassi.Core.Accounts.ViewModels.Categories
             return new CategorySummaryViewModel
             {
                 Id = query.Category?.Id,
-                Name = query.Category?.Name ?? "Uncategorised",
+                Name = query.Category == null ? "Uncategorised" : query.Category.Name ?? "Unnamed",
                 Spend = spend
             };
         }

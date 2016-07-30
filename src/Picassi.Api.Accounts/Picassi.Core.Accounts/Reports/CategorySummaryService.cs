@@ -5,7 +5,6 @@ using Picassi.Core.Accounts.DbAccess.Categories;
 using Picassi.Core.Accounts.Enums;
 using Picassi.Core.Accounts.Time;
 using Picassi.Core.Accounts.Time.Periods;
-using Picassi.Core.Accounts.ViewModels;
 using Picassi.Core.Accounts.ViewModels.Categories;
 
 namespace Picassi.Core.Accounts.Reports
