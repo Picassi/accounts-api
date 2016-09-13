@@ -29,11 +29,13 @@ namespace Picassi.Core.Accounts.Services.Meta
             var accountIds = _dataContext.Accounts.Select(account => account.Id).ToList();
             var balance = accountIds.Sum(id => _accountBalanceService.GetAccountBalance(id, DateTime.Now));
             var identityProvider = HttpContext.Current.Items[UserIdentityProvider.UserIdentityProviderKey] as UserIdentityProvider;
+            var targetDate = DateTime.Now.AddDays(-7);
 
             return new MetaDataViewModel
             {
                 Username = identityProvider?.DisplayName ?? "Unknown user",
-                Total = $"{balance:0.00}"
+                Total = $"{balance:0.00}",
+                AccountsNeedUpdating = _dataContext.Accounts.Any(x => x.LastUpdated < targetDate)
             };
         }
     }
