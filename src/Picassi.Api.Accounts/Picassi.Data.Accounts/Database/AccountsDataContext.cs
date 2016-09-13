@@ -15,6 +15,7 @@ namespace Picassi.Data.Accounts.Database
         DbSet<ReportGroupReport> ReportGroupReports { get; set; }
         DbSet<ReportGroup> ReportGroups { get; set; }
         DbSet<ReportGroupCategory> ReportGroupCategories { get; set; }
+        System.Data.Entity.Database Database { get; }
     }
 
     public class AccountsDataContext : DbContext, IAccountsDataContext

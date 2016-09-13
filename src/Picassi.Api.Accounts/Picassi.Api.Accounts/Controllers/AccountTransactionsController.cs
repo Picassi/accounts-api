@@ -73,5 +73,19 @@ namespace Picassi.Api.Accounts.Controllers
         {
             _transactionUploadService.ConfirmTransactions(accountId, transactionIds);
         }
+
+        [HttpPost]
+        [Route("accounts/{accountId}/transactions/moveup")]
+        public void MoveTransactionUp(int accountId, [FromBody]int transactionId)
+        {
+            _transactionCrudService.MoveTransactionUp(accountId, transactionId);
+        }
+
+        [HttpPost]
+        [Route("accounts/{accountId}/transactions/movedown")]
+        public void MoveTransactionDown(int accountId, [FromBody]int transactionId)
+        {
+            _transactionCrudService.MoveTransactionDown(accountId, transactionId);
+        }
     }
 }

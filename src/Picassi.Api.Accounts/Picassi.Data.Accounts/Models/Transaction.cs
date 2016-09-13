@@ -7,6 +7,8 @@ namespace Picassi.Data.Accounts.Models
     {
         public int Id { get; set; }
 
+        public int Ordinal { get; set; }
+
         public string Description { get; set; }
 
         [ForeignKey("From")]

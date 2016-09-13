@@ -1,8 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using Picassi.Core.Accounts.DbAccess.Transactions;
-using Picassi.Core.Accounts.ViewModels.Accounts;
-using Picassi.Core.Accounts.ViewModels.Transactions;
 using Picassi.Data.Accounts.Database;
 using Picassi.Data.Accounts.Models;
 
@@ -19,55 +17,29 @@ namespace Picassi.Core.Accounts.Reports
     public class AccountBalanceService : IAccountBalanceService
     {
         private readonly IAccountsDataContext _dataContext;
-        private readonly ITransactionQueryService _transactionQueryService;
 
-        public AccountBalanceService(ITransactionQueryService transactionQueryService, IAccountsDataContext dataContext)
+        public AccountBalanceService(IAccountsDataContext dataContext)
         {
-            _transactionQueryService = transactionQueryService;
             _dataContext = dataContext;
         }
 
         public decimal GetAccountBalance(int accountId, DateTime date)
         {
-            var lastTransaction = _dataContext.Transactions.Where(x => x.FromId == accountId || x.ToId == accountId)
-                .OrderByDescending(transaction => transaction.Date)
-                .ThenByDescending(transaction => transaction.Id)
-                .FirstOrDefault();
-            return (lastTransaction?.Balance ?? 0);
+            return GetTransactionForAccountBalance(accountId, date)?.Balance ?? 0;
         }
 
         public void SetTransactionBalances(int accountId, DateTime date)
         {
-            var initialBalance = GetAccountBalance(accountId, date);            
-            var transaction = GetFirstTransactionFromDate(accountId, date) ?? GetFirstTransactionBeforeDate(accountId, date);
-
-            SetTransactionBalances(accountId, date, transaction, initialBalance);
-        }
-
-        private Transaction GetFirstTransactionBeforeDate(int accountId, DateTime date)
-        {
-            return _dataContext.Transactions
-                .Where(x => x.FromId == accountId || x.ToId == accountId)
-                .Where(x => x.Date < date)
-                .OrderByDescending(x => x.Date).ThenByDescending(x => x.Id)
-                .FirstOrDefault();
-        }
-
-        private Transaction GetFirstTransactionFromDate(int accountId, DateTime date)
-        {
-            return _dataContext.Transactions
-                .Where(x => x.FromId == accountId || x.ToId == accountId)
-                .Where(x => x.Date >= date)
-                .OrderBy(x => x.Date).ThenBy(x => x.Id)
-                .FirstOrDefault();
+            var transaction = GetTransactionForAccountBalance(accountId, date);            
+            SetTransactionBalances(accountId, date, transaction, transaction?.Balance ?? 0);
         }
 
         public void SetTransactionBalances(int accountId, DateTime date, Transaction transaction, decimal initialBalance)
         {
             if (transaction == null) return;
 
-            SetBalanceForward(GetTransactionsAfterTransaction(accountId, transaction), accountId, initialBalance);
-            SetBalanceBackwards(GetTransactionBeforeTransaction(accountId, transaction), accountId, initialBalance);
+            SetBalanceForward(GetTransactionsAfterTransaction(accountId, transaction).ToList(), accountId, initialBalance);
+            SetBalanceBackwards(GetTransactionBeforeTransaction(accountId, transaction).ToList(), accountId, initialBalance);
 
             _dataContext.SaveChanges();
         }
@@ -76,20 +48,20 @@ namespace Picassi.Core.Accounts.Reports
         {
             return _dataContext.Transactions                
                 .Where(x => x.FromId == accountId || x.ToId == accountId)
-                .Where(x => x.Date > transaction.Date || x.Date == transaction.Date && x.Id > transaction.Id)
-                .OrderBy(x => x.Date).ThenBy(x => x.Id);
+                .Where(x => x.Date > transaction.Date || (x.Date == transaction.Date && x.Ordinal > transaction.Ordinal))
+                .OrderBy(x => x.Date).ThenBy(x => x.Ordinal);
         }
 
         private IQueryable<Transaction> GetTransactionBeforeTransaction(int accountId, Transaction transaction)
         {
             return _dataContext.Transactions
                 .Where(x => x.FromId == accountId || x.ToId == accountId)
-                .Where(x => x.Date < transaction.Date || x.Date == transaction.Date && x.Id < transaction.Id)
-                .OrderByDescending(x => x.Date).ThenByDescending(x => x.Id);
+                .Where(x => x.Date < transaction.Date || (x.Date == transaction.Date && x.Ordinal < transaction.Ordinal))
+                .OrderByDescending(x => x.Date).ThenByDescending(x => x.Ordinal);
 
         }
 
-        private static void SetBalanceForward(IQueryable<Transaction> transactions, int accountId, decimal initialBalance)
+        private static void SetBalanceForward(IEnumerable<Transaction> transactions, int accountId, decimal initialBalance)
         {
             foreach (var transaction in transactions)
             {
@@ -101,7 +73,7 @@ namespace Picassi.Core.Accounts.Reports
             }
         }
 
-        private static void SetBalanceBackwards(IQueryable<Transaction> transactions, int accountId, decimal initialBalance)
+        private static void SetBalanceBackwards(IEnumerable<Transaction> transactions, int accountId, decimal initialBalance)
         {
             foreach (var transaction in transactions)
             {
@@ -113,13 +85,18 @@ namespace Picassi.Core.Accounts.Reports
             }
         }
 
-        private decimal TransactionTotal(int accountId, AccountPeriodViewModel period)
+        private Transaction GetTransactionForAccountBalance(int accountId, DateTime date)
         {
-            var query = new SimpleTransactionQueryModel { AccountId = accountId, DateFrom = period.From, DateTo = period.To };
-            var transactions = _transactionQueryService.Query(query).ToList();
-            var totalCredited = transactions.Where(x => x.ToId == accountId).Select(x => x.Amount).DefaultIfEmpty(0).Sum();
-            var totalDebited = transactions.Where(x => x.FromId == accountId).Select(x => x.Amount).DefaultIfEmpty(0).Sum();
-            return totalCredited - totalDebited;
+            var lastTransaction = _dataContext
+                .Transactions.Where(x => (x.FromId == accountId || x.ToId == accountId) && x.Date < date)
+                .OrderByDescending(transaction => transaction.Date)
+                .ThenByDescending(transaction => transaction.Ordinal)
+                .FirstOrDefault();
+            var firstTransactionToday = _dataContext
+                .Transactions.Where(x => (x.FromId == accountId || x.ToId == accountId) && x.Date == date)
+                .OrderBy(transaction => transaction.Ordinal)
+                .FirstOrDefault();
+            return (lastTransaction ?? firstTransactionToday);
         }
     }
 }

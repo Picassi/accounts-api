@@ -150,11 +150,11 @@ namespace Picassi.Core.Accounts.DbAccess.Transactions
         {
             if (field == null)
             {
-                field = "Id";
+                field = "Date";
                 ascending = true;
             }
 
-            return field == "Id" ? transactions.OrderBy(field, @ascending) : transactions.OrderBy(field, @ascending).ThenBy("Id", @ascending);
+            return transactions.OrderBy(field, @ascending).ThenBy("Ordinal", @ascending);
         }
 
         private static IEnumerable<AccountTransactionViewModel> GetAccountLines(int accountId, IEnumerable<Transaction> transactions)

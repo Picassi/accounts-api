@@ -82,6 +82,10 @@
     <Compile Include="Migrations\201609131019560_AddUpdatedDateToAccount.Designer.cs">
       <DependentUpon>201609131019560_AddUpdatedDateToAccount.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609131551320_AddOrdinalToTransaction.cs" />
+    <Compile Include="Migrations\201609131551320_AddOrdinalToTransaction.Designer.cs">
+      <DependentUpon>201609131551320_AddOrdinalToTransaction.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Report.cs" />
@@ -116,6 +120,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609131019560_AddUpdatedDateToAccount.resx">
       <DependentUpon>201609131019560_AddUpdatedDateToAccount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609131551320_AddOrdinalToTransaction.resx">
+      <DependentUpon>201609131551320_AddOrdinalToTransaction.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

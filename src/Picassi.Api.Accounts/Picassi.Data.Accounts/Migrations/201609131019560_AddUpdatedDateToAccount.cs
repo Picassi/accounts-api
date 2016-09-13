@@ -8,6 +8,8 @@ namespace Picassi.Data.Accounts.Migrations
         public override void Up()
         {
             AddColumn("accounts.Accounts", "LastUpdated", c => c.DateTime(nullable: false));
+
+            Sql("Update accounts.Accounts SET LastUpdated = GetDate()");
         }
         
         public override void Down()

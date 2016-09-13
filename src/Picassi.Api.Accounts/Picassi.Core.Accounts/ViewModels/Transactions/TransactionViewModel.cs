@@ -5,6 +5,7 @@ namespace Picassi.Core.Accounts.ViewModels.Transactions
     public class TransactionViewModel
     {
 		public int Id { get; set; }
+        public int Ordinal { get; set; }
 		public string Description { get; set; }
 		public int? FromId { get; set; }
 		public int? ToId { get; set; }
