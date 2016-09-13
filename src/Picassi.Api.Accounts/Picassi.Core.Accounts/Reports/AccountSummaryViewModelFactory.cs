@@ -8,6 +8,7 @@ namespace Picassi.Core.Accounts.Reports
     public interface IAccountSummariser
     {
         AccountSummaryViewModel GetAccountSummary(AccountPeriodViewModel view);
+        AccountsStatusViewModel GetAccountsSummary();
     }
 
     public class AccountSummaryViewModelFactory : IAccountSummariser
@@ -40,6 +41,15 @@ namespace Picassi.Core.Accounts.Reports
                 LastUpdated = _statusChecker.LastUpdated(view.AccountId)
             };
 
+        }
+
+        public AccountsStatusViewModel GetAccountsSummary()
+        {
+            return new AccountsStatusViewModel
+            {
+                LastUpdated = _statusChecker.LastUpdated(),
+                MostOutOfDate = _statusChecker.MostOutOfDate()
+            };
         }
     }
 }

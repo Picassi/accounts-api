@@ -68,5 +68,12 @@ namespace Picassi.Api.Accounts.Controllers
         {
             return _accountSummariser.GetAccountSummary(new AccountPeriodViewModel { AccountId = id, From = period.Start, To = period.End });
         }
-   }
+
+        [HttpGet]
+        [Route("accounts/summary")]
+        public AccountsStatusViewModel GetAccountsSummary()
+        {
+            return _accountSummariser.GetAccountsSummary();
+        }
+    }
 }

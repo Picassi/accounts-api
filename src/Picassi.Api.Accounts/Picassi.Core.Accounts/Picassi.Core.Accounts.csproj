@@ -116,6 +116,7 @@
     <Compile Include="Time\Periods\YearPeriodTypeDefinition.cs" />
     <Compile Include="ViewModels\Accounts\AccountAutomapperProfile.cs" />
     <Compile Include="ViewModels\Accounts\AccountQueryModel.cs" />
+    <Compile Include="ViewModels\Accounts\AccountsStatusViewModel.cs" />
     <Compile Include="ViewModels\Accounts\AccountSummaryViewModel.cs" />
     <Compile Include="ViewModels\Accounts\AccountViewModel.cs" />
     <Compile Include="ViewModels\Categories\CategorySummaryQueryModel.cs" />

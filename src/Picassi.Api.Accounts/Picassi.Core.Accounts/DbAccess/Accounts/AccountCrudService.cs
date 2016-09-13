@@ -1,3 +1,4 @@
+using System;
 using AutoMapper;
 using Picassi.Core.Accounts.ViewModels.Accounts;
 using Picassi.Data.Accounts.Database;
@@ -25,6 +26,7 @@ namespace Picassi.Core.Accounts.DbAccess.Accounts
         public AccountViewModel CreateAccount(AccountViewModel account)
         {
             var dataModel = Mapper.Map<Account>(account);
+            account.LastUpdated = DateTime.Now;
             _dbContext.Accounts.Add(dataModel);
             _dbContext.SaveChanges();
             return Mapper.Map<AccountViewModel>(dataModel);

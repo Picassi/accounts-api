@@ -78,6 +78,10 @@
     <Compile Include="Migrations\201606052016441_RemoveAdditionalIdFromReportGroupReport.Designer.cs">
       <DependentUpon>201606052016441_RemoveAdditionalIdFromReportGroupReport.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609131019560_AddUpdatedDateToAccount.cs" />
+    <Compile Include="Migrations\201609131019560_AddUpdatedDateToAccount.Designer.cs">
+      <DependentUpon>201609131019560_AddUpdatedDateToAccount.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Report.cs" />
@@ -109,6 +113,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606052016441_RemoveAdditionalIdFromReportGroupReport.resx">
       <DependentUpon>201606052016441_RemoveAdditionalIdFromReportGroupReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609131019560_AddUpdatedDateToAccount.resx">
+      <DependentUpon>201609131019560_AddUpdatedDateToAccount.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
