@@ -28,8 +28,13 @@ namespace Picassi.Core.Accounts.Services.Transactions
 
         public void AddTransactionsToAccount(int accountId, IEnumerable<TransactionUploadModel> transactions)
         {
-            _dbContext.Transactions.AddRange(transactions.Select(x => CreateTransaction(accountId, x)).Where(x => x != null));
+            var maxOrdinal = _dbContext.Transactions.Any()
+                ? _dbContext.Transactions.Max(transaction => transaction.Ordinal)
+                : 0;
+            var transactionModels = transactions.Select(x => CreateTransaction(accountId, x, ++maxOrdinal)).Where(x => x != null).ToList();
+            _dbContext.Transactions.AddRange(transactionModels);
             _dbContext.SaveChanges();
+            _balanceService.SetTransactionBalances(accountId, transactionModels.Min(transaction => transaction.Date));
         }
 
         public void ConfirmTransactions(int accountId, IEnumerable<int> transactionids)
@@ -44,7 +49,7 @@ namespace Picassi.Core.Accounts.Services.Transactions
 
         }
 
-        private Transaction CreateTransaction(int baseAccountId, TransactionUploadModel transaction)
+        private Transaction CreateTransaction(int baseAccountId, TransactionUploadModel transaction, int ordinal)
         {
             return new Transaction
             {
@@ -54,7 +59,8 @@ namespace Picassi.Core.Accounts.Services.Transactions
                 CategoryId = _dbContext.Categories.SingleOrDefault(x => x.Name == transaction.CategoryName)?.Id,
                 FromId = (transaction.Amount < 0 || transaction.Amount == 0 && transaction.Debit > 0) ? baseAccountId : (int?)null,
                 ToId = (transaction.Amount > 0 || transaction.Amount == 0 && transaction.Credit > 0) ? baseAccountId : (int?)null,
-                Status = TransactionStatus.Provisional
+                Status = TransactionStatus.Provisional,
+                Ordinal = ordinal
             };
         }
 
