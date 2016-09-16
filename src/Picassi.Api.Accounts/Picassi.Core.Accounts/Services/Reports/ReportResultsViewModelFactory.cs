@@ -8,12 +8,12 @@ namespace Picassi.Core.Accounts.Services.Reports
     public interface IReportResultsViewModelFactory
     {
         ReportResultsViewModel BuildViewModel(int reportId, IEnumerable<ReportGroup> reportGroups,
-            IEnumerable<ReportResultsLineViewModel> transactionSummaries);
+            IEnumerable<TransactionCategoryGroupingViewModel> transactionSummaries);
     }
 
     public class ReportResultsViewModelFactory : IReportResultsViewModelFactory
     {
-        public ReportResultsViewModel BuildViewModel(int reportId, IEnumerable<ReportGroup> reportGroups, IEnumerable<ReportResultsLineViewModel> transactionSummaries)
+        public ReportResultsViewModel BuildViewModel(int reportId, IEnumerable<ReportGroup> reportGroups, IEnumerable<TransactionCategoryGroupingViewModel> transactionSummaries)
         {
             return new ReportResultsViewModel
             {
@@ -25,7 +25,7 @@ namespace Picassi.Core.Accounts.Services.Reports
                         ReportLines = @group.Categories
                             .OrderBy(category => category.Ordinal)
                             .Select(category => transactionSummaries.FirstOrDefault(x => x.CategoryId == category.CategoryId) 
-                                ?? new ReportResultsLineViewModel
+                                ?? new TransactionCategoryGroupingViewModel
                                 {
                                     CategoryId = category.CategoryId,
                                     Name = category.Category.Name,

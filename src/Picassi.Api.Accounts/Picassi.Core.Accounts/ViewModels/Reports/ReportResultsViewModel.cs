@@ -16,10 +16,10 @@ namespace Picassi.Core.Accounts.ViewModels.Reports
 
         public decimal Total { get { return ReportLines.Sum(x => x.Amount);  } }
 
-        public IEnumerable<ReportResultsLineViewModel> ReportLines { get; set; }
+        public IEnumerable<TransactionCategoryGroupingViewModel> ReportLines { get; set; }
     }
 
-    public class ReportResultsLineViewModel
+    public class TransactionCategoryGroupingViewModel
     {
         public int CategoryId { get; set; }
 

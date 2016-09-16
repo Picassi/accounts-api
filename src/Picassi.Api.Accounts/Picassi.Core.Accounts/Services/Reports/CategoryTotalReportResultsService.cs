@@ -25,7 +25,7 @@ namespace Picassi.Core.Accounts.Services.Reports
         public ReportResultsViewModel GetResults(int id, ReportResultsQueryModel query)
         {
             var reportGroups = _reportGroupsProvider.GetReportGroups(id);
-            var transactionSummaries = _transactionTotalSummariesProvider.GetTransactionSummaries(id, query);
+            var transactionSummaries = _transactionTotalSummariesProvider.GetTransactionSummariesForReport(id, query);
             return _reportResultsViewModelFactory.BuildViewModel(id, reportGroups, transactionSummaries);
         }
     }

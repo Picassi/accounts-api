@@ -8,7 +8,7 @@ namespace Picassi.Core.Accounts.Services.Reports
 {
     public interface ITransactionAverageSummariesProvider
     {
-        IEnumerable<ReportResultsLineViewModel> GetTransactionSummaries(int id, ReportResultsQueryModel query);
+        IEnumerable<TransactionCategoryGroupingViewModel> GetTransactionSummaries(int id, ReportResultsQueryModel query);
     }
 
     public class TransactionAverageSummariesProvider : ITransactionAverageSummariesProvider
@@ -22,14 +22,14 @@ namespace Picassi.Core.Accounts.Services.Reports
             _periodCalculator = periodCalculator;
         }
 
-        public IEnumerable<ReportResultsLineViewModel> GetTransactionSummaries(int id, ReportResultsQueryModel query)
+        public IEnumerable<TransactionCategoryGroupingViewModel> GetTransactionSummaries(int id, ReportResultsQueryModel query)
         {
             var definition = new PeriodDefinition {  Quantity = 1, Type = query.Period };
             var range = new DateRange { Start = query.DateFrom, End = query.DateTo };
             var divider = _periodCalculator.GetNumberOfPeriods(definition, range);
 
-            return _transactionTotalSummariesProvider.GetTransactionSummaries(id, query)
-                .Select(summary => new ReportResultsLineViewModel
+            return _transactionTotalSummariesProvider.GetTransactionSummariesForReport(id, query)
+                .Select(summary => new TransactionCategoryGroupingViewModel
                 {
                     CategoryId = summary.CategoryId,
                     Name = summary.Name,

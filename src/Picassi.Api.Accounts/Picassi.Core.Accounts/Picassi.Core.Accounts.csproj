@@ -89,6 +89,10 @@
     <Compile Include="Services\Accounts\AccountStatusChecker.cs" />
     <Compile Include="Reports\AccountSummaryViewModelFactory.cs" />
     <Compile Include="Reports\CategorySummaryService.cs" />
+    <Compile Include="Services\Categories\CategoryTotalSummaryResultsService.cs" />
+    <Compile Include="Services\Categories\CategoryAverageSummaryResultsService.cs" />
+    <Compile Include="Services\Categories\ICategorySummaryService.cs" />
+    <Compile Include="Services\Categories\CategorySummaryServiceProvider.cs" />
     <Compile Include="Services\Meta\MetaDataService.cs" />
     <Compile Include="Services\Reports\ReportGroupsProvider.cs" />
     <Compile Include="Services\Reports\CategoryTotalReportResultsService.cs" />
@@ -101,6 +105,7 @@
     <Compile Include="Services\Reports\TransactionAverageSummariesProvider.cs" />
     <Compile Include="Services\Transactions\TransactionUploadService.cs" />
     <Compile Include="Services\Reports\TransactionTotalSummariesProvider.cs" />
+    <Compile Include="Services\Transactions\TransactionUtils.cs" />
     <Compile Include="Time\DateRange.cs" />
     <Compile Include="Time\PeriodCalculator.cs" />
     <Compile Include="Time\PeriodDefinition.cs" />
@@ -153,6 +158,7 @@
     <Compile Include="ViewModels\Transactions\AccountTransactionsQueryModel.cs" />
     <Compile Include="ViewModels\Transactions\TransactionsQueryModel.cs" />
     <Compile Include="ViewModels\Transactions\TransactionsResultsViewModel.cs" />
+    <Compile Include="ViewModels\Transactions\TransactionSummaryViewModel.cs" />
     <Compile Include="ViewModels\Transactions\TransactionUploadModel.cs" />
     <Compile Include="ViewModels\Transactions\AccountTransactionViewModel.cs" />
     <Compile Include="ViewModels\Transactions\TransactionViewModel.cs" />
