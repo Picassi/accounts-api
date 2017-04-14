@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Picassi.Data.Accounts", "Picassi.Data.Accounts\Picassi.Data.Accounts.csproj", "{F86E6DB3-CC2B-40F6-95D0-D1E77CD0B3D2}"
 EndProject
@@ -11,15 +11,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Picassi.Api.Accounts.Tests"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Picassi.Core.Accounts.Tests", "Picassi.Core.Accounts.Tests\Picassi.Core.Accounts.Tests.csproj", "{AAFC0A72-8292-489B-83A1-490D35FE7C62}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{C8C97346-668F-491E-A343-823723120911}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Picassi.Api.Accounts", "Picassi.Api.Accounts\Picassi.Api.Accounts.csproj", "{DE37A1FF-3F62-463A-9C49-0000E5155D9E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{E807A594-F4BB-4BE9-93CD-59BC607718C6}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Picassi.Common.Api", "Picassi.Common.Api\Picassi.Common.Api.csproj", "{79DE28BB-796E-4C8D-9D75-F70F6C386B57}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Picassi.Common.Data", "Picassi.Common.Data\Picassi.Common.Data.csproj", "{B5347A7A-FBA1-4923-9AA1-E216FDF1C0CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -80,26 +74,6 @@ Global
 		{DE37A1FF-3F62-463A-9C49-0000E5155D9E}.Staging|Any CPU.Build.0 = Staging|Any CPU
 		{DE37A1FF-3F62-463A-9C49-0000E5155D9E}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{DE37A1FF-3F62-463A-9C49-0000E5155D9E}.Test|Any CPU.Build.0 = Test|Any CPU
-		{79DE28BB-796E-4C8D-9D75-F70F6C386B57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{79DE28BB-796E-4C8D-9D75-F70F6C386B57}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{79DE28BB-796E-4C8D-9D75-F70F6C386B57}.Local|Any CPU.ActiveCfg = Local|Any CPU
-		{79DE28BB-796E-4C8D-9D75-F70F6C386B57}.Local|Any CPU.Build.0 = Local|Any CPU
-		{79DE28BB-796E-4C8D-9D75-F70F6C386B57}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{79DE28BB-796E-4C8D-9D75-F70F6C386B57}.Release|Any CPU.Build.0 = Release|Any CPU
-		{79DE28BB-796E-4C8D-9D75-F70F6C386B57}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
-		{79DE28BB-796E-4C8D-9D75-F70F6C386B57}.Staging|Any CPU.Build.0 = Staging|Any CPU
-		{79DE28BB-796E-4C8D-9D75-F70F6C386B57}.Test|Any CPU.ActiveCfg = Test|Any CPU
-		{79DE28BB-796E-4C8D-9D75-F70F6C386B57}.Test|Any CPU.Build.0 = Test|Any CPU
-		{B5347A7A-FBA1-4923-9AA1-E216FDF1C0CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B5347A7A-FBA1-4923-9AA1-E216FDF1C0CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B5347A7A-FBA1-4923-9AA1-E216FDF1C0CD}.Local|Any CPU.ActiveCfg = Local|Any CPU
-		{B5347A7A-FBA1-4923-9AA1-E216FDF1C0CD}.Local|Any CPU.Build.0 = Local|Any CPU
-		{B5347A7A-FBA1-4923-9AA1-E216FDF1C0CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B5347A7A-FBA1-4923-9AA1-E216FDF1C0CD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B5347A7A-FBA1-4923-9AA1-E216FDF1C0CD}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
-		{B5347A7A-FBA1-4923-9AA1-E216FDF1C0CD}.Staging|Any CPU.Build.0 = Staging|Any CPU
-		{B5347A7A-FBA1-4923-9AA1-E216FDF1C0CD}.Test|Any CPU.ActiveCfg = Test|Any CPU
-		{B5347A7A-FBA1-4923-9AA1-E216FDF1C0CD}.Test|Any CPU.Build.0 = Test|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -107,7 +81,5 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{3A4DFE41-BC06-48AA-8B7F-271D8009037F} = {E807A594-F4BB-4BE9-93CD-59BC607718C6}
 		{AAFC0A72-8292-489B-83A1-490D35FE7C62} = {E807A594-F4BB-4BE9-93CD-59BC607718C6}
-		{79DE28BB-796E-4C8D-9D75-F70F6C386B57} = {C8C97346-668F-491E-A343-823723120911}
-		{B5347A7A-FBA1-4923-9AA1-E216FDF1C0CD} = {C8C97346-668F-491E-A343-823723120911}
 	EndGlobalSection
 EndGlobal

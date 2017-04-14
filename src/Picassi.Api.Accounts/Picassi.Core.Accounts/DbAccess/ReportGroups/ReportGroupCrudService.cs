@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
-using Picassi.Common.Data.Services;
 using Picassi.Core.Accounts.ViewModels.ReportGroups;
 using Picassi.Data.Accounts.Database;
 using Picassi.Data.Accounts.Models;
+using Picassi.Utils.Data.Services;
 
 namespace Picassi.Core.Accounts.DbAccess.ReportGroups
 {

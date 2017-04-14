@@ -1,6 +1,6 @@
 ﻿using System.Data.Entity;
-using Picassi.Common.Data;
 using Picassi.Data.Accounts.Models;
+using Picassi.Utils.Data;
 
 namespace Picassi.Data.Accounts.Database
 {

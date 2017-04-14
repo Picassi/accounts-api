@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using Picassi.Common.Data.Extensions;
 using Picassi.Core.Accounts.ViewModels.Categories;
 using Picassi.Data.Accounts.Database;
 using Picassi.Data.Accounts.Models;
+using Picassi.Utils.Data.Extensions;
 
 namespace Picassi.Core.Accounts.DbAccess.Categories
 {

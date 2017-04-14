@@ -51,6 +51,10 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Picassi.Utils.Data, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Picassi.Utils.Data.1.0.0.24\lib\net452\Picassi.Utils.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -168,10 +172,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Picassi.Common.Data\Picassi.Common.Data.csproj">
-      <Project>{B5347A7A-FBA1-4923-9AA1-E216FDF1C0CD}</Project>
-      <Name>Picassi.Common.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Picassi.Data.Accounts\Picassi.Data.Accounts.csproj">
       <Project>{F86E6DB3-CC2B-40F6-95D0-D1E77CD0B3D2}</Project>
       <Name>Picassi.Data.Accounts</Name>

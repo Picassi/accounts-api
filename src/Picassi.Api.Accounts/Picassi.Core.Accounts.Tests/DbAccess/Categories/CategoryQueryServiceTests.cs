@@ -2,13 +2,13 @@
 using System.Reflection;
 using FakeItEasy;
 using NUnit.Framework;
-using Picassi.Common.Api.Helpers;
 using Picassi.Core.Accounts.DbAccess.Categories;
 using Picassi.Core.Accounts.Tests.Dummies;
 using Picassi.Core.Accounts.Tests.Helpers;
 using Picassi.Core.Accounts.ViewModels.Categories;
 using Picassi.Data.Accounts.Database;
 using Picassi.Data.Accounts.Models;
+using Picassi.Utils.Api.Helpers;
 
 namespace Picassi.Core.Accounts.Tests.DbAccess.Categories
 {

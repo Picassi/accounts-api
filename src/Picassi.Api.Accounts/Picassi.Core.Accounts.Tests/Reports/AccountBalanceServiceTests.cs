@@ -26,7 +26,7 @@ namespace Picassi.Core.Accounts.Tests.Reports
             snapshotQueryService = A.Fake<ISnapshotQueryService>();
             transactionQueryService = A.Fake<ITransactionQueryService>();
             accountsDataContext = A.Fake<IAccountsDataContext>();
-            balanceService = new AccountBalanceService(transactionQueryService, accountsDataContext);
+            balanceService = new AccountBalanceService(accountsDataContext);
         }
 
 

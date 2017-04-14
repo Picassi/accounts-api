@@ -1,9 +1,0 @@
-[submodule "auth-server"]
-	path = auth-server
-	url = https://github.com/Picassi/auth-server.git
-[submodule "src/Picassi.Api.Accounts/Picassi.Common.Api"]
-	path = src/Picassi.Api.Accounts/Picassi.Common.Api
-	url = https://github.com/Picassi/common-api.git
-[submodule "src/Picassi.Api.Accounts/Picassi.Common.Data"]
-	path = src/Picassi.Api.Accounts/Picassi.Common.Data
-	url = https://github.com/Picassi/common-data.git

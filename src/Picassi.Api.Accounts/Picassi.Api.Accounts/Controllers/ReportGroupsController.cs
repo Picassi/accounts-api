@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Cors;
-using Picassi.Common.Api.Attributes;
 using Picassi.Core.Accounts.DbAccess.ReportGroups;
 using Picassi.Core.Accounts.ViewModels.ReportGroups;
+using Picassi.Utils.Api.Attributes;
 
 namespace Picassi.Api.Accounts.Controllers
 {

@@ -6,8 +6,8 @@ using AutoMapper;
 using Picassi.Core.Accounts.ViewModels.Transactions;
 using Picassi.Data.Accounts.Database;
 using Picassi.Data.Accounts.Models;
-using Picassi.Common.Data.Extensions;
 using Picassi.Core.Accounts.ViewModels;
+using Picassi.Utils.Data.Extensions;
 
 namespace Picassi.Core.Accounts.DbAccess.Transactions
 {

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Picassi.Common.Data;
+using Picassi.Utils.Data;
 
 namespace Picassi.Data.Accounts.Models
 {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Picassi.Common.Data;
 using Picassi.Data.Accounts.Enums;
+using Picassi.Utils.Data;
 
 namespace Picassi.Data.Accounts.Models
 {
