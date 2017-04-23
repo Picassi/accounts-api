@@ -2,6 +2,8 @@ using System.Reflection;
 using System.Web.Http;
 using Autofac;
 using Owin;
+using Picassi.Core.Accounts.ViewModels.Accounts;
+using Picassi.Data.Accounts.Models;
 using Picassi.Utils.Api.Authorization;
 using Picassi.Utils.Api.Filters;
 using Picassi.Utils.Api.Helpers;
@@ -18,6 +20,8 @@ namespace Picassi.Api.Accounts
             var dependentAssemblies = new[]
             {
                 webApiAssembly,
+                Assembly.GetAssembly(typeof(AccountAutomapperProfile)),
+                Assembly.GetAssembly(typeof(Account)),
                 Assembly.GetAssembly(typeof(IAuthenticationConfigurator))
             };
 
