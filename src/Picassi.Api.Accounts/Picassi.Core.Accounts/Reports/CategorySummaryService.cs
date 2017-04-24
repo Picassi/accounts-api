@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 using System.Linq;
-using Picassi.Core.Accounts.DbAccess.Categories;
-using Picassi.Core.Accounts.Enums;
-using Picassi.Core.Accounts.Services.Categories;
-using Picassi.Core.Accounts.Time;
-using Picassi.Core.Accounts.Time.Periods;
 using Picassi.Core.Accounts.ViewModels.Categories;
+using Picassi.Data.Accounts.Database;
 
 namespace Picassi.Core.Accounts.Reports
 {
@@ -17,61 +15,49 @@ namespace Picassi.Core.Accounts.Reports
 
     public class CategorySummaryService : ICategorySummaryService
     {
-        private readonly ICategoryQueryService _categoryQueryService;
-        private readonly ICategorySummaryServiceProvider _summaryServiceProvider;
+        private readonly IAccountsDataContext _dataContext;
 
-        public CategorySummaryService(ICategoryQueryService categoryQueryService, ICategorySummaryServiceProvider summaryServiceProvider)
+        public CategorySummaryService(IAccountsDataContext dataContext)
         {
-            _categoryQueryService = categoryQueryService;
-            _summaryServiceProvider = summaryServiceProvider;
+            _dataContext = dataContext;
         }
 
         public CategorySummaryResultsViewModel GetCategorySummaries(CategoriesQueryModel query)
         {
-            var lines = GetCategorySummaryResults(query);
-            return new CategorySummaryResultsViewModel
-            {
-                TotalLines = lines.Count,
-                Total = lines.Where(x => x.Spend != null).Sum(x => (decimal)x.Spend),
-                TotalTransactions = lines.Sum(x => x.TransactionCount),
-                Lines = lines
-            };
+            var results = GetCategoryByAccountSummaries(query);
+            var grouped = GroupByFilteredAccounts(query, results);
+            var lines = CompileSummaries(grouped);
+            return new CategorySummaryResultsViewModel(lines.ToList());
         }
 
-        private List<CategorySummaryViewModel> GetCategorySummaryResults(CategoriesQueryModel query)
+        private DbRawSqlQuery<CategorySummaryResult> GetCategoryByAccountSummaries(CategoriesQueryModel query)
         {
-            var service = _summaryServiceProvider.GetService(query.ReportType);
-            var categoriesPlusUncategorised = GetCategories(query);
-            var dateRange = query.DateFrom != null && query.DateTo != null
-                ? new DateRange((DateTime) query.DateFrom, (DateTime) query.DateTo)
-                : null;
-            var lines = categoriesPlusUncategorised.Select(category =>
-                service.GetResults(BuildQueryModel(category, query.AccountIds, query.ReportType, query.Frequency, dateRange)))
-                .ToList();
+            var dateFrom = query.DateFrom ?? DateTime.UtcNow.AddMonths(-1);
+            var dateTo = query.DateTo ?? DateTime.UtcNow;
+            var startDate = new SqlParameter("@StartDate", dateFrom);
+            var endDate = new SqlParameter("@EndDate", dateTo);
+            return _dataContext.Query<CategorySummaryResult>(
+                "exec accounts.GetTransactionTotals @StartDate , @EndDate", startDate, endDate);
+        }
+
+        private static IEnumerable<CategoryAccountSummaryResult> GroupByFilteredAccounts(CategoriesQueryModel query, 
+            DbRawSqlQuery<CategorySummaryResult> results)
+        {
+            var filtered = query.AllAccounts
+                ? results
+                : results.Where(r => query.AccountIds != null && query.AccountIds.Contains(r.AccountId));
+
+            var grouped = filtered.GroupBy(r => new { r.CategoryId, r.CategoryName })
+                .Select(r => new CategoryAccountSummaryResult(r.Key.CategoryId, r.Key.CategoryName, r.ToList()));
+
+            return grouped;
+        }
+
+        private static IEnumerable<CategorySummaryViewModel> CompileSummaries(IEnumerable<CategoryAccountSummaryResult> grouped)
+        {
+            var lines = grouped.GroupBy(r => new { r.CategoryId, r.CategoryName })
+                .Select(l => new CategorySummaryViewModel(l.Key.CategoryId, l.Key.CategoryName, l.ToList()));
             return lines;
-        }
-
-        private IEnumerable<CategoryViewModel> GetCategories(CategoriesQueryModel query)
-        {
-            var categories = _categoryQueryService.Query(query);
-            return categories.Union(new List<CategoryViewModel> { null }).ToList();
-        }
-
-        private CategorySummaryQueryModel BuildQueryModel(
-            CategoryViewModel category,
-            IEnumerable<int> referenceAccountIds, 
-            CategorySummaryReportType reportType,
-            PeriodType periodType, 
-            DateRange range)
-        {
-            return new CategorySummaryQueryModel
-            {
-                AccountIds = referenceAccountIds?.ToList() ?? new List<int>(),
-                ReportType = reportType,
-                AverageSpendPeriod = new PeriodDefinition {Quantity = 1, Type = periodType},
-                Category = category,
-                DateRange = range
-            };
         }
     }
 }

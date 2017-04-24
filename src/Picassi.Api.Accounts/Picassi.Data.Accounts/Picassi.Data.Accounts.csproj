@@ -68,6 +68,8 @@
   <ItemGroup>
     <Compile Include="Database\AccountsDataContext.cs" />
     <Compile Include="Database\Migrator.cs" />
+    <Compile Include="Database\StoreProcedures\GetTransactionTotals.cs" />
+    <Compile Include="Database\StoreProcedures\IStoredProcedure.cs" />
     <Compile Include="Enums\ReportSource.cs" />
     <Compile Include="Enums\ReportType.cs" />
     <Compile Include="Migrations\201605021541458_InitialCreate.cs" />
@@ -89,6 +91,10 @@
     <Compile Include="Migrations\201609131551320_AddOrdinalToTransaction.cs" />
     <Compile Include="Migrations\201609131551320_AddOrdinalToTransaction.Designer.cs">
       <DependentUpon>201609131551320_AddOrdinalToTransaction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704242142040_AddTransactionToolsStoredProc.cs" />
+    <Compile Include="Migrations\201704242142040_AddTransactionToolsStoredProc.Designer.cs">
+      <DependentUpon>201704242142040_AddTransactionToolsStoredProc.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
@@ -121,6 +127,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609131551320_AddOrdinalToTransaction.resx">
       <DependentUpon>201609131551320_AddOrdinalToTransaction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704242142040_AddTransactionToolsStoredProc.resx">
+      <DependentUpon>201704242142040_AddTransactionToolsStoredProc.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

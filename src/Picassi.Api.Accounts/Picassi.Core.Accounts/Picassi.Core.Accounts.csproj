@@ -93,10 +93,6 @@
     <Compile Include="Services\Accounts\AccountStatusChecker.cs" />
     <Compile Include="Reports\AccountSummaryViewModelFactory.cs" />
     <Compile Include="Reports\CategorySummaryService.cs" />
-    <Compile Include="Services\Categories\CategoryTotalSummaryResultsService.cs" />
-    <Compile Include="Services\Categories\CategoryAverageSummaryResultsService.cs" />
-    <Compile Include="Services\Categories\ICategorySummaryService.cs" />
-    <Compile Include="Services\Categories\CategorySummaryServiceProvider.cs" />
     <Compile Include="Services\Meta\MetaDataService.cs" />
     <Compile Include="Services\Reports\ReportGroupsProvider.cs" />
     <Compile Include="Services\Reports\CategoryTotalReportResultsService.cs" />
@@ -128,12 +124,13 @@
     <Compile Include="ViewModels\Accounts\AccountsStatusViewModel.cs" />
     <Compile Include="ViewModels\Accounts\AccountSummaryViewModel.cs" />
     <Compile Include="ViewModels\Accounts\AccountViewModel.cs" />
+    <Compile Include="ViewModels\Categories\CategoryAccountSummaryResult.cs" />
     <Compile Include="ViewModels\Categories\CategorySummaryQueryModel.cs" />
     <Compile Include="ViewModels\Categories\CategoriesQueryModel.cs" />
     <Compile Include="ViewModels\Categories\CategoryAutomapperProfile.cs" />
+    <Compile Include="ViewModels\Categories\CategorySummaryResult.cs" />
     <Compile Include="ViewModels\Categories\CategorySummaryResultsViewModel.cs" />
     <Compile Include="ViewModels\Categories\CategorySummaryViewModel.cs" />
-    <Compile Include="ViewModels\Categories\CategorySummaryViewModelFactory.cs" />
     <Compile Include="ViewModels\Categories\CategoryViewModel.cs" />
     <Compile Include="ViewModels\Meta\MetaDataViewModel.cs" />
     <Compile Include="ViewModels\ReportGroups\ReportGroupAutomapperProfile.cs" />
