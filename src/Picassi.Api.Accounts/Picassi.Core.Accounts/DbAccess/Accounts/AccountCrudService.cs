@@ -41,7 +41,9 @@ namespace Picassi.Core.Accounts.DbAccess.Accounts
         public AccountViewModel UpdateAccount(int id, AccountViewModel account)
         {
             var dataModel = _dbContext.Accounts.Find(id);
-            Mapper.Map(account, dataModel);
+            if (dataModel == null) throw new InvalidOperationException($"Could not find account with id {id}");
+
+            dataModel.Name = account.Name;
             _dbContext.SaveChanges();
             return Mapper.Map<AccountViewModel>(dataModel);
         }

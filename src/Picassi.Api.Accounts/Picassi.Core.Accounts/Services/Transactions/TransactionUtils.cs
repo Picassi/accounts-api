@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Picassi.Core.Accounts.Time;
-using Picassi.Core.Accounts.ViewModels.Reports;
 using Picassi.Core.Accounts.ViewModels.Transactions;
 using Picassi.Data.Accounts.Models;
 
@@ -10,17 +8,6 @@ namespace Picassi.Core.Accounts.Services.Transactions
 {
     public static class TransactionUtils
     {
-        public static IEnumerable<TransactionCategoryGroupingViewModel> GroupTransactionsByCategory(IQueryable<Transaction> transactions, ICollection<int> accounts = null)
-        {
-            return transactions.GroupBy(transaction => new { transaction.Category.Id, transaction.Category.Name })
-                .Select(group => new TransactionCategoryGroupingViewModel
-                {
-                    CategoryId = @group.Key.Id,
-                    Name = @group.Key.Name,
-                    Amount = GetTransactionTotal(transactions, accounts)
-                }).ToList();
-        }
-
         public static TransactionSummaryViewModel GetTransactionsForAccountsAndDateRange(IQueryable<Transaction> transactions, ICollection<int> accountIds, DateRange range)
         {
             if (range != null)

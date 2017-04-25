@@ -96,15 +96,13 @@
     <Compile Include="Migrations\201704242142040_AddTransactionToolsStoredProc.Designer.cs">
       <DependentUpon>201704242142040_AddTransactionToolsStoredProc.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201704252004110_RemoveBloatFromDatabase.cs" />
+    <Compile Include="Migrations\201704252004110_RemoveBloatFromDatabase.Designer.cs">
+      <DependentUpon>201704252004110_RemoveBloatFromDatabase.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
-    <Compile Include="Models\Report.cs" />
-    <Compile Include="Models\ReportGroupReport.cs" />
-    <Compile Include="Models\ReportGroupCategory.cs" />
-    <Compile Include="Models\Tag.cs" />
-    <Compile Include="Models\ReportGroup.cs" />
     <Compile Include="Models\Category.cs" />
-    <Compile Include="Models\Snapshot.cs" />
     <Compile Include="Models\Transaction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -130,6 +128,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201704242142040_AddTransactionToolsStoredProc.resx">
       <DependentUpon>201704242142040_AddTransactionToolsStoredProc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704252004110_RemoveBloatFromDatabase.resx">
+      <DependentUpon>201704252004110_RemoveBloatFromDatabase.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
