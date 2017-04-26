@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using Picassi.Core.Accounts.DbAccess.Categories;
@@ -40,9 +42,14 @@ namespace Picassi.Api.Accounts.Controllers
 
         [HttpPost]
         [Route("categories")]
-        public CategoryViewModel CreateCategory([FromBody]CategoryViewModel CategoryViewModel)
+        public CategoryViewModel CreateCategory([FromBody]CategoryViewModel model)
         {
-            return _crudService.CreateCategory(CategoryViewModel);
+            if (string.IsNullOrEmpty(model.Name))
+            {
+                throw new InvalidOperationException("Cannot create category with empty name");
+            }
+            var existingCategory = _queryService.Query(new CategoriesQueryModel { Name = model.Name }).FirstOrDefault();
+            return existingCategory ?? _crudService.CreateCategory(model);
         }
 
         [HttpGet]

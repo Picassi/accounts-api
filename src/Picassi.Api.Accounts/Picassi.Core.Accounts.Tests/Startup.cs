@@ -3,14 +3,16 @@ using System.Web.Http;
 using Autofac;
 using Newtonsoft.Json;
 using Owin;
-using Picassi.Core.Accounts.ViewModels.Accounts;
-using Picassi.Data.Accounts.Models;
+using Picassi.Core.Accounts.DbAccess.Accounts;
+using Picassi.Data.Accounts.Database;
 using Picassi.Utils.Api.Authorization;
 using Picassi.Utils.Api.Filters;
 using Picassi.Utils.Api.Helpers;
 using Picassi.Utils.Api.Init;
+using Picassi.Utils.Data;
+using Module = Autofac.Module;
 
-namespace Picassi.Api.Accounts
+namespace Picassi.Core.Accounts.Tests
 {
     public class Startup
     {
@@ -21,12 +23,10 @@ namespace Picassi.Api.Accounts
             var dependentAssemblies = new[]
             {
                 webApiAssembly,
-                Assembly.GetAssembly(typeof(AccountAutomapperProfile)),
-                Assembly.GetAssembly(typeof(Account)),
                 Assembly.GetAssembly(typeof(IAuthenticationConfigurator))
             };
 
-            AutofacConfig.BuildContainer(config, webApiAssembly, new ApiModule());            
+            AutofacConfig.BuildContainer(config, webApiAssembly, new TestApiModule());            
 
             using (var scope = AutofacConfig.Container.BeginLifetimeScope())
             {
@@ -41,6 +41,17 @@ namespace Picassi.Api.Accounts
             config.Filters.Add(new ApiExceptionHandlingAttribute());
 
             app.UseWebApi(config);
+        }
+    }
+
+    public class TestApiModule : Module
+    {
+        protected override void Load(ContainerBuilder builder)
+        {
+            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(IDbContext))).AsImplementedInterfaces();
+            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(IAccountsDataContext))).AsImplementedInterfaces();
+            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(IAccountCrudService))).AsImplementedInterfaces();
+            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(ISwaggerConfig))).AsImplementedInterfaces();
         }
     }
 }

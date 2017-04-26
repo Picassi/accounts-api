@@ -57,7 +57,8 @@ namespace Picassi.Core.Accounts.DbAccess.Transactions
 
             if (dataModel.Balance != existingBalance)
             {                
-                _accountBalanceService.SetTransactionBalances(transaction.AccountId, transaction.Date, dataModel, transaction.Balance - transaction.Amount);
+                _accountBalanceService.SetTransactionBalances(transaction.AccountId, transaction.Date, 
+                    dataModel, transaction.Balance - transaction.Amount, transaction.Balance);
             }
 
             return ConvertToViewModel(accountId, dataModel);

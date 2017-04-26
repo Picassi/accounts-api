@@ -11,7 +11,7 @@ namespace Picassi.Core.Accounts.Services.Transactions
 {
     public interface ITransactionUploadService
     {
-        void AddTransactionsToAccount(int accountId, IEnumerable<TransactionUploadModel> transactions);
+        void AddTransactionsToAccount(int accountId, ICollection<TransactionUploadModel> transactions);
         void ConfirmTransactions(int accountId, IEnumerable<int> transactionids);
     }
 
@@ -26,12 +26,17 @@ namespace Picassi.Core.Accounts.Services.Transactions
             _balanceService = balanceService;
         }
 
-        public void AddTransactionsToAccount(int accountId, IEnumerable<TransactionUploadModel> transactions)
+        public void AddTransactionsToAccount(int accountId, ICollection<TransactionUploadModel> transactions)
         {
             var maxOrdinal = _dbContext.Transactions.Any()
                 ? _dbContext.Transactions.Max(transaction => transaction.Ordinal)
                 : 0;
-            var transactionModels = transactions.Select(x => CreateTransaction(accountId, x, ++maxOrdinal)).Where(x => x != null).ToList();
+
+            var transactionModels = transactions
+                .OrderBy(x => x.Ordinal)
+                .Select(transaction => CreateTransaction(accountId, transaction, ++maxOrdinal))
+                .ToList();
+
             _dbContext.Transactions.AddRange(transactionModels);
             _dbContext.SaveChanges();
             _balanceService.SetTransactionBalances(accountId, transactionModels.Min(transaction => transaction.Date));

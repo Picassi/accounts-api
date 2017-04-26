@@ -10,7 +10,7 @@ namespace Picassi.Core.Accounts.Reports
     {
         decimal GetAccountBalance(int accountId, DateTime date);
         void SetTransactionBalances(int accountId, DateTime date);
-        void SetTransactionBalances(int accountId, DateTime date, Transaction transaction, decimal initialBalance);
+        void SetTransactionBalances(int accountId, DateTime date, Transaction transaction, decimal initialBalance, decimal balanceAfter);
         
     }
 
@@ -30,15 +30,20 @@ namespace Picassi.Core.Accounts.Reports
 
         public void SetTransactionBalances(int accountId, DateTime date)
         {
-            var transaction = GetTransactionForAccountBalance(accountId, date);            
-            SetTransactionBalances(accountId, date, transaction, transaction?.Balance ?? 0);
+            var transaction = GetTransactionForAccountBalance(accountId, date);
+            var initialBalance = transaction?.Balance ?? 0;
+            var balanceAfter = transaction == null ? 0 : 
+                (transaction.FromId == accountId
+                    ? initialBalance - transaction.Amount
+                    : initialBalance + transaction.Amount);
+            SetTransactionBalances(accountId, date, transaction, initialBalance, balanceAfter);
         }
 
-        public void SetTransactionBalances(int accountId, DateTime date, Transaction transaction, decimal initialBalance)
+        public void SetTransactionBalances(int accountId, DateTime date, Transaction transaction, decimal initialBalance, decimal balanceAfter)
         {
             if (transaction == null) return;
 
-            SetBalanceForward(GetTransactionsAfterTransaction(accountId, transaction).ToList(), accountId, initialBalance);
+            SetBalanceForward(GetTransactionsAfterTransaction(accountId, transaction).ToList(), accountId, balanceAfter);
             SetBalanceBackwards(GetTransactionBeforeTransaction(accountId, transaction).ToList(), accountId, initialBalance);
 
             _dataContext.SaveChanges();
