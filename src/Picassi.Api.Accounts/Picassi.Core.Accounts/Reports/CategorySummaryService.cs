@@ -47,7 +47,10 @@ namespace Picassi.Core.Accounts.Reports
                 ? results
                 : results.Where(r => query.AccountIds != null && query.AccountIds.Contains(r.AccountId));
 
-            var grouped = filtered.GroupBy(r => new { r.CategoryId, r.CategoryName })
+            var filteredList = filtered.ToList();
+
+            var grouped = filteredList
+                .GroupBy(r => new { r.CategoryId, r.CategoryName })
                 .Select(r => new CategoryAccountSummaryResult(r.Key.CategoryId, r.Key.CategoryName, r.ToList()));
 
             return grouped;

@@ -59,6 +59,8 @@ left join
 
 )	as agg
 ON		c.id = agg.CategoryId
+AND		a.id = agg.AccountId
+
 
 END
 
