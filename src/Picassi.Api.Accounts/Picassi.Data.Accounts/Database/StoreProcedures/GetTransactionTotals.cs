@@ -48,7 +48,7 @@ left join
 
 	union
 
-	select		t.ToId as AccountId, c.id as CategoryId, Count(*) as total, SUM(-amount) as amount
+	select		t.ToId as AccountId, c.id as CategoryId, Count(*) as total, SUM(amount) as amount
 	from		accounts.Categories c
 	left join	accounts.Transactions t
 	on			t.CategoryId = c.Id
