@@ -10,9 +10,13 @@ namespace Picassi.Core.Accounts.DAL.Entities
 
         public int? BudgetId { get; set; }
 
+        public virtual Budget Budget { get; set; }
+
         public virtual ICollection<Transaction> Transactions { get; set; }
 
-        public virtual Budget Budget { get; set; }
+        public virtual ICollection<ScheduledTransaction> ScheduledTransactions { get; set; }
+
+        public virtual ICollection<ModelledTransaction> ModelledTransactions { get; set; }
 
     }
 }

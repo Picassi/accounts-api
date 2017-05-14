@@ -49,8 +49,8 @@ namespace Picassi.Core.Accounts.Services.Transactions
                 Date = DateTime.ParseExact(transaction.Date, "dd/MM/yyyy", CultureInfo.CurrentCulture),
                 Description = transaction.Description,
                 CategoryId = _dbContext.Categories.SingleOrDefault(x => x.Name == transaction.CategoryName)?.Id,
-                FromId = (transaction.Amount < 0 || transaction.Amount == 0 && transaction.Debit > 0) ? baseAccountId : (int?)null,
-                ToId = (transaction.Amount > 0 || transaction.Amount == 0 && transaction.Credit > 0) ? baseAccountId : (int?)null,
+                AccountId = baseAccountId,
+                ToId = null,
                 Ordinal = ordinal
             };
         }

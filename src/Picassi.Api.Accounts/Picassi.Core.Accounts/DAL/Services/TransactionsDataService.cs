@@ -25,7 +25,7 @@ namespace Picassi.Core.Accounts.DAL.Services
 
         public IEnumerable<TransactionModel> Query(SimpleTransactionQueryModel query)
         {
-            var transactions = DbContext.Transactions.Where(x => x.FromId == query.AccountId || x.ToId == query.AccountId);
+            var transactions = DbContext.Transactions.Where(x => x.AccountId == query.AccountId);
             if (query.DateFrom != null) transactions = transactions.Where(x => x.Date >= query.DateFrom);
             if (query.DateTo != null) transactions = transactions.Where(x => x.Date < query.DateTo);
             return Mapper.Map<IEnumerable<TransactionModel>>(transactions);
@@ -74,10 +74,9 @@ namespace Picassi.Core.Accounts.DAL.Services
 
         private static IQueryable<Transaction> FilterAccounts(IQueryable<Transaction> transactions, int[] accountIds)
         {
-            return accountIds == null || accountIds.Length == 0 ? transactions :
-                transactions.Where(x =>
-                    (x.FromId != null && accountIds.Contains((int)x.FromId)) ||
-                    (x.ToId != null && accountIds.Contains((int)x.ToId)));
+            return accountIds == null || accountIds.Length == 0
+                ? transactions
+                : transactions.Where(x => accountIds.Contains((int) x.AccountId));
         }
 
         private static IQueryable<Transaction> FilterCategories(IQueryable<Transaction> transactions, bool showAllCategories, bool showUncategorised, int[] categoryIds)

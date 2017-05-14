@@ -14,6 +14,7 @@ namespace Picassi.Core.Accounts.DAL
         DbSet<Goal> Goals { get; set; }
         DbSet<ModelledTransaction> ModelledTransactions { get; set; }
         DbSet<ScheduledTransaction> ScheduledTransactions { get; set; }
+        DbSet<Tag> Tags { get; set; }
         DbSet<Transaction> Transactions { get; set; }
         System.Data.Entity.Database Database { get; }
         DbRawSqlQuery<T> Query<T>(string sql, params object[] parms);
@@ -28,6 +29,7 @@ namespace Picassi.Core.Accounts.DAL
         public DbSet<Goal> Goals { get; set; }
         public DbSet<ModelledTransaction> ModelledTransactions { get; set; }
         public DbSet<ScheduledTransaction> ScheduledTransactions { get; set; }
+        public DbSet<Tag> Tags { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbRawSqlQuery<T> Query<T>(string sql, params object[] parms)
         {

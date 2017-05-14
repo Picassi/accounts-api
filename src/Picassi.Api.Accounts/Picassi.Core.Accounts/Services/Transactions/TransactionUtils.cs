@@ -8,13 +8,13 @@ namespace Picassi.Core.Accounts.Services.Transactions
 {
     public static class TransactionUtils
     {
-        public static TransactionSummaryViewModel GetTransactionsForAccountsAndDateRange(IQueryable<Transaction> transactions, ICollection<int> accountIds, DateRange range)
+        public static TransactionSummaryModel GetTransactionsForAccountsAndDateRange(IQueryable<Transaction> transactions, ICollection<int> accountIds, DateRange range)
         {
             if (range != null)
             {
                 transactions = transactions.Where(transaction => transaction.Date >= range.Start && transaction.Date < range.End);
             }
-            return new TransactionSummaryViewModel
+            return new TransactionSummaryModel
             {
                 Count = GetTransactionCount(transactions, accountIds),
                 Total = GetTransactionTotal(transactions, accountIds)
@@ -23,31 +23,20 @@ namespace Picassi.Core.Accounts.Services.Transactions
 
         public static decimal GetTransactionCount(IQueryable<Transaction> transactions, ICollection<int> accounts = null)
         {
-            var trans = accounts == null 
-                ? transactions.Where(x => (x.ToId != null || x.FromId != null) && !(x.ToId != null && x.FromId != null))
-                : transactions.Where(x => 
-                    ((x.ToId != null && accounts.Contains((int)x.ToId)) || (x.FromId != null && accounts.Contains((int)x.FromId))) &&
-                   !((x.ToId != null && accounts.Contains((int)x.ToId)) && (x.FromId != null && accounts.Contains((int)x.FromId))));
-            return trans.Count();
+            return GetTransactionsForAccounts(transactions, accounts).Count();
         }
 
         public static decimal GetTransactionTotal(IQueryable<Transaction> transactions, ICollection<int> accounts = null)
         {
-            var to = accounts == null
-                ? transactions.Where(x => x.ToId != null).Select(x => x.Amount).DefaultIfEmpty(0).Sum()
-                : transactions.Where(x => x.ToId != null && accounts.Contains((int) x.ToId))
+            return GetTransactionsForAccounts(transactions, accounts)
                     .Select(x => x.Amount)
                     .DefaultIfEmpty(0)
                     .Sum();
+        }
 
-            var from = accounts == null
-                ? transactions.Where(x => x.FromId != null).Select(x => x.Amount).DefaultIfEmpty(0).Sum()
-                : transactions.Where(x => x.FromId != null && accounts.Contains((int) x.FromId))
-                    .Select(x => x.Amount)
-                    .DefaultIfEmpty(0)
-                    .Sum();
-
-            return to - from;
+        public static IQueryable<Transaction> GetTransactionsForAccounts(IQueryable<Transaction> transactions, ICollection<int> accounts = null)
+        {
+            return accounts == null ? transactions : transactions.Where(x => accounts.Contains((int) x.AccountId));
         }
     }
 }

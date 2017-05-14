@@ -32,10 +32,7 @@ namespace Picassi.Core.Accounts.Services.Reports
         {
             var transaction = GetTransactionForAccountBalance(accountId, date);
             var initialBalance = transaction?.Balance ?? 0;
-            var balanceAfter = transaction == null ? 0 : 
-                (transaction.FromId == accountId
-                    ? initialBalance - transaction.Amount
-                    : initialBalance + transaction.Amount);
+            var balanceAfter = initialBalance - transaction?.Amount ?? 0;
             SetTransactionBalances(accountId, date, transaction, initialBalance, balanceAfter);
         }
 
@@ -52,7 +49,7 @@ namespace Picassi.Core.Accounts.Services.Reports
         private IQueryable<Transaction> GetTransactionsAfterTransaction(int accountId, Transaction transaction)
         {
             return _dataContext.Transactions                
-                .Where(x => x.FromId == accountId || x.ToId == accountId)
+                .Where(x => x.AccountId == accountId)
                 .Where(x => x.Date > transaction.Date || (x.Date == transaction.Date && x.Ordinal > transaction.Ordinal))
                 .OrderBy(x => x.Date).ThenBy(x => x.Ordinal);
         }
@@ -60,7 +57,7 @@ namespace Picassi.Core.Accounts.Services.Reports
         private IQueryable<Transaction> GetTransactionBeforeTransaction(int accountId, Transaction transaction)
         {
             return _dataContext.Transactions
-                .Where(x => x.FromId == accountId || x.ToId == accountId)
+                .Where(x => x.AccountId == accountId)
                 .Where(x => x.Date < transaction.Date || (x.Date == transaction.Date && x.Ordinal < transaction.Ordinal))
                 .OrderByDescending(x => x.Date).ThenByDescending(x => x.Ordinal);
 
@@ -70,10 +67,7 @@ namespace Picassi.Core.Accounts.Services.Reports
         {
             foreach (var transaction in transactions)
             {
-                if (transaction.FromId == accountId)
-                    initialBalance = initialBalance - transaction.Amount;
-                else if (transaction.ToId == accountId)
-                    initialBalance = initialBalance + transaction.Amount;
+                initialBalance = initialBalance - transaction.Amount;
                 transaction.Balance = initialBalance;
             }
         }
@@ -83,22 +77,19 @@ namespace Picassi.Core.Accounts.Services.Reports
             foreach (var transaction in transactions)
             {
                 transaction.Balance = initialBalance;
-                if (transaction.FromId == accountId)
-                    initialBalance = initialBalance + transaction.Amount;
-                else if (transaction.ToId == accountId)
-                    initialBalance = initialBalance - transaction.Amount;
+                initialBalance = initialBalance + transaction.Amount;
             }
         }
 
         private Transaction GetTransactionForAccountBalance(int accountId, DateTime date)
         {
             var lastTransaction = _dataContext
-                .Transactions.Where(x => (x.FromId == accountId || x.ToId == accountId) && x.Date < date)
+                .Transactions.Where(x => x.AccountId == accountId && x.Date < date)
                 .OrderByDescending(transaction => transaction.Date)
                 .ThenByDescending(transaction => transaction.Ordinal)
                 .FirstOrDefault();
             var firstTransactionToday = _dataContext
-                .Transactions.Where(x => (x.FromId == accountId || x.ToId == accountId) && x.Date == date)
+                .Transactions.Where(x => x.AccountId == accountId && x.Date == date)
                 .OrderBy(transaction => transaction.Ordinal)
                 .FirstOrDefault();
             return (lastTransaction ?? firstTransactionToday);

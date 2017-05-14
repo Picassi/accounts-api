@@ -12,7 +12,7 @@ namespace Picassi.Core.Accounts.Models.Categories
         public string PageSize { get; set; }
         public string PageNumber { get; set; }
         public int[] AccountIds { get; set; } 
-        public CategorySummaryReportType ReportType { get; set; }
+        public SummaryReportType ReportType { get; set; }
         public PeriodType Frequency { get; set; }
         public string SortBy { get; set; }
         public bool SortAscending { get; set; }

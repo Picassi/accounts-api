@@ -68,7 +68,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DAL\AccountsDataContext.cs" />
+    <Compile Include="DAL\Entities\Tag.cs" />
     <Compile Include="DAL\Migrator.cs" />
+    <Compile Include="Models\Categories\CategoryModelMapper.cs" />
+    <Compile Include="Models\Tags\TagModelMapper.cs" />
+    <Compile Include="DAL\Services\TagsDataService.cs" />
     <Compile Include="DAL\StoreProcedures\GetTransactionTotals.cs" />
     <Compile Include="DAL\StoreProcedures\IStoredProcedure.cs" />
     <Compile Include="DAL\Services\AccountTransactionsDataService.cs" />
@@ -85,6 +89,14 @@
     <Compile Include="DAL\Entities\ScheduledTransaction.cs" />
     <Compile Include="DAL\Entities\Transaction.cs" />
     <Compile Include="Models\Budgets\BudgetModelMapper.cs" />
+    <Compile Include="Models\Tags\TagsQueryModel.cs" />
+    <Compile Include="Models\Tags\TagAccountSummaryResult.cs" />
+    <Compile Include="Models\Tags\TagAutomapperProfile.cs" />
+    <Compile Include="Models\Tags\TagModel.cs" />
+    <Compile Include="Models\Tags\TagSummaryQueryModel.cs" />
+    <Compile Include="Models\Tags\TagSummaryResult.cs" />
+    <Compile Include="Models\Tags\TagSummaryResultsViewModel.cs" />
+    <Compile Include="Models\Tags\TagSummaryViewModel.cs" />
     <Compile Include="Models\Events\EventModelMapper.cs" />
     <Compile Include="Models\Goals\GoalModelMapper.cs" />
     <Compile Include="Models\ModelledTransactions\ModelledTransactionModelMapper.cs" />
@@ -97,7 +109,7 @@
     <Compile Include="DAL\Services\GoalsDataService.cs" />
     <Compile Include="DAL\Services\BudgetsDataService.cs" />
     <Compile Include="DAL\Services\AccountsDataService.cs" />
-    <Compile Include="Enums\CategorySummaryReportType.cs" />
+    <Compile Include="Enums\SummaryReportType.cs" />
     <Compile Include="Events\EventBus.cs" />
     <Compile Include="Events\Handlers\TransactionCreatedHandler.cs" />
     <Compile Include="Events\Handlers\UpdateAccountBalancesHandler.cs" />
@@ -108,6 +120,18 @@
     <Compile Include="Events\Messages\EntityUpdated.cs" />
     <Compile Include="Events\Messages\TransactionMoved.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Projections\AccountProjector.cs" />
+    <Compile Include="Services\Projections\FlowProjectors\FlowProjectorProvider.cs" />
+    <Compile Include="Enums\FlowUserType.cs" />
+    <Compile Include="Services\Projections\FlowProjectors\IFlowProjector.cs" />
+    <Compile Include="Services\Projections\FlowProjectors\MonthlyFlowProjector.cs" />
+    <Compile Include="Services\Projections\FlowProjectors\MonthlyTransactionMapper.cs" />
+    <Compile Include="Services\Projections\FlowProjectors\MonthlyTransactionViewModel.cs" />
+    <Compile Include="Services\Projections\FlowProjectors\WeeklyFlowProjector.cs" />
+    <Compile Include="Services\Projections\FlowProjectors\WeeklyTransactionMapper.cs" />
+    <Compile Include="Services\Projections\FlowProjectors\WeeklyTransactionViewModel.cs" />
+    <Compile Include="Services\Projections\ProjectionBalanceService.cs" />
+    <Compile Include="Services\Projections\ProjectionGenerationParameters.cs" />
     <Compile Include="Services\Reports\AccountBalanceService.cs" />
     <Compile Include="Services\Reports\StatementViewModelFactory.cs" />
     <Compile Include="Services\Reports\StatementService.cs" />
@@ -120,6 +144,7 @@
     <Compile Include="Services\Transactions\TransactionUploadService.cs" />
     <Compile Include="Services\Transactions\TransactionUtils.cs" />
     <Compile Include="Time\DateRange.cs" />
+    <Compile Include="Time\DateUtilities.cs" />
     <Compile Include="Time\PeriodCalculator.cs" />
     <Compile Include="Time\PeriodDefinition.cs" />
     <Compile Include="Time\Periods\Constants.cs" />
@@ -164,7 +189,7 @@
     <Compile Include="Models\ScheduledTransactions\ScheduledTransactionViewModel.cs" />
     <Compile Include="Models\Statements\StatementLineViewModel.cs" />
     <Compile Include="Models\Accounts\AccountPeriodViewModel.cs" />
-    <Compile Include="Models\Statements\StatementViewModel.cs" />
+    <Compile Include="Models\Statements\StatementModel.cs" />
     <Compile Include="Models\Statements\StatementQueryModel.cs" />
     <Compile Include="Models\Accounts\AccountModelMapper.cs" />
     <Compile Include="Models\Transactions\TransactionModelMapper.cs" />
@@ -174,7 +199,7 @@
     <Compile Include="Models\Transactions\AccountTransactionsQueryModel.cs" />
     <Compile Include="Models\Transactions\TransactionsQueryModel.cs" />
     <Compile Include="Models\Transactions\TransactionsResultsViewModel.cs" />
-    <Compile Include="Models\Transactions\TransactionSummaryViewModel.cs" />
+    <Compile Include="Models\Transactions\TransactionSummaryModel.cs" />
     <Compile Include="Models\Transactions\TransactionUploadModel.cs" />
     <Compile Include="Models\Transactions\AccountTransactionModel.cs" />
     <Compile Include="Models\Transactions\TransactionModel.cs" />

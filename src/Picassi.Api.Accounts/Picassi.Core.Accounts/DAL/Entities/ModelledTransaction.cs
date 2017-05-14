@@ -11,8 +11,8 @@ namespace Picassi.Core.Accounts.DAL.Entities
 
         public string Description { get; set; }
 
-        [ForeignKey("From")]
-        public int? FromId { get; set; }
+        [ForeignKey("Account")]
+        public int AccountId { get; set; }
 
         [ForeignKey("To")]
         public int? ToId { get; set; }
@@ -29,7 +29,7 @@ namespace Picassi.Core.Accounts.DAL.Entities
 
         public DateTime Date { get; set; }
 
-        public virtual Account From { get; set; }
+        public virtual Account Account { get; set; }
 
         public virtual Account To { get; set; }
 

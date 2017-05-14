@@ -7,7 +7,7 @@ namespace Picassi.Core.Accounts.Services.Reports
 {
     public interface IStatementService
     {
-        StatementViewModel GetStatement(int accountId, StatementQueryModel query);
+        StatementModel GetStatement(int accountId, StatementQueryModel query);
     }
 
     public class StatementService : IStatementService
@@ -23,7 +23,7 @@ namespace Picassi.Core.Accounts.Services.Reports
             _statementViewModelFactory = statementViewModelFactory;
         }
 
-        public StatementViewModel GetStatement(int accountId, StatementQueryModel query)
+        public StatementModel GetStatement(int accountId, StatementQueryModel query)
         {
             var transactions = _transactionQueryService.Query(query.GetTransactionQuery(accountId)).ToList();
             var startDate = query.DateFrom ?? (transactions.Any() ? transactions.Min(x => x.Date) : (DateTime?) null);

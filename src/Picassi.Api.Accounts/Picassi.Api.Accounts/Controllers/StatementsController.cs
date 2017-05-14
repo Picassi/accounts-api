@@ -19,7 +19,7 @@ namespace Picassi.Api.Accounts.Controllers
 
         [HttpGet]
         [Route("accounts/{accountId}/statement")]
-        public StatementViewModel GetStatement(int accountId, [FromUri]StatementQueryModel query)
+        public StatementModel GetStatement(int accountId, [FromUri]StatementQueryModel query)
         {
             return _statementService.GetStatement(accountId, query);
         }

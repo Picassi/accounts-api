@@ -80,7 +80,7 @@ namespace Picassi.Core.Accounts.DAL.Services
         private Transaction GetNextTransactionOnSameDay(int accountId, Transaction transaction)
         {
             var targetTransaction = DbContext.Transactions
-                .Where(x => (x.FromId == accountId || x.ToId == accountId) && x.Date == transaction.Date && x.Ordinal > transaction.Ordinal)
+                .Where(x => x.AccountId == accountId && x.Date == transaction.Date && x.Ordinal > transaction.Ordinal)
                 .OrderBy(x => x.Ordinal)
                 .FirstOrDefault();
             return targetTransaction;
@@ -89,8 +89,7 @@ namespace Picassi.Core.Accounts.DAL.Services
         private Transaction GetPreviousTransactionOnSameDay(int accountId, Transaction transaction)
         {
             var targetTransaction = DbContext.Transactions
-                .Where(x => (x.FromId == accountId || x.ToId == accountId) && x.Date == transaction.Date &&
-                            x.Ordinal < transaction.Ordinal)
+                .Where(x => x.AccountId == accountId && x.Date == transaction.Date && x.Ordinal < transaction.Ordinal)
                 .OrderByDescending(x => x.Ordinal).FirstOrDefault();
             return targetTransaction;
         }

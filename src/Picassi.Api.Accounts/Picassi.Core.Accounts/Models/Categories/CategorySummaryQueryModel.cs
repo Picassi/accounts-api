@@ -10,6 +10,6 @@ namespace Picassi.Core.Accounts.Models.Categories
         public DateRange DateRange { get; set; }
         public PeriodDefinition AverageSpendPeriod { get; set; }
         public List<int> AccountIds { get; set; }
-        public CategorySummaryReportType ReportType { get; set; }
+        public SummaryReportType ReportType { get; set; }
     }
 }

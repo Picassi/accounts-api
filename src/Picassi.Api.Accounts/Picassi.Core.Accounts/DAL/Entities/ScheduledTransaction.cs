@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using Picassi.Core.Accounts.Enums;
 
 namespace Picassi.Core.Accounts.DAL.Entities
 {
@@ -9,8 +10,8 @@ namespace Picassi.Core.Accounts.DAL.Entities
 
         public string Description { get; set; }
 
-        [ForeignKey("From")]
-        public int? FromId { get; set; }
+        [ForeignKey("Account")]
+        public int AccountId { get; set; }
 
         [ForeignKey("To")]
         public int? ToId { get; set; }
@@ -21,7 +22,13 @@ namespace Picassi.Core.Accounts.DAL.Entities
 
         public decimal Amount { get; set; }
 
+        public FlowUserType Type { get; set; }
+
         public DateTime? Date { get; set; }
+
+        public DateTime? Start { get; set; }
+
+        public DateTime? End { get; set; }
 
         public int? DaysBefore { get; set; }
 
@@ -31,9 +38,9 @@ namespace Picassi.Core.Accounts.DAL.Entities
 
         public int? RecurrenceWeekOfMonth { get; set; }
 
-        public int? RecurrenceDayOfWeek { get; set; }
+        public DayOfWeek? RecurrenceDayOfWeek { get; set; }
 
-        public virtual Account From { get; set; }
+        public virtual Account Account { get; set; }
 
         public virtual Account To { get; set; }
 

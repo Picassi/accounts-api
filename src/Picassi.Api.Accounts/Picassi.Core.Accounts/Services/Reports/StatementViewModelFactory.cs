@@ -7,14 +7,14 @@ namespace Picassi.Core.Accounts.Services.Reports
 {
     public interface IStatementViewModelFactory
     {
-        StatementViewModel CompileStatement(int accountId, decimal startBalance, List<TransactionModel> transactions, int? pageNumber, int? pageSize);
+        StatementModel CompileStatement(int accountId, decimal startBalance, List<TransactionModel> transactions, int? pageNumber, int? pageSize);
     }
 
     public class StatementViewModelFactory : IStatementViewModelFactory
     {
-        public StatementViewModel CompileStatement(int accountId, decimal startBalance, List<TransactionModel> transactions, int? pageNumber, int? pageSize)
+        public StatementModel CompileStatement(int accountId, decimal startBalance, List<TransactionModel> transactions, int? pageNumber, int? pageSize)
         {
-            return new StatementViewModel
+            return new StatementModel
             {
                 AccountId = accountId,
                 StartBalance = startBalance,
