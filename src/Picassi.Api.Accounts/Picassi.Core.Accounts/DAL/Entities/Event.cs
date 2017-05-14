@@ -9,12 +9,14 @@ namespace Picassi.Core.Accounts.DAL.Entities
 
         public string Name { get; set; }
 
-        public int? CategoryId { get; set; }
-
         public DateTime? Date { get; set; }
 
-        public virtual ICollection<Transaction> Transactions { get; set; }
+        public int? CategoryId { get; set; }
 
         public virtual Category Category { get; set; }
+
+        public virtual ICollection<ScheduledTransaction> ScheduledTransactions { get; set; }
+
+        public virtual ICollection<ModelledTransaction> ModelledTransactions { get; set; }
     }
 }

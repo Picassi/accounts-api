@@ -70,6 +70,10 @@
     <Compile Include="DAL\AccountsDataContext.cs" />
     <Compile Include="DAL\Entities\Tag.cs" />
     <Compile Include="DAL\Migrator.cs" />
+    <Compile Include="Migrations\201705141655026_InitialCreate.cs" />
+    <Compile Include="Migrations\201705141655026_InitialCreate.Designer.cs">
+      <DependentUpon>201705141655026_InitialCreate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Categories\CategoryModelMapper.cs" />
     <Compile Include="Models\Tags\TagModelMapper.cs" />
     <Compile Include="DAL\Services\TagsDataService.cs" />
@@ -207,6 +211,11 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201705141655026_InitialCreate.resx">
+      <DependentUpon>201705141655026_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

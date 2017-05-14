@@ -1,10 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using Picassi.Core.Accounts.DAL.Services;
 using Picassi.Core.Accounts.Models.Goals;
+using Picassi.Utils.Api.Attributes;
 
 namespace Picassi.Api.Accounts.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
+    [PicassiApiAuthorise]
     public class GoalsController : ApiController
     {
         private readonly IGoalsDataService _dataService;

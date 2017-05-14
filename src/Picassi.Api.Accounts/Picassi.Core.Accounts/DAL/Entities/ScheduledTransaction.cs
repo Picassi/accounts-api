@@ -45,5 +45,7 @@ namespace Picassi.Core.Accounts.DAL.Entities
         public virtual Account To { get; set; }
 
         public virtual Category Category { get; set; }
+
+        public virtual Event Event { get; set; }
     }
 }
