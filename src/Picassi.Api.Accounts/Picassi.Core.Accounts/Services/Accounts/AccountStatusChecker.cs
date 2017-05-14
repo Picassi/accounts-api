@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Picassi.Data.Accounts.Database;
+using Picassi.Core.Accounts.DAL;
 
 namespace Picassi.Core.Accounts.Services.Accounts
 {

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Picassi.Core.Accounts.Reports;
-using Picassi.Core.Accounts.ViewModels.Transactions;
-using Picassi.Data.Accounts.Database;
-using Picassi.Data.Accounts.Models;
+using Picassi.Core.Accounts.DAL;
+using Picassi.Core.Accounts.DAL.Entities;
+using Picassi.Core.Accounts.Models.Transactions;
+using Picassi.Core.Accounts.Services.Reports;
 
 namespace Picassi.Core.Accounts.Services.Transactions
 {

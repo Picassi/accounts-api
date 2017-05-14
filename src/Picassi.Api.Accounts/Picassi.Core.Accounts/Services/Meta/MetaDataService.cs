@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Web;
-using Picassi.Core.Accounts.Reports;
-using Picassi.Core.Accounts.ViewModels.Meta;
-using Picassi.Data.Accounts.Database;
+using Picassi.Core.Accounts.DAL;
+using Picassi.Core.Accounts.Models.Meta;
+using Picassi.Core.Accounts.Services.Reports;
 using Picassi.Utils.Data.Identity;
 
 namespace Picassi.Core.Accounts.Services.Meta

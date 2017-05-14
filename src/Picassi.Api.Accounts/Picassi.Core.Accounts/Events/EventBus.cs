@@ -1,6 +1,4 @@
-﻿using Picassi.Data.Accounts.Events;
-
-namespace Picassi.Core.Accounts.Events
+﻿namespace Picassi.Core.Accounts.Events
 {
     public interface IEventBus
     {

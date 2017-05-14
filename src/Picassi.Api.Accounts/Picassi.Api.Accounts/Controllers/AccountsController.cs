@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Cors;
-using Picassi.Core.Accounts.DbAccess;
-using Picassi.Core.Accounts.Reports;
+using Picassi.Core.Accounts.DAL.Services;
+using Picassi.Core.Accounts.Models.Accounts;
+using Picassi.Core.Accounts.Services.Reports;
 using Picassi.Core.Accounts.Time;
-using Picassi.Core.Accounts.ViewModels.Accounts;
 using Picassi.Utils.Api.Attributes;
 
 namespace Picassi.Api.Accounts.Controllers

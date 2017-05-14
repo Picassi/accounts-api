@@ -1,4 +1,4 @@
-﻿namespace Picassi.Data.Accounts.Events
+﻿namespace Picassi.Core.Accounts.Events
 {
     public interface IEvent
     {

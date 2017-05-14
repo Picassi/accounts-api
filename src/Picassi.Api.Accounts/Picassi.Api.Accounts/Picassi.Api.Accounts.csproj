@@ -228,10 +228,6 @@
       <Project>{AC94699B-B1AF-46EF-B657-FFEE06E52EA4}</Project>
       <Name>Picassi.Core.Accounts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Picassi.Data.Accounts\Picassi.Data.Accounts.csproj">
-      <Project>{F86E6DB3-CC2B-40F6-95D0-D1E77CD0B3D2}</Project>
-      <Name>Picassi.Data.Accounts</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

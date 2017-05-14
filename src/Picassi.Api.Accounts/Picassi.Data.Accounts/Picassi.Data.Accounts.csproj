@@ -70,78 +70,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database\AccountsDataContext.cs" />
-    <Compile Include="Database\Migrator.cs" />
-    <Compile Include="Database\StoreProcedures\GetTransactionTotals.cs" />
-    <Compile Include="Database\StoreProcedures\IStoredProcedure.cs" />
-    <Compile Include="Enums\ReportSource.cs" />
-    <Compile Include="Enums\ReportType.cs" />
-    <Compile Include="Exceptions\EntityNotFoundException.cs" />
-    <Compile Include="Migrations\201605021541458_InitialCreate.cs" />
-    <Compile Include="Migrations\201605021541458_InitialCreate.Designer.cs">
-      <DependentUpon>201605021541458_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201606052008154_RemoveAdditionalIdFromReportGroupCategory.cs" />
-    <Compile Include="Migrations\201606052008154_RemoveAdditionalIdFromReportGroupCategory.Designer.cs">
-      <DependentUpon>201606052008154_RemoveAdditionalIdFromReportGroupCategory.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201606052016441_RemoveAdditionalIdFromReportGroupReport.cs" />
-    <Compile Include="Migrations\201606052016441_RemoveAdditionalIdFromReportGroupReport.Designer.cs">
-      <DependentUpon>201606052016441_RemoveAdditionalIdFromReportGroupReport.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201609131019560_AddUpdatedDateToAccount.cs" />
-    <Compile Include="Migrations\201609131019560_AddUpdatedDateToAccount.Designer.cs">
-      <DependentUpon>201609131019560_AddUpdatedDateToAccount.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201609131551320_AddOrdinalToTransaction.cs" />
-    <Compile Include="Migrations\201609131551320_AddOrdinalToTransaction.Designer.cs">
-      <DependentUpon>201609131551320_AddOrdinalToTransaction.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201704242142040_AddTransactionToolsStoredProc.cs" />
-    <Compile Include="Migrations\201704242142040_AddTransactionToolsStoredProc.Designer.cs">
-      <DependentUpon>201704242142040_AddTransactionToolsStoredProc.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201704252004110_RemoveBloatFromDatabase.cs" />
-    <Compile Include="Migrations\201704252004110_RemoveBloatFromDatabase.Designer.cs">
-      <DependentUpon>201704252004110_RemoveBloatFromDatabase.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\Account.cs" />
-    <Compile Include="Models\Budget.cs" />
-    <Compile Include="Models\Category.cs" />
-    <Compile Include="Models\Event.cs" />
-    <Compile Include="Models\Goal.cs" />
-    <Compile Include="Models\ModelledTransaction.cs" />
-    <Compile Include="Models\ScheduledTransaction.cs" />
-    <Compile Include="Models\Transaction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201605021541458_InitialCreate.resx">
-      <DependentUpon>201605021541458_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606052008154_RemoveAdditionalIdFromReportGroupCategory.resx">
-      <DependentUpon>201606052008154_RemoveAdditionalIdFromReportGroupCategory.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606052016441_RemoveAdditionalIdFromReportGroupReport.resx">
-      <DependentUpon>201606052016441_RemoveAdditionalIdFromReportGroupReport.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201609131019560_AddUpdatedDateToAccount.resx">
-      <DependentUpon>201609131019560_AddUpdatedDateToAccount.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201609131551320_AddOrdinalToTransaction.resx">
-      <DependentUpon>201609131551320_AddOrdinalToTransaction.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201704242142040_AddTransactionToolsStoredProc.resx">
-      <DependentUpon>201704242142040_AddTransactionToolsStoredProc.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201704252004110_RemoveBloatFromDatabase.resx">
-      <DependentUpon>201704252004110_RemoveBloatFromDatabase.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
-using Picassi.Core.Accounts.DbAccess;
-using Picassi.Core.Accounts.ViewModels.Budgets;
+using Picassi.Core.Accounts.DAL.Services;
+using Picassi.Core.Accounts.Models.Budgets;
 
 namespace Picassi.Api.Accounts.Controllers
 {

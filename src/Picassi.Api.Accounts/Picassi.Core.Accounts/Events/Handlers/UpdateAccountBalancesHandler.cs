@@ -1,6 +1,5 @@
 ﻿using Picassi.Core.Accounts.Events.Messages;
-using Picassi.Core.Accounts.Reports;
-using Picassi.Data.Accounts.Events;
+using Picassi.Core.Accounts.Services.Reports;
 
 namespace Picassi.Core.Accounts.Events.Handlers
 {

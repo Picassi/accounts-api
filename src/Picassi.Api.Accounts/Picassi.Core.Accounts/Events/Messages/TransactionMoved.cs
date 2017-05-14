@@ -1,5 +1,4 @@
 ﻿using System;
-using Picassi.Data.Accounts.Events;
 
 namespace Picassi.Core.Accounts.Events.Messages
 {

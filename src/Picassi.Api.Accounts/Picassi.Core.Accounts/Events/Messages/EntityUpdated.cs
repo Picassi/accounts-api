@@ -1,4 +1,4 @@
-﻿namespace Picassi.Data.Accounts.Events.Messages
+﻿namespace Picassi.Core.Accounts.Events.Messages
 {
     public class EntityUpdated<TEntity> : IEvent
     {

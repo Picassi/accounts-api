@@ -1,7 +1,7 @@
-﻿using Picassi.Data.Accounts.Events.Messages;
-using Picassi.Data.Accounts.Models;
+﻿using Picassi.Core.Accounts.DAL.Entities;
+using Picassi.Core.Accounts.Events.Messages;
 
-namespace Picassi.Data.Accounts.Events.Handlers
+namespace Picassi.Core.Accounts.Events.Handlers
 {
     public class TransactionCreatedHandler : IEventHandler<EntityCreated<Transaction>>
     {

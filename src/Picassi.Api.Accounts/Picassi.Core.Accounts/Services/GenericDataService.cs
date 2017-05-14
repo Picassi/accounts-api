@@ -1,5 +1,5 @@
-﻿using Picassi.Data.Accounts.Database;
-using Picassi.Data.Accounts.Exceptions;
+﻿using Picassi.Core.Accounts.DAL;
+using Picassi.Core.Accounts.Exceptions;
 using Picassi.Utils.Data;
 
 namespace Picassi.Core.Accounts.Services

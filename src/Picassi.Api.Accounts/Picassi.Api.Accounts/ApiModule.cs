@@ -1,7 +1,7 @@
 using System.Reflection;
 using Autofac;
-using Picassi.Core.Accounts.DbAccess;
-using Picassi.Data.Accounts.Database;
+using Picassi.Core.Accounts.DAL;
+using Picassi.Core.Accounts.DAL.Services;
 using Picassi.Utils.Api.Init;
 using Picassi.Utils.Data;
 

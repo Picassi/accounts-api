@@ -1,7 +1,7 @@
 ﻿using System.Web.Http;
 using System.Web.Http.Cors;
-using Picassi.Core.Accounts.Reports;
-using Picassi.Core.Accounts.ViewModels.Statements;
+using Picassi.Core.Accounts.Models.Statements;
+using Picassi.Core.Accounts.Services.Reports;
 using Picassi.Utils.Api.Attributes;
 
 namespace Picassi.Api.Accounts.Controllers

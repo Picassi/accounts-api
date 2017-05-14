@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Picassi.Core.Accounts.DAL.Entities;
+using Picassi.Core.Accounts.Models.Transactions;
 using Picassi.Core.Accounts.Time;
-using Picassi.Core.Accounts.ViewModels.Transactions;
-using Picassi.Data.Accounts.Models;
 
 namespace Picassi.Core.Accounts.Services.Transactions
 {
