@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
-using Picassi.Core.Accounts.DbAccess.Categories;
+using Picassi.Core.Accounts.DbAccess;
 using Picassi.Core.Accounts.Reports;
 using Picassi.Core.Accounts.ViewModels;
 using Picassi.Core.Accounts.ViewModels.Categories;
@@ -15,22 +15,20 @@ namespace Picassi.Api.Accounts.Controllers
     [PicassiApiAuthorise]
     public class CategoriesController : ApiController
     {
-        private readonly ICategoryCrudService _crudService;
-        private readonly ICategoryQueryService _queryService;
+        private readonly ICategoriesDataService _dataService;
         private readonly ICategorySummaryService _categorySummaryService;
 
-        public CategoriesController(ICategoryCrudService crudService, ICategoryQueryService queryService, ICategorySummaryService categorySummaryService)
+        public CategoriesController(ICategoriesDataService dataService, ICategorySummaryService categorySummaryService)
         {
-            _crudService = crudService;
-            _queryService = queryService;
+            _dataService = dataService;
             _categorySummaryService = categorySummaryService;
         }
 
         [HttpGet]
         [Route("categories")]
-        public IEnumerable<CategoryViewModel> GetCategories([FromUri]CategoriesQueryModel query)
+        public IEnumerable<CategoryModel> GetCategories([FromUri]CategoriesQueryModel query)
         {
-            return _queryService.Query(query);
+            return _dataService.Query(query);
         }
 
         [HttpGet]
@@ -42,35 +40,35 @@ namespace Picassi.Api.Accounts.Controllers
 
         [HttpPost]
         [Route("categories")]
-        public CategoryViewModel CreateCategory([FromBody]CategoryViewModel model)
+        public CategoryModel CreateCategory([FromBody]CategoryModel model)
         {
             if (string.IsNullOrEmpty(model.Name))
             {
                 throw new InvalidOperationException("Cannot create category with empty name");
             }
-            var existingCategory = _queryService.Query(new CategoriesQueryModel { Name = model.Name }).FirstOrDefault();
-            return existingCategory ?? _crudService.CreateCategory(model);
+            var existingCategory = _dataService.Query(new CategoriesQueryModel { Name = model.Name }).FirstOrDefault();
+            return existingCategory ?? _dataService.Create(model);
         }
 
         [HttpGet]
         [Route("categories/{id}")]
-        public CategoryViewModel GetCategory(int id)
+        public CategoryModel GetCategory(int id)
         {
-            return _crudService.GetCategory(id);
+            return _dataService.Get(id);
         }
 
         [HttpPut]
         [Route("categories/{id}")]
-        public CategoryViewModel UpdateCategory(int id, [FromBody]CategoryViewModel CategoryViewModel)
+        public CategoryModel UpdateCategory(int id, [FromBody]CategoryModel categoryModel)
         {
-            return _crudService.UpdateCategory(id, CategoryViewModel);
+            return _dataService.Update(id, categoryModel);
         }
 
         [HttpDelete]
         [Route("categories/{id}")]
         public bool DeleteAccount(int id)
         {
-            return _crudService.DeleteCategory(id);
+            return _dataService.Delete(id);
         }
     }
 }

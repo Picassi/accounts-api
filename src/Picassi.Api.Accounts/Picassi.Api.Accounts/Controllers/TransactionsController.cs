@@ -1,6 +1,6 @@
 using System.Web.Http;
 using System.Web.Http.Cors;
-using Picassi.Core.Accounts.DbAccess.Transactions;
+using Picassi.Core.Accounts.DbAccess;
 using Picassi.Core.Accounts.ViewModels.Transactions;
 using Picassi.Utils.Api.Attributes;
 
@@ -9,51 +9,47 @@ namespace Picassi.Api.Accounts.Controllers
 	[EnableCors(origins: "*", headers: "*", methods: "*")]
     [PicassiApiAuthorise]
     public class TransactionsController : ApiController
-    {
-        private readonly ITransactionCrudService _crudService;
-        private readonly ITransactionQueryService _queryService;
+	{
+	    private readonly ITransactionsDataService _dataService;
 
-	    public TransactionsController(
-            ITransactionCrudService crudService, 
-            ITransactionQueryService queryService)
-        {
-            _crudService = crudService;
-            _queryService = queryService;
-        }
+	    public TransactionsController(ITransactionsDataService dataService)
+	    {
+	        _dataService = dataService;
+	    }
 
-        [HttpGet]
+	    [HttpGet]
         [Route("transactions")]
         public TransactionsResultsViewModel GetTransactions([FromUri]TransactionsQueryModel query)
         {
-            return _queryService.Query(query);
+            return _dataService.Query(query);
         }
 
         [HttpPost]
         [Route("transactions")]
-        public TransactionViewModel CreateTransaction([FromBody]TransactionViewModel transactionViewModel)
+        public TransactionModel CreateTransaction([FromBody]TransactionModel transactionModel)
         {
-            return _crudService.CreateTransaction(transactionViewModel);
+            return _dataService.Create(transactionModel);
         }
 
         [HttpGet]
         [Route("transactions/{id}")]
-        public TransactionViewModel GetTransaction(int id)
+        public TransactionModel GetTransaction(int id)
         {
-            return _crudService.GetTransaction(id);            
+            return _dataService.Get(id);            
         }
 
         [HttpPut]
         [Route("transactions/{id}")]
-        public TransactionViewModel UpdateTransaction(int id, [FromBody]TransactionViewModel transactionViewModel)
+        public TransactionModel UpdateTransaction(int id, [FromBody]TransactionModel transactionModel)
         {
-            return _crudService.UpdateTransaction(id, transactionViewModel);
+            return _dataService.Update(id, transactionModel);
         }
 
         [HttpDelete]
         [Route("transactions/{id}")]
         public bool DeleteAccount(int id)
         {
-            return _crudService.DeleteTransaction(id);
+            return _dataService.Delete(id);
         }
     }
 }

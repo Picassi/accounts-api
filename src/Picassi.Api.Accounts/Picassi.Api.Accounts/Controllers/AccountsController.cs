@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Cors;
-using Picassi.Core.Accounts.DbAccess.Accounts;
+using Picassi.Core.Accounts.DbAccess;
 using Picassi.Core.Accounts.Reports;
 using Picassi.Core.Accounts.Time;
 using Picassi.Core.Accounts.ViewModels.Accounts;
@@ -13,53 +13,50 @@ namespace Picassi.Api.Accounts.Controllers
     [PicassiApiAuthorise]
     public class AccountsController : ApiController
 	{
-        private readonly IAccountCrudService _crudService;
-        private readonly IAccountQueryService _queryService;
+        private readonly IAccountDataService _dataService;
 	    private readonly IAccountSummariser _accountSummariser;
 
         public AccountsController(
-            IAccountCrudService crudService, 
-            IAccountQueryService queryService, 
+            IAccountDataService dataService, 
             IAccountSummariser accountSummariser)
         {
-            _crudService = crudService;
-            _queryService = queryService;
+            _dataService = dataService;
             _accountSummariser = accountSummariser;
         }
 
         [HttpGet]
         [Route("accounts")]
-        public IEnumerable<AccountViewModel> GetAccounts([FromUri]AccountQueryModel query)
+        public IEnumerable<AccountModel> GetAccounts([FromUri]AccountQueryModel query)
         {
-            return _queryService.Query(query);
+            return _dataService.Query(query);
         }
 
         [HttpPost]
         [Route("accounts")]
-        public AccountViewModel CreateAccount([FromBody]AccountViewModel accountViewModel)
+        public AccountModel CreateAccount([FromBody]AccountModel accountModel)
         {
-            return _crudService.CreateAccount(accountViewModel);
+            return _dataService.Create(accountModel);
         }
 
         [HttpGet]
         [Route("accounts/{id}")]
-        public AccountViewModel GetAccount(int id)
+        public AccountModel GetAccount(int id)
         {
-            return _crudService.GetAccount(id);            
+            return _dataService.Get(id);            
         }
 
 	    [HttpPut]
         [Route("accounts/{id}")]
-        public AccountViewModel UpdateAccount(int id, [FromBody]AccountViewModel accountViewModel)
+        public AccountModel UpdateAccount(int id, [FromBody]AccountModel accountModel)
         {
-            return _crudService.UpdateAccount(id, accountViewModel);
+            return _dataService.Update(id, accountModel);
         }
 
         [HttpDelete]
         [Route("accounts/{id}")]
         public bool DeleteAccount(int id)
         {
-            return _crudService.DeleteAccount(id);
+            return _dataService.Delete(id);
         }
 
         [HttpGet]

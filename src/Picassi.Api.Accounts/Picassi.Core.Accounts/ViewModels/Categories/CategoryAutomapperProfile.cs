@@ -7,8 +7,8 @@ namespace Picassi.Core.Accounts.ViewModels.Categories
     {
         protected override void Configure()
         {
-            CreateMap<CategoryViewModel, Category>();
-            CreateMap<Category, CategoryViewModel>();
+            CreateMap<CategoryModel, Category>();
+            CreateMap<Category, CategoryModel>();
         }
     }
 }

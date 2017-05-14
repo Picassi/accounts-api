@@ -212,6 +212,9 @@
     <Compile Include="ApiModule.cs" />
     <Compile Include="Controllers\AccountTransactionsController.cs" />
     <Compile Include="Controllers\AccountsController.cs" />
+    <Compile Include="Controllers\GoalsController.cs" />
+    <Compile Include="Controllers\EventsController.cs" />
+    <Compile Include="Controllers\BudgetsController.cs" />
     <Compile Include="Controllers\MetaController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\DatabaseController.cs" />

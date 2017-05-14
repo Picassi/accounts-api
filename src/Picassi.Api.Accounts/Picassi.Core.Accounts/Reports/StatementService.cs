@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Picassi.Core.Accounts.DbAccess.Transactions;
+using Picassi.Core.Accounts.DbAccess;
 using Picassi.Core.Accounts.ViewModels.Statements;
 
 namespace Picassi.Core.Accounts.Reports
@@ -13,10 +13,10 @@ namespace Picassi.Core.Accounts.Reports
     public class StatementService : IStatementService
     {
         private readonly IAccountBalanceService _accountBalanceService;
-        private readonly ITransactionQueryService _transactionQueryService;
+        private readonly ITransactionsDataService _transactionQueryService;
         private readonly IStatementViewModelFactory _statementViewModelFactory;
 
-        public StatementService(IAccountBalanceService accountBalanceService, ITransactionQueryService transactionQueryService, IStatementViewModelFactory statementViewModelFactory)
+        public StatementService(IAccountBalanceService accountBalanceService, ITransactionsDataService transactionQueryService, IStatementViewModelFactory statementViewModelFactory)
         {
             _accountBalanceService = accountBalanceService;
             _transactionQueryService = transactionQueryService;

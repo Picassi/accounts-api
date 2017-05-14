@@ -8,6 +8,11 @@ namespace Picassi.Data.Accounts.Models
 
         public string Name { get; set; }
 
+        public int? BudgetId { get; set; }
+
         public virtual ICollection<Transaction> Transactions { get; set; }
+
+        public virtual Budget Budget { get; set; }
+
     }
 }

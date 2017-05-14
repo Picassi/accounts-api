@@ -7,8 +7,8 @@ namespace Picassi.Core.Accounts.ViewModels.Accounts
     {
         protected override void Configure()
         {
-            CreateMap<AccountViewModel, Account>();
-            CreateMap<Account, AccountViewModel>();
+            CreateMap<AccountModel, Account>();
+            CreateMap<Account, AccountModel>();
         }
     }
 }

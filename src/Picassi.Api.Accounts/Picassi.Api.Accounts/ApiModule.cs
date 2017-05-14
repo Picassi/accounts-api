@@ -1,6 +1,6 @@
 using System.Reflection;
 using Autofac;
-using Picassi.Core.Accounts.DbAccess.Accounts;
+using Picassi.Core.Accounts.DbAccess;
 using Picassi.Data.Accounts.Database;
 using Picassi.Utils.Api.Init;
 using Picassi.Utils.Data;
@@ -13,7 +13,7 @@ namespace Picassi.Api.Accounts
         {
             builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(IDbContext))).AsImplementedInterfaces();
             builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(IAccountsDataContext))).AsImplementedInterfaces();
-            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(IAccountCrudService))).AsImplementedInterfaces();
+            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(IAccountDataService))).AsImplementedInterfaces();
             builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(ISwaggerConfig))).AsImplementedInterfaces();
         }
     }

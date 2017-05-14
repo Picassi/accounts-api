@@ -30,13 +30,5 @@ namespace Picassi.Data.Accounts.Models
         public virtual Account To { get; set; }
 
         public virtual Category Category { get; set; }
-
-        public TransactionStatus Status { get; set; }
-    }
-
-    public enum TransactionStatus
-    {
-        Provisional = 0,
-        Confirmed = 1
     }
 }

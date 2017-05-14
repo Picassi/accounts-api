@@ -12,7 +12,6 @@ namespace Picassi.Core.Accounts.Services.Transactions
     public interface ITransactionUploadService
     {
         void AddTransactionsToAccount(int accountId, ICollection<TransactionUploadModel> transactions);
-        void ConfirmTransactions(int accountId, IEnumerable<int> transactionids);
     }
 
     public class TransactionUploadService : ITransactionUploadService
@@ -42,18 +41,6 @@ namespace Picassi.Core.Accounts.Services.Transactions
             _balanceService.SetTransactionBalances(accountId, transactionModels.Min(transaction => transaction.Date));
         }
 
-        public void ConfirmTransactions(int accountId, IEnumerable<int> transactionids)
-        {
-            var firstDate = _dbContext.Transactions.Where(x => transactionids.Contains(x.Id)).Min(x => x.Date);
-            foreach (var transaction in _dbContext.Transactions.Where(x => transactionids.Contains(x.Id)))
-            {
-                transaction.Status = TransactionStatus.Confirmed;
-            }
-            _balanceService.SetTransactionBalances(accountId, firstDate);
-            _dbContext.SaveChanges();
-
-        }
-
         private Transaction CreateTransaction(int baseAccountId, TransactionUploadModel transaction, int ordinal)
         {
             return new Transaction
@@ -64,7 +51,6 @@ namespace Picassi.Core.Accounts.Services.Transactions
                 CategoryId = _dbContext.Categories.SingleOrDefault(x => x.Name == transaction.CategoryName)?.Id,
                 FromId = (transaction.Amount < 0 || transaction.Amount == 0 && transaction.Debit > 0) ? baseAccountId : (int?)null,
                 ToId = (transaction.Amount > 0 || transaction.Amount == 0 && transaction.Credit > 0) ? baseAccountId : (int?)null,
-                Status = TransactionStatus.Provisional,
                 Ordinal = ordinal
             };
         }

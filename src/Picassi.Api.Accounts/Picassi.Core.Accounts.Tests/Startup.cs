@@ -3,7 +3,7 @@ using System.Web.Http;
 using Autofac;
 using Newtonsoft.Json;
 using Owin;
-using Picassi.Core.Accounts.DbAccess.Accounts;
+using Picassi.Core.Accounts.DbAccess;
 using Picassi.Data.Accounts.Database;
 using Picassi.Utils.Api.Authorization;
 using Picassi.Utils.Api.Filters;
@@ -50,7 +50,7 @@ namespace Picassi.Core.Accounts.Tests
         {
             builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(IDbContext))).AsImplementedInterfaces();
             builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(IAccountsDataContext))).AsImplementedInterfaces();
-            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(IAccountCrudService))).AsImplementedInterfaces();
+            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(IAccountDataService))).AsImplementedInterfaces();
             builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(ISwaggerConfig))).AsImplementedInterfaces();
         }
     }
