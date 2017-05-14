@@ -190,7 +190,7 @@
     <Compile Include="Models\ResultsViewModel.cs" />
     <Compile Include="Models\ScheduledTransactions\ScheduledTransactionAutomapperProfile.cs" />
     <Compile Include="Models\ScheduledTransactions\ScheduledTransactionQueryModel.cs" />
-    <Compile Include="Models\ScheduledTransactions\ScheduledTransactionViewModel.cs" />
+    <Compile Include="Models\ScheduledTransactions\ScheduledTransactionModel.cs" />
     <Compile Include="Models\Statements\StatementLineViewModel.cs" />
     <Compile Include="Models\Accounts\AccountPeriodViewModel.cs" />
     <Compile Include="Models\Statements\StatementModel.cs" />

@@ -6,19 +6,19 @@ using Picassi.Core.Accounts.Services;
 
 namespace Picassi.Core.Accounts.DAL.Services
 {
-    public interface IScheduledTransactionsDataService : IGenericDataService<ScheduledTransactionViewModel>
+    public interface IScheduledTransactionsDataService : IGenericDataService<ScheduledTransactionModel>
     {
-        IEnumerable<ScheduledTransactionViewModel> Query(ScheduledTransactionQueryModel query);
+        IEnumerable<ScheduledTransactionModel> Query(ScheduledTransactionQueryModel query);
     }
 
-    public class ScheduledTransactionsDataService : GenericDataService<ScheduledTransactionViewModel, ScheduledTransaction>, IScheduledTransactionsDataService
+    public class ScheduledTransactionsDataService : GenericDataService<ScheduledTransactionModel, ScheduledTransaction>, IScheduledTransactionsDataService
     {
-        public ScheduledTransactionsDataService(IModelMapper<ScheduledTransactionViewModel, ScheduledTransaction> modelMapper, IAccountsDataContext dbContext) 
+        public ScheduledTransactionsDataService(IModelMapper<ScheduledTransactionModel, ScheduledTransaction> modelMapper, IAccountsDataContext dbContext) 
             : base(modelMapper, dbContext)
         {
         }
 
-        public IEnumerable<ScheduledTransactionViewModel> Query(ScheduledTransactionQueryModel query)
+        public IEnumerable<ScheduledTransactionModel> Query(ScheduledTransactionQueryModel query)
         {
             var queryResults = DbContext.ScheduledTransactions.AsQueryable();
 

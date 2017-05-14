@@ -7,7 +7,7 @@ namespace Picassi.Core.Accounts.Models.ScheduledTransactions
     {
         protected override void Configure()
         {
-            CreateMap<ScheduledTransactionViewModel, ModelledTransaction>().ReverseMap();
+            CreateMap<ScheduledTransactionModel, ModelledTransaction>().ReverseMap();
         }
     }
 }

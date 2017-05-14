@@ -3,7 +3,7 @@ using Picassi.Core.Accounts.DAL.Entities;
 
 namespace Picassi.Core.Accounts.Models.ScheduledTransactions
 {
-    public class ScheduledTransactionViewModel
+    public class ScheduledTransactionModel
     {
         public int Id { get; set; }
 
