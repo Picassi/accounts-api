@@ -209,7 +209,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApiModule.cs" />
+    <Compile Include="AccountsApiModule.cs" />
     <Compile Include="Controllers\AccountTransactionsController.cs" />
     <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Controllers\ProjectionsController.cs" />

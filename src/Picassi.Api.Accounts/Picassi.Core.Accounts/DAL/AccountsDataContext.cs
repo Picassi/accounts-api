@@ -16,7 +16,7 @@ namespace Picassi.Core.Accounts.DAL
         DbSet<ScheduledTransaction> ScheduledTransactions { get; set; }
         DbSet<Tag> Tags { get; set; }
         DbSet<Transaction> Transactions { get; set; }
-        System.Data.Entity.Database Database { get; }
+        Database Database { get; }
         DbRawSqlQuery<T> Query<T>(string sql, params object[] parms);
     }
 

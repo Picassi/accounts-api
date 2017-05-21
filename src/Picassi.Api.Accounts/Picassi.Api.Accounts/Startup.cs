@@ -26,7 +26,7 @@ namespace Picassi.Api.Accounts
                 Assembly.GetAssembly(typeof(IAuthenticationConfigurator))
             };
 
-            AutofacConfig.BuildContainer(config, webApiAssembly, new ApiModule());            
+            AutofacConfig.BuildContainer(config, webApiAssembly, new AccountsApiModule());            
 
             using (var scope = AutofacConfig.Container.BeginLifetimeScope())
             {
