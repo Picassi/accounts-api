@@ -30,11 +30,12 @@ namespace Picassi.Api.Accounts.Tests.Framework
                 .WithAutofacModules(new AccountsApiModule())
                 .WithScopes("accounts-user")
                 .WithApplicationConfiguration("accounts-api", new[] { "accounts-user" })
-                .WithServerClientConfiguration("movebubble-server", new[] { "accounts-user" }, new Dictionary<string, string> { { "accounts-admin", "true" } });
+                .WithServerClientConfiguration("picassi-server", new[] { "accounts-user" }, 
+                    new Dictionary<string, string> { { "accounts-admin", "true" } });
 
             _sandbox = builder.BuildApiSandbox();
 
-            var apiClient = builder.BuildClient("movebubble-server");
+            var apiClient = builder.BuildClient("picassi-server");
             ApiClient = new PicassiAccountsApiClient(apiClient);
 
             Database = TestAutofacConfig.Container.Resolve<IAccountsDataContext>();
