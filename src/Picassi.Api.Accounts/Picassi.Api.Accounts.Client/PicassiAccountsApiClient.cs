@@ -4,16 +4,16 @@ namespace Picassi.Api.Accounts.Client
 {
     public interface IPicassiAccountsApiClient
     {
-        
+        IEventsApiClient Events { get; }
     }
 
     public class PicassiAccountsApiClient : IPicassiAccountsApiClient
-    {
-        private ApiClient _apiClient;
+    {        
+        public IEventsApiClient Events { get; }
 
         public PicassiAccountsApiClient(ApiClient apiClient)
         {
-            _apiClient = apiClient;
+            Events = new EventsApiClient(apiClient);
         }
     }
 }

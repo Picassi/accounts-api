@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Net;
 using System.Reflection;
 using Autofac;
@@ -13,12 +14,14 @@ namespace Picassi.Api.Accounts.Tests.Framework
     {
         private ApiSandbox _sandbox;
 
-        public IPicassiAccountsApiClient ServerClient { get; }
+        public IPicassiAccountsApiClient ApiClient { get; }
         public IAccountsDataContext Database { get; set; }
 
         public SandboxWrapper()
         {
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+
+            System.Data.Entity.Database.SetInitializer(new DropCreateDatabaseAlways<AccountsDataContext>());
 
             var builder = new ApiTestEnvironmentBuilder()
                 .WithServicePort(TestPortProvider.GetFreeLocalhostBinding())
@@ -29,13 +32,12 @@ namespace Picassi.Api.Accounts.Tests.Framework
                 .WithApplicationConfiguration("accounts-api", new[] { "accounts-user" })
                 .WithServerClientConfiguration("movebubble-server", new[] { "accounts-user" }, new Dictionary<string, string> { { "accounts-admin", "true" } });
 
-
             _sandbox = builder.BuildApiSandbox();
 
             var apiClient = builder.BuildClient("movebubble-server");
-            ServerClient = new PicassiAccountsApiClient(apiClient);
+            ApiClient = new PicassiAccountsApiClient(apiClient);
 
-            //Database = (TestAccountsDataContext)TestAutofacConfig.Container.Resolve<IAccountsDataContext>();
+            Database = TestAutofacConfig.Container.Resolve<IAccountsDataContext>();
         }
 
         public void Dispose()

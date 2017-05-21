@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using Picassi.Api.Accounts.Contract.Events;
 using Picassi.Core.Accounts.DAL.Services;
 using Picassi.Core.Accounts.Models.Events;
 using Picassi.Utils.Api.Attributes;
@@ -27,9 +28,10 @@ namespace Picassi.Api.Accounts.Controllers
 
         [HttpPost]
         [Route("events")]
-        public EventModel CreateEvent([FromBody]EventModel model)
+        public EventModel CreateEvent([FromBody]CreateEventApiModel model)
         {
-            return _dataService.Create(model);
+            var eventModel = new EventModel(); // TODO fix this
+            return _dataService.Create(eventModel);
         }
 
         [HttpGet]

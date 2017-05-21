@@ -227,6 +227,10 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Picassi.Api.Accounts.Contract\Picassi.Api.Accounts.Contract.csproj">
+      <Project>{8D318D2C-0A4D-46CB-AA26-04BB0832A429}</Project>
+      <Name>Picassi.Api.Accounts.Contract</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Picassi.Core.Accounts\Picassi.Core.Accounts.csproj">
       <Project>{AC94699B-B1AF-46EF-B657-FFEE06E52EA4}</Project>
       <Name>Picassi.Core.Accounts</Name>
