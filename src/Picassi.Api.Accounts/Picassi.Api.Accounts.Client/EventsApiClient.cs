@@ -26,7 +26,11 @@ namespace Picassi.Api.Accounts.Client
 
             var response = _apiClient.PostJson("events", model);
 
-            if (!response.IsSuccessStatusCode) throw new HttpRequestException($"Response {response.StatusCode}: " + response.ReasonPhrase);
+            if (!response.IsSuccessStatusCode)
+            {
+                var content = response.Content.ReadAsStringAsync().Result;
+                throw new HttpRequestException($"Response {response.StatusCode}: " + response.ReasonPhrase + ", " + content);
+            }
         }
 
         private void ValidateApiClient()

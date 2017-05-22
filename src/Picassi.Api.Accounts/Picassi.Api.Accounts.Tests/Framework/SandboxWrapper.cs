@@ -30,8 +30,7 @@ namespace Picassi.Api.Accounts.Tests.Framework
                 .WithAutofacModules(new AccountsApiModule())
                 .WithScopes("accounts-user")
                 .WithApplicationConfiguration("accounts-api", new[] { "accounts-user" })
-                .WithServerClientConfiguration("picassi-server", new[] { "accounts-user" }, 
-                    new Dictionary<string, string> { { "accounts-admin", "true" } });
+                .WithMobileClientConfiguration("picassi-server", new[] { "accounts-user" });
 
             _sandbox = builder.BuildApiSandbox();
 

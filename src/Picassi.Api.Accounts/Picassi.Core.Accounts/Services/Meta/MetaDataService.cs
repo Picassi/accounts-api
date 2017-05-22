@@ -17,23 +17,24 @@ namespace Picassi.Core.Accounts.Services.Meta
     {
         private readonly IAccountBalanceService _accountBalanceService;
         private readonly IAccountsDataContext _dataContext;
+        private readonly IUserIdentityProvider _userIdentityProvider;
 
-        public MetaDataService(IAccountBalanceService accountBalanceService, IAccountsDataContext dataContext)
+        public MetaDataService(IAccountBalanceService accountBalanceService, IAccountsDataContext dataContext, IUserIdentityProvider userIdentityProvider)
         {
             _accountBalanceService = accountBalanceService;
             _dataContext = dataContext;
+            _userIdentityProvider = userIdentityProvider;
         }
 
         public MetaDataViewModel GetMetaData()
         {
             var accountIds = _dataContext.Accounts.Select(account => account.Id).ToList();
             var balance = accountIds.Sum(id => _accountBalanceService.GetAccountBalance(id, DateTime.Now));
-            var identityProvider = HttpContext.Current.Items[UserIdentityProvider.UserIdentityProviderKey] as UserIdentityProvider;
             var targetDate = DateTime.Now.AddDays(-7);
 
             return new MetaDataViewModel
             {
-                Username = identityProvider?.DisplayName ?? "Unknown user",
+                Username = _userIdentityProvider?.DisplayName ?? "Unknown user",
                 Total = $"{balance:0.00}",
                 AccountsNeedUpdating = _dataContext.Accounts.Any(x => x.LastUpdated < targetDate)
             };

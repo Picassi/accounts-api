@@ -26,9 +26,9 @@ namespace Picassi.Api.Accounts
                 Assembly.GetAssembly(typeof(IAuthenticationConfigurator))
             };
 
-            AutofacConfig.BuildContainer(config, webApiAssembly, new AccountsApiModule());            
+            var container = AutofacConfig.BuildContainer(config, webApiAssembly, new AccountsApiModule());            
 
-            using (var scope = AutofacConfig.Container.BeginLifetimeScope())
+            using (var scope = container.BeginLifetimeScope())
             {
                 scope.Resolve<ISwaggerConfig>().Register(config);
                 scope.Resolve<IAuthenticationConfigurator>().Configure(app);
@@ -40,6 +40,8 @@ namespace Picassi.Api.Accounts
             config.EnsureInitialized();
             config.Filters.Add(new ApiExceptionHandlingAttribute());
 
+            app.UseAutofacMiddleware(container);
+            app.UseAutofacWebApi(config);
             app.UseWebApi(config);
         }
     }

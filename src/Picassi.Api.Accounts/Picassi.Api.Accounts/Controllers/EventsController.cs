@@ -9,7 +9,7 @@ using Picassi.Utils.Api.Attributes;
 namespace Picassi.Api.Accounts.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    [PicassiApiAuthorise]
+    [PicassiApiAuthorise] // TODO Ensure that we are using OWIN context for DB configuration
     public class EventsController : ApiController
     {
         private readonly IEventsDataService _dataService;
