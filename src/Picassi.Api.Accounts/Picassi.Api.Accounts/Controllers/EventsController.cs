@@ -2,6 +2,7 @@
 using System.Web.Http;
 using System.Web.Http.Cors;
 using Picassi.Api.Accounts.Contract.Events;
+using Picassi.Api.Accounts.Mappers;
 using Picassi.Core.Accounts.DAL.Services;
 using Picassi.Core.Accounts.Models.Events;
 using Picassi.Utils.Api.Attributes;
@@ -9,43 +10,54 @@ using Picassi.Utils.Api.Attributes;
 namespace Picassi.Api.Accounts.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    [PicassiApiAuthorise] // TODO Ensure that we are using OWIN context for DB configuration
+    [PicassiApiAuthorise] 
     public class EventsController : ApiController
     {
         private readonly IEventsDataService _dataService;
+        private readonly IEventsApiMapper _eventsApiMapper;
 
-        public EventsController(IEventsDataService dataService)
+        public EventsController(IEventsDataService dataService, IEventsApiMapper eventsApiMapper)
         {
             _dataService = dataService;
+            _eventsApiMapper = eventsApiMapper;
         }
 
         [HttpGet]
         [Route("events")]
-        public IEnumerable<EventModel> GetEvents([FromUri]EventsQueryModel query)
+        public IEnumerable<EventModel> GetEvents([FromUri]EventsQueryModel json)
         {
-            return _dataService.Query(query);
+            return _dataService.Query(json);
         }
 
         [HttpPost]
         [Route("events")]
-        public EventModel CreateEvent([FromBody]CreateEventApiModel model)
+        public EventJson CreateEvent([FromBody]CreateEventJson json)
         {
-            var eventModel = new EventModel(); // TODO fix this
-            return _dataService.Create(eventModel);
+            var createdEventModel = _dataService.Create(_eventsApiMapper.Map(json));
+
+            return _eventsApiMapper.Map(createdEventModel);
         }
 
         [HttpGet]
         [Route("events/{id}")]
-        public EventModel GetEvent(int id)
+        public EventJson GetEvent(int id)
         {
-            return _dataService.Get(id);
+            var model = _dataService.Get(id);
+
+            return _eventsApiMapper.Map(model);
         }
 
         [HttpPut]
         [Route("events/{id}")]
-        public EventModel UpdateEvent(int id, [FromBody]EventModel model)
+        public EventJson UpdateEvent(int id, [FromBody]EventJson json)
         {
-            return _dataService.Update(id, model);
+            var model = _dataService.Get(id);
+
+            _eventsApiMapper.Map(json, model);
+
+            var updatedModel = _dataService.Update(id, model);
+
+            return _eventsApiMapper.Map(updatedModel);
         }
 
         [HttpDelete]

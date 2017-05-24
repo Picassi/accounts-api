@@ -1,11 +1,9 @@
 ﻿using System;
 
-namespace Picassi.Core.Accounts.Models.Events
+namespace Picassi.Api.Accounts.Contract.Events
 {
-    public class EventModel
+    public class CreateEventJson
     {
-        public int Id { get; set; }
-
         public string Name { get; set; }
 
         public int? CategoryId { get; set; }

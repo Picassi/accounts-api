@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Picassi.Core.Accounts.Models.Events
+namespace Picassi.Api.Accounts.Contract.Events
 {
-    public class EventModel
+    public class EventJson
     {
         public int Id { get; set; }
 

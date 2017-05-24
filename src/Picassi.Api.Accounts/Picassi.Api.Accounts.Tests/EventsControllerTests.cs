@@ -20,7 +20,7 @@ namespace Picassi.Api.Accounts.Tests
             using (var sandbox = new SandboxWrapper())
             {
                 // TODO make this test work
-                sandbox.ApiClient.Events.CreateEvent(new CreateEventApiModel());
+                sandbox.ApiClient.Events.CreateEvent(new CreateEventJson());
             }
         }
     }
