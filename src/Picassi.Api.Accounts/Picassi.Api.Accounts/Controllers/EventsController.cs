@@ -24,9 +24,9 @@ namespace Picassi.Api.Accounts.Controllers
 
         [HttpGet]
         [Route("events")]
-        public IEnumerable<EventModel> GetEvents([FromUri]EventsQueryModel json)
+        public IEnumerable<EventModel> GetEvents([FromUri]EventsQueryJson json)
         {
-            return _dataService.Query(json);
+            return _dataService.Query(json.PageNumber ?? 1, json.PageSize ?? 20);
         }
 
         [HttpPost]

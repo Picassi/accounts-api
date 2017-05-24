@@ -1,6 +1,4 @@
-﻿using System;
-using System.Net.Http;
-using Picassi.Api.Accounts.Contract.Events;
+﻿using Picassi.Api.Accounts.Contract.Events;
 using Picassi.Auth.Clients;
 
 namespace Picassi.Api.Accounts.Client
@@ -8,34 +6,58 @@ namespace Picassi.Api.Accounts.Client
     public interface IEventsApiClient
     {
 
-        void CreateEvent(CreateEventApiModel model);
+        void CreateEvent(CreateEventJson model);
     }
 
-    public class EventsApiClient : IEventsApiClient
+    public class EventsApiClient : AbstractApiClient, IEventsApiClient
     {
-        private readonly ApiClient _apiClient;
-
-        public EventsApiClient(ApiClient client)
-        {
-            _apiClient = client;
-        }
-
-        public void CreateEvent(CreateEventApiModel model)
+        public void QueryEvents(EventsQueryJson json)
         {
             ValidateApiClient();
 
-            var response = _apiClient.PostJson("events", model);
+            var response = ApiClient.PostJson("events", json);
 
-            if (!response.IsSuccessStatusCode)
-            {
-                var content = response.Content.ReadAsStringAsync().Result;
-                throw new HttpRequestException($"Response {response.StatusCode}: " + response.ReasonPhrase + ", " + content);
-            }
+            HandleErrorResponse(response);
         }
 
-        private void ValidateApiClient()
+        public void CreateEvent(CreateEventJson json)
         {
-            if (_apiClient == null) throw new InvalidOperationException("No client configured");
+            ValidateApiClient();
+
+            var response = ApiClient.PostJson("events", json);
+
+            HandleErrorResponse(response);
+        }
+
+        public void GetEvent(string id, EventJson json)
+        {
+            ValidateApiClient();
+
+            var response = ApiClient.PostJson($"events/{id}", json);
+
+            HandleErrorResponse(response);
+        }
+
+        public void UpdateEvent(string id, EventJson json)
+        {
+            ValidateApiClient();
+
+            var response = ApiClient.PutJson($"events/{id}", json);
+
+            HandleErrorResponse(response);
+        }
+
+        public void DeleteEvent(string id)
+        {
+            ValidateApiClient();
+
+            var response = ApiClient.Delete($"events/{id}");
+
+            HandleErrorResponse(response);
+        }
+
+        public EventsApiClient(ApiClient apiClient) : base(apiClient)
+        {
         }
     }
 }

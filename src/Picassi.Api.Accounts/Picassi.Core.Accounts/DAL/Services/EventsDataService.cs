@@ -8,7 +8,7 @@ namespace Picassi.Core.Accounts.DAL.Services
 {
     public interface IEventsDataService : IGenericDataService<EventModel>
     {
-        IEnumerable<EventModel> Query(EventsQueryModel query);
+        IEnumerable<EventModel> Query(int pageNumber = 1, int pageSize = 20);
     }
 
     public class EventsDataService : GenericDataService<EventModel, Event>, IEventsDataService
@@ -18,12 +18,11 @@ namespace Picassi.Core.Accounts.DAL.Services
         {
         }
 
-        public IEnumerable<EventModel> Query(EventsQueryModel query)
+        public IEnumerable<EventModel> Query(int pageNumber = 1, int pageSize = 20)
         {
-            var queryResults = DbContext.Events.AsQueryable();
-
+            var skip = (pageNumber - 1) * pageSize;
+            var queryResults = DbContext.Events.Skip(skip).Take(pageNumber).AsQueryable();
             return queryResults.Select(ModelMapper.Map);
         }
-
     }
 }
