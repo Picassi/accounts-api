@@ -25,11 +25,14 @@ namespace Picassi.Core.Accounts.Services.Projections
             _projectionBalanceService = projectionBalanceService;
         }
 
-        public bool ProjectAccounts(ProjectionGenerationParameters projectionGenerationParameters)
+        public bool ProjectAccounts(ProjectionGenerationParameters parms)
         {
+            var start = parms?.Start ?? DateTime.Now;
+            var end = parms?.End ?? DateTime.Now.AddYears(1);
+
             RemovePreviouslyCalculatedTransactions();
-            AddUpdatedTransactions(projectionGenerationParameters);
-            UpdateBalances(projectionGenerationParameters);
+            AddUpdatedTransactions(start, end);
+            UpdateBalances(start);
             _dataContext.SaveChanges();
 
             return true;
@@ -43,18 +46,15 @@ namespace Picassi.Core.Accounts.Services.Projections
             }
         }
 
-        private void AddUpdatedTransactions(ProjectionGenerationParameters projectionGenerationParameters)
+        private void AddUpdatedTransactions(DateTime start, DateTime end)
         {
-            var transactions = GenerateTransactions(projectionGenerationParameters);
+            var transactions = GenerateTransactions(start, end);
             _dataContext.ModelledTransactions.AddRange(transactions);
             _dataContext.SaveChanges();
         }
 
-        private IEnumerable<ModelledTransaction> GenerateTransactions(ProjectionGenerationParameters parms)
+        private IEnumerable<ModelledTransaction> GenerateTransactions(DateTime start, DateTime end)
         {
-            var start = parms.Start ?? DateTime.Now;
-            var end = parms.End ?? DateTime.Now.AddYears(1);
-
             var transactions = _dataContext.ScheduledTransactions
                 .ToList()
                 .SelectMany(flow => GetTransactionsForFlow(flow, start, end))
@@ -80,9 +80,9 @@ namespace Picassi.Core.Accounts.Services.Projections
             return projector.GetProjectionsForFlow(flow, start, end);
         }
 
-        private void UpdateBalances(ProjectionGenerationParameters projectionGenerationParameters)
+        private void UpdateBalances(DateTime start)
         {
-            _projectionBalanceService.SetTransactionBalances(projectionGenerationParameters.Start ?? DateTime.Now);
+            _projectionBalanceService.SetTransactionBalances(start);
         }
     }
 }

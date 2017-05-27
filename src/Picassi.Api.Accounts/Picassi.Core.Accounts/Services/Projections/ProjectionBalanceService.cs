@@ -25,7 +25,7 @@ namespace Picassi.Core.Accounts.Services.Projections
 
         public void SetTransactionBalances(DateTime date)
         {
-            foreach (var account in _projectionsDataContext.Accounts)
+            foreach (var account in _projectionsDataContext.Accounts.ToList())
             {
                 SetTransactionBalances(account.Id, date);
             }
@@ -39,17 +39,18 @@ namespace Picassi.Core.Accounts.Services.Projections
 
         public void SetTransactionBalances(int accountId, DateTime date, decimal initialBalance)
         {
-            SetBalanceForward(GetTransactionsAfterTransaction(accountId).ToList(), initialBalance);
+            SetBalanceForward(GetTransactionsAfterTransaction(accountId), initialBalance);
 
             _projectionsDataContext.SaveChanges();
         }
 
-        private IQueryable<ModelledTransaction> GetTransactionsAfterTransaction(int accountId)
+        private IList<ModelledTransaction> GetTransactionsAfterTransaction(int accountId)
         {
             return _projectionsDataContext.ModelledTransactions
                 .Where(x => x.AccountId == accountId)
                 .OrderBy(x => x.Date)
-                .ThenBy(x => x.Ordinal);
+                .ThenBy(x => x.Ordinal)
+                .ToList();
         }
 
         private static void SetBalanceForward(IEnumerable<ModelledTransaction> transactions, decimal initialBalance)

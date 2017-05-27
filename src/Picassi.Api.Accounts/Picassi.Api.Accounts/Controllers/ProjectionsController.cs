@@ -7,7 +7,7 @@ namespace Picassi.Api.Accounts.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     [PicassiApiAuthorise]
-    public class ProjectionsController
+    public class ProjectionsController : ApiController
     {
         private readonly IAccountProjector _accountProjector;
 
@@ -17,10 +17,18 @@ namespace Picassi.Api.Accounts.Controllers
         }
 
         [HttpPost]
-        [Route("project-account")]
+        [Route("accounts/project")]
         public bool GenerateProjection([FromBody]ProjectionGenerationParameters query)
         {
             return _accountProjector.ProjectAccounts(query);
         }
+
+        [HttpPost]
+        [Route("accounts/{id}/project")]
+        public bool GenerateProjectionForAccount(int id, [FromBody]ProjectionGenerationParameters query)
+        {
+            return _accountProjector.ProjectAccounts(query);
+        }
+
     }
 }
