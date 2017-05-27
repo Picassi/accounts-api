@@ -4,6 +4,8 @@ using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System.Linq;
 using Picassi.Core.Accounts.DAL;
+using Picassi.Core.Accounts.DAL.Entities;
+using Picassi.Core.Accounts.DAL.StoreProcedures;
 using Picassi.Core.Accounts.Models.Categories;
 
 namespace Picassi.Core.Accounts.Services.Reports
@@ -24,43 +26,21 @@ namespace Picassi.Core.Accounts.Services.Reports
 
         public CategorySummaryResultsViewModel GetCategorySummaries(CategoriesQueryModel query)
         {
-            var results = GetCategoryByAccountSummaries(query);
-            var grouped = GroupByFilteredAccounts(query, results);
-            var lines = CompileSummaries(grouped);
-            return new CategorySummaryResultsViewModel(lines.ToList());
+            var transactions = GroupByFilteredAccounts(query)
+                .Where(transaction => query.AccountIds.Contains(transaction.AccountId))
+                .GroupBy(transaction => transaction.Category);
+
+            var summaries = transactions
+                .Select(grp => new CategorySummaryViewModel(grp.Key, grp.Select(results => results).ToList()));            
+
+            return new CategorySummaryResultsViewModel(summaries.ToList());
         }
 
-        private DbRawSqlQuery<CategorySummaryResult> GetCategoryByAccountSummaries(CategoriesQueryModel query)
+        private IQueryable<Transaction> GroupByFilteredAccounts(CategoriesQueryModel query)
         {
-            var dateFrom = query.DateFrom ?? DateTime.UtcNow.AddMonths(-1);
-            var dateTo = query.DateTo ?? DateTime.UtcNow;
-            var startDate = new SqlParameter("@StartDate", dateFrom);
-            var endDate = new SqlParameter("@EndDate", dateTo);
-            return _dataContext.Query<CategorySummaryResult>(
-                "exec accounts.GetTransactionTotals @StartDate , @EndDate", startDate, endDate);
-        }
-
-        private static IEnumerable<CategoryAccountSummaryResult> GroupByFilteredAccounts(CategoriesQueryModel query, 
-            DbRawSqlQuery<CategorySummaryResult> results)
-        {
-            var filtered = query.AllAccounts
-                ? results
-                : results.Where(r => query.AccountIds != null && query.AccountIds.Contains(r.AccountId));
-
-            var filteredList = filtered.ToList();
-
-            var grouped = filteredList
-                .GroupBy(r => new { r.CategoryId, r.CategoryName })
-                .Select(r => new CategoryAccountSummaryResult(r.Key.CategoryId, r.Key.CategoryName, r.ToList()));
-
-            return grouped;
-        }
-
-        private static IEnumerable<CategorySummaryViewModel> CompileSummaries(IEnumerable<CategoryAccountSummaryResult> grouped)
-        {
-            var lines = grouped.GroupBy(r => new { r.CategoryId, r.CategoryName })
-                .Select(l => new CategorySummaryViewModel(l.Key.CategoryId, l.Key.CategoryName, l.ToList()));
-            return lines;
+            var transactions = _dataContext.Transactions.Include("Category").AsQueryable();
+            return query.AllAccounts
+                ? transactions : transactions.Where(r => query.AccountIds != null && query.AccountIds.Contains(r.AccountId));
         }
     }
 }

@@ -40,7 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Events\CreateEventApiModel.cs" />
+    <Compile Include="Events\CreateEventJson.cs" />
+    <Compile Include="Events\EventJson.cs" />
+    <Compile Include="Events\EventsQueryJson.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -34,7 +34,7 @@ namespace Picassi.Core.Accounts.DAL.Services
             var transactionsQuery = new TransactionsQueryModel
             {
                 PageSize = query.PageSize,
-                PageNumber = query.PageSize, 
+                PageNumber = query.PageNumber, 
                 Text = query.Text,
                 Accounts = new [] { accountId },
                 Categories = query.Categories,

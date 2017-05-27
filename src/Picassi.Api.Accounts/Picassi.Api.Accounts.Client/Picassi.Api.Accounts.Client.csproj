@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbstractApiClient.cs" />
     <Compile Include="EventsApiClient.cs" />
     <Compile Include="PicassiAccountsApiClient.cs" />
     <Compile Include="PicassiAccountsApiClientConfig.cs" />

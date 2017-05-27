@@ -231,6 +231,7 @@
     <Compile Include="Controllers\StatementsController.cs" />
     <Compile Include="Controllers\ScheduledTransactionsController.cs" />
     <Compile Include="Controllers\TransactionsController.cs" />
+    <Compile Include="Mappers\EventsApiMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

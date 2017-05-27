@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Picassi.Core.Accounts.DAL.Entities;
 
 namespace Picassi.Core.Accounts.Models.Categories
 {
@@ -10,12 +11,12 @@ namespace Picassi.Core.Accounts.Models.Categories
         public decimal Spend { get; set; }
         public decimal TransactionCount { get; set; }
 
-        public CategorySummaryViewModel(int id, string name, ICollection<CategoryAccountSummaryResult> list)
+        public CategorySummaryViewModel(Category category, ICollection<Transaction> list)
         {
-            Id = id;
-            Name = name;
+            Id = category.Id;
+            Name = category.Name;
             Spend = list.Sum(x => x.Amount);
-            TransactionCount = list.Sum(x => x.Total);
+            TransactionCount = list.Count;
         }
     }
 }

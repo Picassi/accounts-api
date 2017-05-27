@@ -20,9 +20,9 @@ namespace Picassi.Core.Accounts.DAL.Services
 
         public IEnumerable<ScheduledTransactionModel> Query(ScheduledTransactionQueryModel query)
         {
-            var queryResults = DbContext.ScheduledTransactions.AsQueryable();
+            var queryResults = DbContext.ScheduledTransactions.Include("Category").AsQueryable();
 
-            return queryResults.Select(ModelMapper.Map);
+            return queryResults.ToList().Select(ModelMapper.Map);
         }
 
     }

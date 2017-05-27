@@ -1,5 +1,5 @@
 ﻿using System.Data.Entity.Migrations;
-using Picassi.Core.Accounts.DAL.Migrations;
+using Picassi.Core.Accounts.Migrations;
 
 namespace Picassi.Core.Accounts.DAL
 {

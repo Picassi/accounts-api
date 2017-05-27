@@ -1,3 +1,4 @@
+using System;
 using AutoMapper;
 using Picassi.Core.Accounts.DAL.Entities;
 using Picassi.Core.Accounts.Services;
@@ -13,17 +14,26 @@ namespace Picassi.Core.Accounts.Models.Accounts
     {
         public Account CreateEntity(AccountModel model)
         {
-            return Mapper.Map<Account>(model);
+            return new Account
+            {
+                LastUpdated = DateTime.Now,
+                Name = model.Name
+            };
         }
 
         public AccountModel Map(Account model)
         {
-            return Mapper.Map<AccountModel>(model);
+            return new AccountModel
+            {
+                Id = model.Id,
+                LastUpdated = model.LastUpdated,
+                Name = model.Name
+            };
         }
 
         public void Patch(AccountModel model, Account entity)
         {
-            Mapper.Map(model, entity);
+            entity.Name = model.Name;
         }
     }
 }
