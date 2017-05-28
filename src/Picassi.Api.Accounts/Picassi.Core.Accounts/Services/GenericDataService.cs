@@ -23,7 +23,7 @@ namespace Picassi.Core.Accounts.Services
             DbContext = dbContext;
         }
 
-        public TModel Create(TModel model)
+        public virtual TModel Create(TModel model)
         {
             var dataModel = ModelMapper.CreateEntity(model);
             DbContext.Set<TEntity>().Add(dataModel);
@@ -31,7 +31,7 @@ namespace Picassi.Core.Accounts.Services
             return ModelMapper.Map(dataModel);
         }
 
-        public TModel Get(int id)
+        public virtual TModel Get(int id)
         {
             var entity = DbContext.Set<TEntity>().Find(id);
             if (entity == null) throw new EntityNotFoundException<TEntity>(id);
@@ -39,7 +39,7 @@ namespace Picassi.Core.Accounts.Services
             return ModelMapper.Map(entity);
         }
 
-        public TModel Update(int id, TModel model)
+        public virtual TModel Update(int id, TModel model)
         {
             var entity = DbContext.Set<TEntity>().Find(id);
             if (entity == null) throw new EntityNotFoundException<TEntity>(id);
@@ -49,7 +49,7 @@ namespace Picassi.Core.Accounts.Services
             return ModelMapper.Map(entity);
         }
 
-        public bool Delete(int id)
+        public virtual bool Delete(int id)
         {
             var entity = DbContext.Set<TEntity>().Find(id);
             if (entity == null) throw new EntityNotFoundException<TEntity>(id);

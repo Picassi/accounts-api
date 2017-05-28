@@ -4,6 +4,7 @@ using Autofac;
 using Newtonsoft.Json;
 using Owin;
 using Picassi.Core.Accounts.DAL.Entities;
+using Picassi.Core.Accounts.Events;
 using Picassi.Core.Accounts.Models.Accounts;
 using Picassi.Utils.Api.Authorization;
 using Picassi.Utils.Api.Filters;
@@ -26,7 +27,8 @@ namespace Picassi.Api.Accounts
                 Assembly.GetAssembly(typeof(IAuthenticationConfigurator))
             };
 
-            var container = AutofacConfig.BuildContainer(config, webApiAssembly, new AccountsApiModule());            
+            var container = AutofacConfig.BuildContainer(config, webApiAssembly, 
+                new AccountsApiModule(), new EventBusModule(dependentAssemblies));            
 
             using (var scope = container.BeginLifetimeScope())
             {
@@ -39,6 +41,8 @@ namespace Picassi.Api.Accounts
             JsonConfig.ConfigureJson(config, DateTimeZoneHandling.Unspecified);
             config.EnsureInitialized();
             config.Filters.Add(new ApiExceptionHandlingAttribute());
+
+            EventBus.Instance = new DefaultEventBus(new HandlerResolver(container));
 
             app.UseAutofacMiddleware(container);
             app.UseAutofacWebApi(config);

@@ -39,6 +39,10 @@
     <OutputPath>bin\Local\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.5.0\lib\net45\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="AutoMapper, Version=4.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
@@ -78,6 +82,8 @@
     <Compile Include="DAL\AccountsDataContext.cs" />
     <Compile Include="DAL\Entities\Tag.cs" />
     <Compile Include="DAL\Migrator.cs" />
+    <Compile Include="Events\DefaultEventBus.cs" />
+    <Compile Include="Events\HandlerResolver.cs" />
     <Compile Include="Migrations\201705271109030_InitialCreate.cs" />
     <Compile Include="Migrations\201705271109030_InitialCreate.Designer.cs">
       <DependentUpon>201705271109030_InitialCreate.cs</DependentUpon>
@@ -182,7 +188,7 @@
     <Compile Include="Models\Goals\GoalModel.cs" />
     <Compile Include="Models\ModelledTransactions\ModelledTransactionAutomapperProfile.cs" />
     <Compile Include="Models\ModelledTransactions\ModelledTransactionQueryModel.cs" />
-    <Compile Include="Models\ModelledTransactions\ModelledTransactionViewModel.cs" />
+    <Compile Include="Models\ModelledTransactions\ModelledTransactionModel.cs" />
     <Compile Include="Models\Events\EventsAutomapperProfile.cs" />
     <Compile Include="Models\Events\EventsQueryModel.cs" />
     <Compile Include="Models\Events\EventModel.cs" />

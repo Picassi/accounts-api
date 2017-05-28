@@ -4,19 +4,19 @@ using Picassi.Core.Accounts.Services;
 
 namespace Picassi.Core.Accounts.Models.ModelledTransactions
 {
-    public class ModelledTransactionModelMapper : IModelMapper<ModelledTransactionViewModel, ModelledTransaction>
+    public class ModelledTransactionModelMapper : IModelMapper<ModelledTransactionModel, ModelledTransaction>
     {
-        public ModelledTransaction CreateEntity(ModelledTransactionViewModel model)
+        public ModelledTransaction CreateEntity(ModelledTransactionModel model)
         {
             return Mapper.Map<ModelledTransaction>(model);
         }
 
-        public ModelledTransactionViewModel Map(ModelledTransaction model)
+        public ModelledTransactionModel Map(ModelledTransaction model)
         {
-            return Mapper.Map<ModelledTransactionViewModel>(model);
+            return Mapper.Map<ModelledTransactionModel>(model);
         }
 
-        public void Patch(ModelledTransactionViewModel model, ModelledTransaction entity)
+        public void Patch(ModelledTransactionModel model, ModelledTransaction entity)
         {
             Mapper.Map(model, entity);
         }

@@ -57,9 +57,7 @@ namespace Picassi.Core.Accounts.Services.Transactions
 
         private static decimal GetTransactionAmount(TransactionUploadModel transaction)
         {
-            return transaction.Amount == 0
-                ? transaction.Credit + transaction.Debit
-                : (transaction.Amount > 0 ? transaction.Amount : -transaction.Amount);
+            return transaction.Amount == 0 ? transaction.Credit - transaction.Debit : transaction.Amount;
         }
     }
 }

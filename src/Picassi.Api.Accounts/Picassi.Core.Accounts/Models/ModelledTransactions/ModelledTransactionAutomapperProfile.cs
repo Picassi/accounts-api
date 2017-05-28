@@ -7,7 +7,7 @@ namespace Picassi.Core.Accounts.Models.ModelledTransactions
     {
         protected override void Configure()
         {
-            CreateMap<ModelledTransactionViewModel, ModelledTransaction>().ReverseMap();
+            CreateMap<ModelledTransactionModel, ModelledTransaction>().ReverseMap();
         }
     }
 }

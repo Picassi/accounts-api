@@ -29,6 +29,13 @@ namespace Picassi.Core.Accounts.DAL.Services
             _transactionsDataService = transactionsDataService;
         }
 
+        public override AccountTransactionModel Update(int id, AccountTransactionModel model)
+        {
+            var modelToReturn = base.Update(id, model);
+            EventBus.Instance.Publish(new TransactionMoved(modelToReturn.AccountId, modelToReturn.Date));
+            return modelToReturn;
+        }
+
         public ResultsViewModel<AccountTransactionModel> Query(int accountId, AccountTransactionsQueryModel query)
         {
             var transactionsQuery = new TransactionsQueryModel

@@ -40,8 +40,8 @@ namespace Picassi.Core.Accounts.Services.Reports
         {
             if (transaction == null) return;
 
-            SetBalanceForward(GetTransactionsAfterTransaction(accountId, transaction).ToList(), accountId, balanceAfter);
-            SetBalanceBackwards(GetTransactionBeforeTransaction(accountId, transaction).ToList(), accountId, initialBalance);
+            SetBalanceForward(GetTransactionsAfterTransaction(accountId, transaction).ToList(), balanceAfter);
+            SetBalanceBackwards(GetTransactionBeforeTransaction(accountId, transaction).ToList(), initialBalance);
 
             _dataContext.SaveChanges();
         }
@@ -63,21 +63,21 @@ namespace Picassi.Core.Accounts.Services.Reports
 
         }
 
-        private static void SetBalanceForward(IEnumerable<Transaction> transactions, int accountId, decimal initialBalance)
+        private static void SetBalanceForward(IEnumerable<Transaction> transactions, decimal initialBalance)
         {
             foreach (var transaction in transactions)
             {
-                initialBalance = initialBalance - transaction.Amount;
+                initialBalance = initialBalance + transaction.Amount;
                 transaction.Balance = initialBalance;
             }
         }
 
-        private static void SetBalanceBackwards(IEnumerable<Transaction> transactions, int accountId, decimal initialBalance)
+        private static void SetBalanceBackwards(IEnumerable<Transaction> transactions, decimal initialBalance)
         {
             foreach (var transaction in transactions)
             {
                 transaction.Balance = initialBalance;
-                initialBalance = initialBalance + transaction.Amount;
+                initialBalance = initialBalance - transaction.Amount;
             }
         }
 
