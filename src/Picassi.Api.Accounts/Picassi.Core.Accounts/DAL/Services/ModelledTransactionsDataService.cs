@@ -43,34 +43,30 @@ namespace Picassi.Core.Accounts.DAL.Services
         {
             var baseDate = DateTime.Today;
             var queryResults = GetBaseTransactions(accountId);
-            var groupedByPeriod = queryResults.GroupBy(transaction => (int)DbFunctions.DiffDays(baseDate, transaction.Date) / 7);
+            var results = GetPeriodSummaries(queryResults, baseDate);
+            var resultsWithDefaults = GetResultsWithDefaults(results, baseDate, results.Max(r => r.StartDate));
+            AssignBalances(resultsWithDefaults);
+            return resultsWithDefaults;
+        }
 
-            return groupedByPeriod.Select(grp => new TransactionCategoriesGroupedByPeriodModel
+        private List<TransactionCategoriesGroupedByPeriodModel> GetResultsWithDefaults(List<TransactionCategoriesGroupedByPeriodModel> results, DateTime start, DateTime end)
+        {
+            var resultsToReturn = new List<TransactionCategoriesGroupedByPeriodModel>();
+            var week = 0;
+            for (var date = start; date <= end; date = date.AddDays(7))
             {
-                Description = "Week " + grp.Key,
-                Balance = 0,
-                Credit = grp.Where(transaction => transaction.Amount > 0)
-                    .Select(transaction => transaction.Amount)
-                    .DefaultIfEmpty(0).Sum(),
-                Debit = grp.Where(transaction => transaction.Amount < 0)
-                    .Select(transaction => transaction.Amount)
-                    .DefaultIfEmpty(0).Sum(),
-                StartDate = (DateTime)DbFunctions.AddDays(baseDate, grp.Key * 7),
-                Transactions = grp.GroupBy(transactions => new { transactions.CategoryId, transactions.Category.Name })
-                    .Select(grp2 => new TransactionsGroupedByCategoryModel
-                    {
-                        Description = grp2.Key.Name ?? "Uncategorised",
-                        CategoryId = grp2.Key.CategoryId,
-                        Count = grp2.Count(),
-                        Credit = grp2.Where(transaction => transaction.Amount > 0)
-                            .Select(transaction => transaction.Amount)
-                            .DefaultIfEmpty(0).Sum(),
-                        Debit = grp2.Where(transaction => transaction.Amount < 0)
-                            .Select(transaction => transaction.Amount)
-                            .DefaultIfEmpty(0).Sum()
-                    }
-                )
-            }).OrderBy(x => x.StartDate).ToList();            
+                week++;
+                var groupedModel = results.FirstOrDefault(r => r.StartDate == date) ?? new TransactionCategoriesGroupedByPeriodModel
+                {
+                    Description = "Week " + week,
+                    Credit = 0,
+                    Debit = 0,
+                    StartDate = date,
+                    Transactions = new List<TransactionsGroupedByCategoryModel>()
+                };
+                resultsToReturn.Add(groupedModel);
+            }
+            return resultsToReturn;
         }
 
         private IQueryable<ModelledTransaction> GetBaseTransactions(int accountId)
@@ -88,5 +84,47 @@ namespace Picassi.Core.Accounts.DAL.Services
             return actualResults;
         }
 
+        private static List<TransactionCategoriesGroupedByPeriodModel> GetPeriodSummaries(IQueryable<ModelledTransaction> queryResults, DateTime baseDate)
+        {
+            var groupedByPeriod =
+                queryResults.GroupBy(transaction => (int)DbFunctions.DiffDays(baseDate, transaction.Date) / 7);
+
+            var results = groupedByPeriod.Select(grp => new TransactionCategoriesGroupedByPeriodModel
+            {
+                Description = "Week " + grp.Key,
+                Credit = grp.Where(transaction => transaction.Amount > 0)
+                    .Select(transaction => transaction.Amount)
+                    .DefaultIfEmpty(0).Sum(),
+                Debit = grp.Where(transaction => transaction.Amount < 0)
+                    .Select(transaction => transaction.Amount)
+                    .DefaultIfEmpty(0).Sum(),
+                StartDate = (DateTime)DbFunctions.AddDays(baseDate, grp.Key * 7),
+                Transactions = grp.GroupBy(transactions => new { transactions.CategoryId, transactions.Category.Name })
+                    .Select(grp2 => new TransactionsGroupedByCategoryModel
+                        {
+                            Description = grp2.Key.Name ?? "Uncategorised",
+                            CategoryId = grp2.Key.CategoryId,
+                            Count = grp2.Count(),
+                            Credit = grp2.Where(transaction => transaction.Amount > 0)
+                                .Select(transaction => transaction.Amount)
+                                .DefaultIfEmpty(0).Sum(),
+                            Debit = grp2.Where(transaction => transaction.Amount < 0)
+                                .Select(transaction => transaction.Amount)
+                                .DefaultIfEmpty(0).Sum()
+                        }
+                    )
+            }).OrderBy(x => x.StartDate).ToList();
+            return results;
+        }
+
+        private static void AssignBalances(List<TransactionCategoriesGroupedByPeriodModel> results)
+        {
+            decimal balance = 0;
+            foreach (var result in results)
+            {
+                balance += result.Amount;
+                result.Balance = balance;
+            }
+        }
     }
 }
