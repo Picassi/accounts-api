@@ -26,7 +26,11 @@ namespace Picassi.Core.Accounts.DAL.Services
         {
             var pageSize = query.PageSize ?? 20;
             var skip = ((query.PageNumber ?? 1) - 1) * pageSize;
-            var queryResults = DbContext.ModelledTransactions.Where(t => t.AccountId == accountId).Include("Category").AsQueryable();
+            var queryResults = DbContext.ModelledTransactions.Include("Category")
+                .Where(t => t.AccountId == accountId)                
+                .OrderBy(t => t.Date)
+                .ThenBy(t => t.Ordinal)
+                .AsQueryable();
             var allResults = queryResults.Count();
             var actualResults = queryResults.Skip(skip).Take(pageSize);
 
