@@ -89,6 +89,8 @@
       <DependentUpon>201705271109030_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Categories\CategoryModelMapper.cs" />
+    <Compile Include="Models\ModelledTransactions\TransactionCategoriesGroupedByPeriodModel.cs" />
+    <Compile Include="Models\ModelledTransactions\TransactionsGroupedByCategoryModel.cs" />
     <Compile Include="Models\Tags\TagModelMapper.cs" />
     <Compile Include="DAL\Services\TagsDataService.cs" />
     <Compile Include="DAL\StoreProcedures\GetTransactionTotals.cs" />

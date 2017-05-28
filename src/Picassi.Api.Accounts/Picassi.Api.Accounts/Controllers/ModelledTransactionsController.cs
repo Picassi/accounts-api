@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
@@ -25,6 +26,14 @@ namespace Picassi.Api.Accounts.Controllers
         {
             return _transactionDataService.Query(accountId, query);
         }
+
+	    [HttpGet]
+	    [Route("accounts/{accountId}/projected-transactions/weekly")]
+	    public IEnumerable<TransactionCategoriesGroupedByPeriodModel> GetWeeklyTransactionsForAccount(int accountId, [FromUri]ModelledTransactionQueryModel query)
+	    {
+	        return _transactionDataService.QueryWeekly(accountId, query);
+	    }
+
 
         [HttpPost]
         [Route("accounts/{accountId}/projected-transactions")]
