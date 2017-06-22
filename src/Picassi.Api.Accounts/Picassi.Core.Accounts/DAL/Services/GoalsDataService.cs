@@ -13,14 +13,14 @@ namespace Picassi.Core.Accounts.DAL.Services
 
     public class GoalsDataService : GenericDataService<GoalModel, Goal>, IGoalsDataService
     {
-        public GoalsDataService(IModelMapper<GoalModel, Goal> modelMapper, IAccountsDataContext dbContext) 
-            : base(modelMapper, dbContext)
+        public GoalsDataService(IModelMapper<GoalModel, Goal> modelMapper, IAccountsDatabaseProvider dbProvider) 
+            : base(modelMapper, dbProvider)
         {
         }
 
         public IEnumerable<GoalModel> Query(GoalsQueryModel query)
         {
-            var queryResults = DbContext.Goals.AsQueryable();
+            var queryResults = DbProvider.GetDataContext().Goals.AsQueryable();
 
             return queryResults.Select(ModelMapper.Map);
         }

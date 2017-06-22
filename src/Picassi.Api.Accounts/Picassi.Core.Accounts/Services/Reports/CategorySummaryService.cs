@@ -12,9 +12,9 @@ namespace Picassi.Core.Accounts.Services.Reports
 
     public class CategorySummaryService : ICategorySummaryService
     {
-        private readonly IAccountsDataContext _dataContext;
+        private readonly IAccountsDatabaseProvider _dataContext;
 
-        public CategorySummaryService(IAccountsDataContext dataContext)
+        public CategorySummaryService(IAccountsDatabaseProvider dataContext)
         {
             _dataContext = dataContext;
         }
@@ -40,7 +40,7 @@ namespace Picassi.Core.Accounts.Services.Reports
 
         private IQueryable<Transaction> GroupByFilteredAccounts(CategoriesQueryModel query)
         {
-            var transactions = _dataContext.Transactions.Include("Category").AsQueryable();
+            var transactions = _dataContext.GetDataContext().Transactions.Include("Category").AsQueryable();
             return query.AllAccounts
                 ? transactions : transactions.Where(r => query.AccountIds != null && query.AccountIds.Contains(r.AccountId));
         }

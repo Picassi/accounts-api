@@ -13,14 +13,14 @@ namespace Picassi.Core.Accounts.DAL.Services
 
     public class BudgetsDataService : GenericDataService<BudgetModel, Budget>, IBudgetsDataService
     {
-        public BudgetsDataService(IModelMapper<BudgetModel, Budget> modelMapper, IAccountsDataContext dbContext) 
-            : base(modelMapper, dbContext)
+        public BudgetsDataService(IModelMapper<BudgetModel, Budget> modelMapper, IAccountsDatabaseProvider dbProvider) 
+            : base(modelMapper, dbProvider)
         {
         }
 
         public IEnumerable<BudgetModel> Query(BudgetsQueryModel query)
         {
-            var queryResults = DbContext.Budgets.AsQueryable();
+            var queryResults = DbProvider.GetDataContext().Budgets.AsQueryable();
 
             return queryResults.Select(ModelMapper.Map);
         }

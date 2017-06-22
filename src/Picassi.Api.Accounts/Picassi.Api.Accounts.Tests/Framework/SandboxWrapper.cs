@@ -15,7 +15,7 @@ namespace Picassi.Api.Accounts.Tests.Framework
         private ApiSandbox _sandbox;
 
         public IPicassiAccountsApiClient ApiClient { get; }
-        public IAccountsDataContext Database { get; set; }
+        public IAccountsDatabaseProvider Database { get; set; }
 
         public SandboxWrapper()
         {
@@ -37,7 +37,7 @@ namespace Picassi.Api.Accounts.Tests.Framework
             var apiClient = builder.BuildClient("picassi-server");
             ApiClient = new PicassiAccountsApiClient(apiClient);
 
-            Database = TestAutofacConfig.Container.Resolve<IAccountsDataContext>();
+            Database = TestAutofacConfig.Container.Resolve<IAccountsDatabaseProvider>();
         }
 
         public void Dispose()

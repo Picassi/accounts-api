@@ -18,8 +18,8 @@ namespace Picassi.Core.Accounts.DAL.Services
     public class ModelledTransactionsDataService : GenericDataService<ModelledTransactionModel, ModelledTransaction>, IModelledTransactionsDataService
     {
         private readonly IModelMapper<ModelledTransactionModel, ModelledTransaction> _modelMapper;
-        public ModelledTransactionsDataService(IModelMapper<ModelledTransactionModel, ModelledTransaction> modelMapper, IAccountsDataContext dbContext) 
-            : base(modelMapper, dbContext)
+        public ModelledTransactionsDataService(IModelMapper<ModelledTransactionModel, ModelledTransaction> modelMapper, IAccountsDatabaseProvider dbProvider) 
+            : base(modelMapper, dbProvider)
         {
             _modelMapper = modelMapper;
         }
@@ -71,7 +71,7 @@ namespace Picassi.Core.Accounts.DAL.Services
 
         private IQueryable<ModelledTransaction> GetBaseTransactions(int accountId)
         {
-            var queryResults = DbContext.ModelledTransactions.Include("Category")
+            var queryResults = DbProvider.GetDataContext().ModelledTransactions.Include("Category")
                 .Where(t => t.AccountId == accountId);
             return queryResults;
         }

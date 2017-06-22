@@ -15,14 +15,14 @@ namespace Picassi.Core.Accounts.DAL.Services
 
     public class CategoriesDataService : GenericDataService<CategoryModel, Category>, ICategoriesDataService
     {
-        public CategoriesDataService(IModelMapper<CategoryModel, Category> modelMapper, IAccountsDataContext dbContext) 
-            : base(modelMapper, dbContext)
+        public CategoriesDataService(IModelMapper<CategoryModel, Category> modelMapper, IAccountsDatabaseProvider dbProvider) 
+            : base(modelMapper, dbProvider)
         {
         }
 
         public IEnumerable<CategoryModel> Query(CategoriesQueryModel query)
         {
-            var queryResults = DbContext.Categories.AsQueryable();
+            var queryResults = DbProvider.GetDataContext().Categories.AsQueryable();
 
             if (query?.Name != null) queryResults = queryResults.Where(x => x.Name.Contains(query.Name));
             queryResults = query == null ? queryResults : OrderResults(queryResults, query.SortBy, query.SortAscending);

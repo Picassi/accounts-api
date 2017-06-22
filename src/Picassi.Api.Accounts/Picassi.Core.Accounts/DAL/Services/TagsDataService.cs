@@ -15,14 +15,14 @@ namespace Picassi.Core.Accounts.DAL.Services
 
     public class TagsDataService : GenericDataService<TagModel, Tag>, ITagsDataService
     {
-        public TagsDataService(IModelMapper<TagModel, Tag> modelMapper, IAccountsDataContext dbContext) 
-            : base(modelMapper, dbContext)
+        public TagsDataService(IModelMapper<TagModel, Tag> modelMapper, IAccountsDatabaseProvider dbProvider) 
+            : base(modelMapper, dbProvider)
         {
         }
 
         public IEnumerable<TagModel> Query(TagsQueryModel query)
         {
-            var queryResults = DbContext.Tags.AsQueryable();
+            var queryResults = DbProvider.GetDataContext().Tags.AsQueryable();
 
             if (query?.Name != null) queryResults = queryResults.Where(x => x.Name.Contains(query.Name));
             queryResults = query == null ? queryResults : OrderResults(queryResults, query.SortBy, query.SortAscending);

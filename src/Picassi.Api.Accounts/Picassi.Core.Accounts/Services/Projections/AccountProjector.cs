@@ -14,11 +14,11 @@ namespace Picassi.Core.Accounts.Services.Projections
 
     public class AccountProjector : IAccountProjector
     {
-        private readonly IAccountsDataContext _dataContext;
+        private readonly IAccountsDatabaseProvider _dataContext;
         private readonly IFlowProjectorProvider _flowProjectorProvider;
         private readonly IProjectionBalanceService _projectionBalanceService;
 
-        public AccountProjector(IAccountsDataContext dataContext, IFlowProjectorProvider flowProjectorProvider, IProjectionBalanceService projectionBalanceService)
+        public AccountProjector(IAccountsDatabaseProvider dataContext, IFlowProjectorProvider flowProjectorProvider, IProjectionBalanceService projectionBalanceService)
         {
             _dataContext = dataContext;
             _flowProjectorProvider = flowProjectorProvider;
@@ -33,29 +33,29 @@ namespace Picassi.Core.Accounts.Services.Projections
             RemovePreviouslyCalculatedTransactions();
             AddUpdatedTransactions(start, end);
             UpdateBalances(start);
-            _dataContext.SaveChanges();
+            _dataContext.GetDataContext().SaveChanges();
 
             return true;
         }
 
         private void RemovePreviouslyCalculatedTransactions()
         {
-            foreach (var transaction in _dataContext.ModelledTransactions)
+            foreach (var transaction in _dataContext.GetDataContext().ModelledTransactions)
             {
-                _dataContext.ModelledTransactions.Remove(transaction);
+                _dataContext.GetDataContext().ModelledTransactions.Remove(transaction);
             }
         }
 
         private void AddUpdatedTransactions(DateTime start, DateTime end)
         {
             var transactions = GenerateTransactions(start, end);
-            _dataContext.ModelledTransactions.AddRange(transactions);
-            _dataContext.SaveChanges();
+            _dataContext.GetDataContext().ModelledTransactions.AddRange(transactions);
+            _dataContext.GetDataContext().SaveChanges();
         }
 
         private IEnumerable<ModelledTransaction> GenerateTransactions(DateTime start, DateTime end)
         {
-            var transactions = _dataContext.ScheduledTransactions
+            var transactions = _dataContext.GetDataContext().ScheduledTransactions
                 .ToList()
                 .SelectMany(flow => GetTransactionsForFlow(flow, start, end))
                 .OrderBy(flow => flow.Date);

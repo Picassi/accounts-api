@@ -13,14 +13,14 @@ namespace Picassi.Core.Accounts.DAL.Services
 
     public class AccountDataService : GenericDataService<AccountModel, Account>, IAccountDataService
     {
-        public AccountDataService(IAccountModelMapper modelMapper, IAccountsDataContext dbContext) 
-            : base(modelMapper, dbContext)
+        public AccountDataService(IAccountModelMapper modelMapper, IAccountsDatabaseProvider dbProvider) 
+            : base(modelMapper, dbProvider)
         {
         }
 
         public IEnumerable<AccountModel> Query(AccountQueryModel accounts)
         {
-            var queryResults = DbContext.Accounts.AsQueryable();
+            var queryResults = DbProvider.GetDataContext().Accounts.AsQueryable();
 
             if (accounts?.Name != null)
             {

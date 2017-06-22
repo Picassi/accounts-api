@@ -18,14 +18,14 @@ namespace Picassi.Core.Accounts.DAL.Services
 
     public class TransactionsDataService : GenericDataService<TransactionModel, Transaction>, ITransactionsDataService
     {
-        public TransactionsDataService(ITransactionModelMapper modelMapper, IAccountsDataContext dbContext) 
-            : base(modelMapper, dbContext)
+        public TransactionsDataService(ITransactionModelMapper modelMapper, IAccountsDatabaseProvider dbProvider) 
+            : base(modelMapper, dbProvider)
         {
         }
 
         public IEnumerable<TransactionModel> Query(SimpleTransactionQueryModel query)
         {
-            var transactions = DbContext.Transactions.Where(x => x.AccountId == query.AccountId);
+            var transactions = DbProvider.GetDataContext().Transactions.Where(x => x.AccountId == query.AccountId);
             if (query.DateFrom != null) transactions = transactions.Where(x => x.Date >= query.DateFrom);
             if (query.DateTo != null) transactions = transactions.Where(x => x.Date < query.DateTo);
             return Mapper.Map<IEnumerable<TransactionModel>>(transactions);
@@ -33,7 +33,7 @@ namespace Picassi.Core.Accounts.DAL.Services
 
         public TransactionsResultsViewModel Query(TransactionsQueryModel query)
         {
-            var transactions = DbContext.Transactions.Include(x => x.Category);
+            var transactions = DbProvider.GetDataContext().Transactions.Include(x => x.Category);
             var results = (query == null ? transactions : FilterTransactions(query, transactions)).ToList();
             var count = query == null ? results.Count : FilterTransactionsWithoutPaging(query, transactions).Count();
 

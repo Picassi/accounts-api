@@ -13,14 +13,14 @@ namespace Picassi.Core.Accounts.DAL.Services
 
     public class ScheduledTransactionsDataService : GenericDataService<ScheduledTransactionModel, ScheduledTransaction>, IScheduledTransactionsDataService
     {
-        public ScheduledTransactionsDataService(IModelMapper<ScheduledTransactionModel, ScheduledTransaction> modelMapper, IAccountsDataContext dbContext) 
-            : base(modelMapper, dbContext)
+        public ScheduledTransactionsDataService(IModelMapper<ScheduledTransactionModel, ScheduledTransaction> modelMapper, IAccountsDatabaseProvider dbProvider) 
+            : base(modelMapper, dbProvider)
         {
         }
 
         public IEnumerable<ScheduledTransactionModel> Query(ScheduledTransactionQueryModel query)
         {
-            var queryResults = DbContext.ScheduledTransactions.Include("Category").AsQueryable();
+            var queryResults = DbProvider.GetDataContext().ScheduledTransactions.Include("Category").AsQueryable();
 
             return queryResults.ToList().Select(ModelMapper.Map);
         }

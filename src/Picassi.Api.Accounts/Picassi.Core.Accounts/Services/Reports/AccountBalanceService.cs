@@ -16,9 +16,9 @@ namespace Picassi.Core.Accounts.Services.Reports
 
     public class AccountBalanceService : IAccountBalanceService
     {
-        private readonly IAccountsDataContext _dataContext;
+        private readonly IAccountsDatabaseProvider _dataContext;
 
-        public AccountBalanceService(IAccountsDataContext dataContext)
+        public AccountBalanceService(IAccountsDatabaseProvider dataContext)
         {
             _dataContext = dataContext;
         }
@@ -43,12 +43,12 @@ namespace Picassi.Core.Accounts.Services.Reports
             SetBalanceForward(GetTransactionsAfterTransaction(accountId, transaction).ToList(), balanceAfter);
             SetBalanceBackwards(GetTransactionBeforeTransaction(accountId, transaction).ToList(), initialBalance);
 
-            _dataContext.SaveChanges();
+            _dataContext.GetDataContext().SaveChanges();
         }
 
         private IQueryable<Transaction> GetTransactionsAfterTransaction(int accountId, Transaction transaction)
         {
-            return _dataContext.Transactions                
+            return _dataContext.GetDataContext().Transactions                
                 .Where(x => x.AccountId == accountId)
                 .Where(x => x.Date > transaction.Date || (x.Date == transaction.Date && x.Ordinal > transaction.Ordinal))
                 .OrderBy(x => x.Date).ThenBy(x => x.Ordinal);
@@ -56,7 +56,7 @@ namespace Picassi.Core.Accounts.Services.Reports
 
         private IQueryable<Transaction> GetTransactionBeforeTransaction(int accountId, Transaction transaction)
         {
-            return _dataContext.Transactions
+            return _dataContext.GetDataContext().Transactions
                 .Where(x => x.AccountId == accountId)
                 .Where(x => x.Date < transaction.Date || (x.Date == transaction.Date && x.Ordinal < transaction.Ordinal))
                 .OrderByDescending(x => x.Date).ThenByDescending(x => x.Ordinal);
@@ -84,12 +84,12 @@ namespace Picassi.Core.Accounts.Services.Reports
         private Transaction GetTransactionForAccountBalance(int accountId, DateTime date)
         {
             var lastTransaction = _dataContext
-                .Transactions.Where(x => x.AccountId == accountId && x.Date < date)
+                .GetDataContext().Transactions.Where(x => x.AccountId == accountId && x.Date < date)
                 .OrderByDescending(transaction => transaction.Date)
                 .ThenByDescending(transaction => transaction.Ordinal)
                 .FirstOrDefault();
             var firstTransactionToday = _dataContext
-                .Transactions.Where(x => x.AccountId == accountId && x.Date == date)
+                .GetDataContext().Transactions.Where(x => x.AccountId == accountId && x.Date == date)
                 .OrderBy(transaction => transaction.Ordinal)
                 .FirstOrDefault();
             return (lastTransaction ?? firstTransactionToday);

@@ -23,8 +23,8 @@ namespace Picassi.Core.Accounts.DAL.Services
 
         public AccountTransactionsDataService(
             IAccountTransactionModelMapper modelMapper, 
-            IAccountsDataContext dbContext, ITransactionsDataService transactionsDataService) 
-            : base(modelMapper, dbContext)
+            IAccountsDatabaseProvider dbProvider, ITransactionsDataService transactionsDataService) 
+            : base(modelMapper, dbProvider)
         {
             _transactionsDataService = transactionsDataService;
         }
@@ -64,13 +64,13 @@ namespace Picassi.Core.Accounts.DAL.Services
 
         public void InsertTransactionAt(int id, int position)
         {
-            DbContext.Database.ExecuteSqlCommand($"Update accounts.transactions set ordinal = ordinal + 1 where ordinal >= {position}");
-            DbContext.Database.ExecuteSqlCommand($"Update accounts.transactions set ordinal = {position} where id = {id}");
+            DbProvider.GetDataContext().Database.ExecuteSqlCommand($"Update accounts.transactions set ordinal = ordinal + 1 where ordinal >= {position}");
+            DbProvider.GetDataContext().Database.ExecuteSqlCommand($"Update accounts.transactions set ordinal = {position} where id = {id}");
         }
 
         public void MoveTransactionUp(int accountId, int transactionId)
         {
-            var transaction = DbContext.Transactions.Find(transactionId);
+            var transaction = DbProvider.GetDataContext().Transactions.Find(transactionId);
             var targetTransaction = GetNextTransactionOnSameDay(accountId, transaction);
             MoveOrdinalFromAtoB(transactionId, transaction.Ordinal, targetTransaction?.Ordinal ?? transaction.Ordinal + 1);
             EventBus.Instance.Publish(new TransactionMoved(accountId, transaction.Date));
@@ -78,7 +78,7 @@ namespace Picassi.Core.Accounts.DAL.Services
 
         public void MoveTransactionDown(int accountId, int transactionId)
         {
-            var transaction = DbContext.Transactions.Find(transactionId);
+            var transaction = DbProvider.GetDataContext().Transactions.Find(transactionId);
             var targetTransaction = GetPreviousTransactionOnSameDay(accountId, transaction);
             MoveOrdinalFromAtoB(transactionId, transaction.Ordinal, targetTransaction?.Ordinal ?? transaction.Ordinal + 1);
             EventBus.Instance.Publish(new TransactionMoved(accountId, transaction.Date));
@@ -86,7 +86,7 @@ namespace Picassi.Core.Accounts.DAL.Services
 
         private Transaction GetNextTransactionOnSameDay(int accountId, Transaction transaction)
         {
-            var targetTransaction = DbContext.Transactions
+            var targetTransaction = DbProvider.GetDataContext().Transactions
                 .Where(x => x.AccountId == accountId && x.Date == transaction.Date && x.Ordinal > transaction.Ordinal)
                 .OrderBy(x => x.Ordinal)
                 .FirstOrDefault();
@@ -95,7 +95,7 @@ namespace Picassi.Core.Accounts.DAL.Services
 
         private Transaction GetPreviousTransactionOnSameDay(int accountId, Transaction transaction)
         {
-            var targetTransaction = DbContext.Transactions
+            var targetTransaction = DbProvider.GetDataContext().Transactions
                 .Where(x => x.AccountId == accountId && x.Date == transaction.Date && x.Ordinal < transaction.Ordinal)
                 .OrderByDescending(x => x.Ordinal).FirstOrDefault();
             return targetTransaction;
@@ -106,8 +106,8 @@ namespace Picassi.Core.Accounts.DAL.Services
             var update = start > end
                 ? $"Update accounts.transactions set ordinal = ordinal + 1 where ordinal < {start} and ordinal >= {end}"
                 : $"Update accounts.transactions set ordinal = ordinal - 1 where ordinal > {start} and ordinal <= {end}";
-            DbContext.Database.ExecuteSqlCommand(update);
-            DbContext.Database.ExecuteSqlCommand($"Update accounts.transactions set ordinal = {end} where id = {id}");
+            DbProvider.GetDataContext().Database.ExecuteSqlCommand(update);
+            DbProvider.GetDataContext().Database.ExecuteSqlCommand($"Update accounts.transactions set ordinal = {end} where id = {id}");
         }
 
         private static IEnumerable<AccountTransactionModel> GetAccountLines(int accountId, IEnumerable<TransactionModel> transactions)

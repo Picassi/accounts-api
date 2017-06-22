@@ -13,15 +13,15 @@ namespace Picassi.Core.Accounts.DAL.Services
 
     public class EventsDataService : GenericDataService<EventModel, Event>, IEventsDataService
     {
-        public EventsDataService(IModelMapper<EventModel, Event> modelMapper, IAccountsDataContext dbContext) 
-            : base(modelMapper, dbContext)
+        public EventsDataService(IModelMapper<EventModel, Event> modelMapper, IAccountsDatabaseProvider dbProvider) 
+            : base(modelMapper, dbProvider)
         {
         }
 
         public IEnumerable<EventModel> Query(int pageNumber = 1, int pageSize = 20)
         {
             var skip = (pageNumber - 1) * pageSize;
-            var queryResults = DbContext.Events.Skip(skip).Take(pageNumber).AsQueryable();
+            var queryResults = DbProvider.GetDataContext().Events.Skip(skip).Take(pageNumber).AsQueryable();
             return queryResults.Select(ModelMapper.Map);
         }
     }

@@ -16,19 +16,19 @@ namespace Picassi.Core.Accounts.Services.Transactions
 
     public class TransactionUploadService : ITransactionUploadService
     {
-        private readonly IAccountsDataContext _dbContext;
+        private readonly IAccountsDatabaseProvider _dbProvider;
         private readonly IAccountBalanceService _balanceService;
 
-        public TransactionUploadService(IAccountsDataContext dbContext, IAccountBalanceService balanceService)
+        public TransactionUploadService(IAccountsDatabaseProvider dbProvider, IAccountBalanceService balanceService)
         {
-            _dbContext = dbContext;
+            _dbProvider = dbProvider;
             _balanceService = balanceService;
         }
 
         public void AddTransactionsToAccount(int accountId, ICollection<TransactionUploadModel> transactions)
         {
-            var maxOrdinal = _dbContext.Transactions.Any()
-                ? _dbContext.Transactions.Max(transaction => transaction.Ordinal)
+            var maxOrdinal = _dbProvider.GetDataContext().Transactions.Any()
+                ? _dbProvider.GetDataContext().Transactions.Max(transaction => transaction.Ordinal)
                 : 0;
 
             var transactionModels = transactions
@@ -36,8 +36,8 @@ namespace Picassi.Core.Accounts.Services.Transactions
                 .Select(transaction => CreateTransaction(accountId, transaction, ++maxOrdinal))
                 .ToList();
 
-            _dbContext.Transactions.AddRange(transactionModels);
-            _dbContext.SaveChanges();
+            _dbProvider.GetDataContext().Transactions.AddRange(transactionModels);
+            _dbProvider.GetDataContext().SaveChanges();
             _balanceService.SetTransactionBalances(accountId, transactionModels.Min(transaction => transaction.Date));
         }
 
@@ -48,7 +48,7 @@ namespace Picassi.Core.Accounts.Services.Transactions
                 Amount = GetTransactionAmount(transaction),
                 Date = DateTime.ParseExact(transaction.Date, "dd/MM/yyyy", CultureInfo.CurrentCulture),
                 Description = transaction.Description,
-                CategoryId = _dbContext.Categories.SingleOrDefault(x => x.Name == transaction.CategoryName)?.Id,
+                CategoryId = _dbProvider.GetDataContext().Categories.SingleOrDefault(x => x.Name == transaction.CategoryName)?.Id,
                 AccountId = baseAccountId,
                 ToId = null,
                 Ordinal = ordinal

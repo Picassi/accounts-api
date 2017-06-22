@@ -5,22 +5,7 @@ using Picassi.Utils.Data;
 
 namespace Picassi.Core.Accounts.DAL
 {
-    public interface IAccountsDataContext : IDbContext
-    {
-        DbSet<Account> Accounts { get; set; }
-        DbSet<Budget> Budgets { get; set; }
-        DbSet<Category> Categories { get; set; }
-        DbSet<Event> Events { get; set; }
-        DbSet<Goal> Goals { get; set; }
-        DbSet<ModelledTransaction> ModelledTransactions { get; set; }
-        DbSet<ScheduledTransaction> ScheduledTransactions { get; set; }
-        DbSet<Tag> Tags { get; set; }
-        DbSet<Transaction> Transactions { get; set; }
-        Database Database { get; }
-        DbRawSqlQuery<T> Query<T>(string sql, params object[] parms);
-    }
-
-    public class AccountsDataContext : DbContext, IAccountsDataContext
+    public class AccountsDataContext : DbContext
     {
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Budget> Budgets { get; set; }
@@ -36,7 +21,15 @@ namespace Picassi.Core.Accounts.DAL
             return Database.SqlQuery<T>(sql, parms);
         }
 
-        public AccountsDataContext() : base("Accounts") { }
+        public AccountsDataContext()
+        {
+            
+        }
+
+        public AccountsDataContext(string connectionString) : base(connectionString)
+        {
+            
+        }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

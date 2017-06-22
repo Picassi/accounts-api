@@ -1,6 +1,5 @@
 ﻿using Picassi.Core.Accounts.DAL;
 using Picassi.Core.Accounts.Exceptions;
-using Picassi.Utils.Data;
 
 namespace Picassi.Core.Accounts.Services
 {
@@ -15,25 +14,25 @@ namespace Picassi.Core.Accounts.Services
     public abstract class GenericDataService<TModel, TEntity> : IGenericDataService<TModel> where TEntity : class 
     {
         protected readonly IModelMapper<TModel, TEntity> ModelMapper;
-        protected readonly IAccountsDataContext DbContext;
+        protected readonly IAccountsDatabaseProvider DbProvider;
 
-        protected GenericDataService(IModelMapper<TModel, TEntity> modelMapper, IAccountsDataContext dbContext)
+        protected GenericDataService(IModelMapper<TModel, TEntity> modelMapper, IAccountsDatabaseProvider dbProvider)
         {
             ModelMapper = modelMapper;
-            DbContext = dbContext;
+            DbProvider = dbProvider;
         }
 
         public virtual TModel Create(TModel model)
         {
             var dataModel = ModelMapper.CreateEntity(model);
-            DbContext.Set<TEntity>().Add(dataModel);
-            DbContext.SaveChanges();
+            DbProvider.GetDataContext().Set<TEntity>().Add(dataModel);
+            DbProvider.GetDataContext().SaveChanges();
             return ModelMapper.Map(dataModel);
         }
 
         public virtual TModel Get(int id)
         {
-            var entity = DbContext.Set<TEntity>().Find(id);
+            var entity = DbProvider.GetDataContext().Set<TEntity>().Find(id);
             if (entity == null) throw new EntityNotFoundException<TEntity>(id);
 
             return ModelMapper.Map(entity);
@@ -41,21 +40,21 @@ namespace Picassi.Core.Accounts.Services
 
         public virtual TModel Update(int id, TModel model)
         {
-            var entity = DbContext.Set<TEntity>().Find(id);
+            var entity = DbProvider.GetDataContext().Set<TEntity>().Find(id);
             if (entity == null) throw new EntityNotFoundException<TEntity>(id);
 
             ModelMapper.Patch(model, entity);
-            DbContext.SaveChanges();
+            DbProvider.GetDataContext().SaveChanges();
             return ModelMapper.Map(entity);
         }
 
         public virtual bool Delete(int id)
         {
-            var entity = DbContext.Set<TEntity>().Find(id);
+            var entity = DbProvider.GetDataContext().Set<TEntity>().Find(id);
             if (entity == null) throw new EntityNotFoundException<TEntity>(id);
 
-            DbContext.Set<TEntity>().Remove(entity);
-            DbContext.SaveChanges();
+            DbProvider.GetDataContext().Set<TEntity>().Remove(entity);
+            DbProvider.GetDataContext().SaveChanges();
 
             return true;
         }
