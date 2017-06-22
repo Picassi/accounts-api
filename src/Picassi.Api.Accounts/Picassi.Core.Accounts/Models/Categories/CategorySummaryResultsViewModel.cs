@@ -12,8 +12,8 @@ namespace Picassi.Core.Accounts.Models.Categories
         {
             Lines = lines;
             TotalLines = lines.Count;
-            Total = lines.Sum(l => l.Spend);
-            TotalTransactions = lines.Sum(l => l.TransactionCount);
+            Total = lines.Select(l => l.Spend).DefaultIfEmpty(0).Sum();
+            TotalTransactions = lines.Select(l => l.TransactionCount).DefaultIfEmpty(0).Sum();
         }
     }
 }

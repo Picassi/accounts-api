@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
-using System.Data.SqlClient;
-using System.Linq;
+﻿using System.Linq;
 using Picassi.Core.Accounts.DAL;
 using Picassi.Core.Accounts.DAL.Entities;
-using Picassi.Core.Accounts.DAL.StoreProcedures;
 using Picassi.Core.Accounts.Models.Categories;
 
 namespace Picassi.Core.Accounts.Services.Reports
@@ -26,11 +21,18 @@ namespace Picassi.Core.Accounts.Services.Reports
 
         public CategorySummaryResultsViewModel GetCategorySummaries(CategoriesQueryModel query)
         {
-            var transactions = GroupByFilteredAccounts(query)
-                .Where(transaction => query.AccountIds.Contains(transaction.AccountId))
-                .GroupBy(transaction => transaction.Category);
+            var filteredTransactions = GroupByFilteredAccounts(query);
 
-            var summaries = transactions
+            if (!query.AllAccounts)
+            {
+                filteredTransactions = filteredTransactions.Where(transaction => query.AccountIds.Contains(transaction.AccountId));
+            }
+
+            var groupedTransactions = filteredTransactions
+                .GroupBy(transaction => transaction.Category)
+                .ToList();
+
+            var summaries = groupedTransactions
                 .Select(grp => new CategorySummaryViewModel(grp.Key, grp.Select(results => results).ToList()));            
 
             return new CategorySummaryResultsViewModel(summaries.ToList());

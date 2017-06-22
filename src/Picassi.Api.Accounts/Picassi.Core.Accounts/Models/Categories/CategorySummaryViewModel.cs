@@ -11,11 +11,11 @@ namespace Picassi.Core.Accounts.Models.Categories
         public decimal Spend { get; set; }
         public decimal TransactionCount { get; set; }
 
-        public CategorySummaryViewModel(Category category, ICollection<Transaction> list)
+        public CategorySummaryViewModel(Category category, IList<Transaction> list)
         {
-            Id = category.Id;
-            Name = category.Name;
-            Spend = list.Sum(x => x.Amount);
+            Id = category?.Id;
+            Name = category?.Name ?? "Uncategorised";
+            Spend = list.Select(x => x.Amount).DefaultIfEmpty(0).Sum();
             TransactionCount = list.Count;
         }
     }
