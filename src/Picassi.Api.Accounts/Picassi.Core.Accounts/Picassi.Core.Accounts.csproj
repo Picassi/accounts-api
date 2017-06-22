@@ -89,7 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DAL\AccountsDataContext.cs" />
-    <Compile Include="DAL\AccountsDataContextFactory.cs" />
+    <Compile Include="DAL\AccountsDatabaseProvider.cs" />
     <Compile Include="DAL\Entities\Tag.cs" />
     <Compile Include="DAL\Migrator.cs" />
     <Compile Include="Events\DefaultEventBus.cs" />

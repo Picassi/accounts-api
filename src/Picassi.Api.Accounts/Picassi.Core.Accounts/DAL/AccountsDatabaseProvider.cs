@@ -34,6 +34,11 @@ namespace Picassi.Core.Accounts.DAL
 
         public static string BuildConnectionString(IOwinContext context)
         {
+            if (ConfigurationManager.AppSettings["connection-type"] == "static")
+            {
+                return ConfigurationManager.ConnectionStrings["Accounts"].ConnectionString;
+            }
+
             var principal = context.Authentication?.User;
 
             if (principal == null) throw new AccessViolationException("User has not been authenticated");
