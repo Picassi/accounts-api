@@ -6,7 +6,7 @@ namespace Picassi.Core.Accounts.Services.Accounts
 {
     public interface IAccountStatusChecker
     {
-        DateTime? LastUpdated(int accountId);
+        DateTime? LastUpdated(int? accountId);
         DateTime? LastUpdated();
         DateTime? MostOutOfDate();
     }
@@ -20,9 +20,11 @@ namespace Picassi.Core.Accounts.Services.Accounts
             _dataContext = dataContext;
         }
 
-        public DateTime? LastUpdated(int accountId)
+        public DateTime? LastUpdated(int? accountId)
         {
-            return _dataContext.GetDataContext().Accounts.Find(accountId).LastUpdated;
+            return accountId == null 
+                ? _dataContext.GetDataContext().Accounts.Where(x => x.Id == accountId).Select(x => x.LastUpdated).FirstOrDefault()
+                : _dataContext.GetDataContext().Accounts.Select(x => x.LastUpdated).OrderByDescending(x => x).FirstOrDefault();
         }
 
         public DateTime? LastUpdated()

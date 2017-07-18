@@ -4,7 +4,7 @@ namespace Picassi.Core.Accounts.Models.Accounts
 {
     public class AccountSummaryViewModel
     {
-        public int AccountId { get; set; }
+        public int? AccountId { get; set; }
 
         public DateTime? LastUpdated { get; set; }
 

@@ -12,8 +12,29 @@ namespace Picassi.Core.Accounts.DAL.Services
 {
     public interface ITransactionsDataService : IGenericDataService<TransactionModel>
     {
-        IEnumerable<TransactionModel> Query(SimpleTransactionQueryModel query);
-        TransactionsResultsViewModel Query(TransactionsQueryModel query);
+        IEnumerable<TransactionModel> Query(
+            string text = null,
+            int[] accounts = null,
+            int[] categories = null,
+            DateTime? dateFrom = null,
+            DateTime? dateTo = null,
+            bool showUncategorised = true,
+            int? pageSize = null,
+            int? pageNumber = null,
+            string sortBy = null,
+            bool sortAscending = true);
+
+        TransactionsResultsViewModel QueryWithCount(
+            string text = null, 
+            int[] accounts = null, 
+            int[] categories = null,
+            DateTime? dateFrom = null,
+            DateTime? dateTo = null,
+            bool showUncategorised = true,
+            int? pageSize = null,
+            int? pageNumber = null,
+            string sortBy = null,
+            bool sortAscending = true);
     }
 
     public class TransactionsDataService : GenericDataService<TransactionModel, Transaction>, ITransactionsDataService
@@ -23,19 +44,39 @@ namespace Picassi.Core.Accounts.DAL.Services
         {
         }
 
-        public IEnumerable<TransactionModel> Query(SimpleTransactionQueryModel query)
-        {
-            var transactions = DbProvider.GetDataContext().Transactions.Where(x => x.AccountId == query.AccountId);
-            if (query.DateFrom != null) transactions = transactions.Where(x => x.Date >= query.DateFrom);
-            if (query.DateTo != null) transactions = transactions.Where(x => x.Date < query.DateTo);
-            return Mapper.Map<IEnumerable<TransactionModel>>(transactions);
-        }
-
-        public TransactionsResultsViewModel Query(TransactionsQueryModel query)
+        public IEnumerable<TransactionModel> Query(
+            string text = null,
+            int[] accounts = null,
+            int[] categories = null,
+            DateTime? dateFrom = null,
+            DateTime? dateTo = null,
+            bool showUncategorised = true,
+            int? pageSize = null,
+            int? pageNumber = null,
+            string sortBy = null,
+            bool sortAscending = true)
         {
             var transactions = DbProvider.GetDataContext().Transactions.Include(x => x.Category);
-            var results = (query == null ? transactions : FilterTransactions(query, transactions)).ToList();
-            var count = query == null ? results.Count : FilterTransactionsWithoutPaging(query, transactions).Count();
+            var results = FilterTransactions(text, accounts, categories, dateFrom, dateTo, showUncategorised, pageSize, pageNumber, sortBy, sortAscending, transactions).ToList();
+
+            return Mapper.Map<IEnumerable<TransactionModel>>(results);
+        }
+
+        public TransactionsResultsViewModel QueryWithCount(
+            string text = null,
+            int[] accounts = null,
+            int[] categories = null,
+            DateTime? dateFrom = null,
+            DateTime? dateTo = null,
+            bool showUncategorised = true,
+            int? pageSize = null,
+            int? pageNumber = null,
+            string sortBy = null,
+            bool sortAscending = true)
+        {
+            var transactions = DbProvider.GetDataContext().Transactions.Include(x => x.Category);
+            var results = FilterTransactions(text, accounts, categories, dateFrom, dateTo, showUncategorised, pageSize, pageNumber, sortBy, sortAscending, transactions).ToList();
+            var count = FilterTransactionsWithoutPaging(text, accounts, categories, dateFrom, dateTo, showUncategorised, transactions).Count();
 
             return new TransactionsResultsViewModel
             {
@@ -45,20 +86,23 @@ namespace Picassi.Core.Accounts.DAL.Services
             };
         }
 
-        private static IEnumerable<Transaction> FilterTransactions(TransactionsQueryModel query, IQueryable<Transaction> transactions)
+        private static IEnumerable<Transaction> FilterTransactions(string text, int[] accounts, int[] categories,
+            DateTime? dateFrom, DateTime? dateTo, bool showUncategorised, int? pageSize, int? pageNumber,
+            string sortBy, bool sortAscending, IQueryable <Transaction> transactions)
         {
-            transactions = FilterTransactionsWithoutPaging(query, transactions);
-            transactions = OrderResults(transactions, query.SortBy, query.SortAscending);
-            transactions = PageResults(transactions, query.PageNumber, query.PageSize);
+            transactions = FilterTransactionsWithoutPaging(text, accounts, categories, dateFrom, dateTo, showUncategorised, transactions);
+            transactions = OrderResults(transactions, sortBy, sortAscending);
+            transactions = PageResults(transactions, pageNumber, pageSize);
             return transactions;
         }
 
-        private static IQueryable<Transaction> FilterTransactionsWithoutPaging(TransactionsQueryModel query, IQueryable<Transaction> transactions)
+        private static IQueryable<Transaction> FilterTransactionsWithoutPaging(string text, int[] accounts, int[] categories,
+            DateTime? dateFrom, DateTime? dateTo, bool showUncategorised, IQueryable<Transaction> transactions)
         {
-            transactions = FilterText(transactions, query.Text);
-            transactions = FilterAccounts(transactions, query.Accounts);
-            transactions = FilterCategories(transactions, query.ShowAllCategorised, query.ShowUncategorised, query.Categories);
-            transactions = FilterDate(transactions, query.DateFrom, query.DateTo);
+            transactions = FilterText(transactions, text);
+            transactions = FilterAccounts(transactions, accounts);
+            transactions = FilterCategories(transactions, categories, showUncategorised);
+            transactions = FilterDate(transactions, dateFrom, dateTo);
             return transactions;
         }
 
@@ -79,8 +123,9 @@ namespace Picassi.Core.Accounts.DAL.Services
                 : transactions.Where(x => accountIds.Contains((int) x.AccountId));
         }
 
-        private static IQueryable<Transaction> FilterCategories(IQueryable<Transaction> transactions, bool showAllCategories, bool showUncategorised, int[] categoryIds)
+        private static IQueryable<Transaction> FilterCategories(IQueryable<Transaction> transactions, int[] categoryIds, bool showUncategorised)
         {
+            var showAllCategories = categoryIds == null;
             if (categoryIds == null) categoryIds = new int[0];
             return transactions.Where(x =>
                 (showUncategorised && x.CategoryId == null) ||

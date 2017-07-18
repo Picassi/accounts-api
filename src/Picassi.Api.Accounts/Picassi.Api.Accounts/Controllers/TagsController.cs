@@ -16,12 +16,10 @@ namespace Picassi.Api.Accounts.Controllers
     public class TagsController : ApiController
     {
         private readonly ICategoriesDataService _dataService;
-        private readonly ICategorySummaryService _tagSummaryService;
 
-        public TagsController(ICategoriesDataService dataService, ICategorySummaryService tagSummaryService)
+        public TagsController(ICategoriesDataService dataService)
         {
             _dataService = dataService;
-            _tagSummaryService = tagSummaryService;
         }
 
         [HttpGet]
@@ -29,13 +27,6 @@ namespace Picassi.Api.Accounts.Controllers
         public IEnumerable<CategoryModel> GetCategories([FromUri]CategoriesQueryModel query)
         {
             return _dataService.Query(query);
-        }
-
-        [HttpGet]
-        [Route("tags/summary")]
-        public ResultsViewModel<CategorySummaryViewModel> GetCategoriesSumary([FromUri]CategoriesQueryModel query)
-        {
-            return _tagSummaryService.GetCategorySummaries(query);
         }
 
         [HttpPost]

@@ -38,22 +38,9 @@ namespace Picassi.Core.Accounts.DAL.Services
 
         public ResultsViewModel<AccountTransactionModel> Query(int accountId, AccountTransactionsQueryModel query)
         {
-            var transactionsQuery = new TransactionsQueryModel
-            {
-                PageSize = query.PageSize,
-                PageNumber = query.PageNumber, 
-                Text = query.Text,
-                Accounts = new [] { accountId },
-                Categories = query.Categories,
-                ShowAllCategorised = query.ShowAllCategorised,
-                ShowUncategorised = query.ShowUncategorised,
-                DateFrom = query.DateFrom,
-                DateTo = query.DateTo,
-                SortBy = query.SortBy,
-                SortAscending = query.SortAscending
-            };
-
-            var transactions = _transactionsDataService.Query(transactionsQuery);
+            var transactions = _transactionsDataService.QueryWithCount(query.Text, new[] { accountId }, query.Categories, 
+                query.DateFrom, query.DateTo, query.ShowUncategorised, query.PageSize, 
+                query.PageNumber, query.SortBy, query.SortAscending);
 
             return new ResultsViewModel<AccountTransactionModel>
             {

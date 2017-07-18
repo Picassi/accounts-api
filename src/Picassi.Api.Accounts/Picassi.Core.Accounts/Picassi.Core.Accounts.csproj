@@ -163,11 +163,9 @@
     <Compile Include="Services\Projections\ProjectionBalanceService.cs" />
     <Compile Include="Services\Projections\ProjectionGenerationParameters.cs" />
     <Compile Include="Services\Reports\AccountBalanceService.cs" />
-    <Compile Include="Services\Reports\StatementViewModelFactory.cs" />
-    <Compile Include="Services\Reports\StatementService.cs" />
     <Compile Include="Services\Accounts\AccountStatusChecker.cs" />
-    <Compile Include="Services\Reports\AccountSummaryViewModelFactory.cs" />
-    <Compile Include="Services\Reports\CategorySummaryService.cs" />
+    <Compile Include="Services\Reports\CategorySummarise.cs" />
+    <Compile Include="Services\Reports\AccountSummariser.cs" />
     <Compile Include="Services\GenericDataService.cs" />
     <Compile Include="Services\IModelMapper.cs" />
     <Compile Include="Services\Meta\MetaDataService.cs" />
@@ -209,7 +207,6 @@
     <Compile Include="Models\Categories\CategoryAutomapperProfile.cs" />
     <Compile Include="Models\Categories\CategorySummaryQueryModel.cs" />
     <Compile Include="Models\Categories\CategorySummaryResult.cs" />
-    <Compile Include="Models\Categories\CategorySummaryResultsViewModel.cs" />
     <Compile Include="Models\Categories\CategorySummaryViewModel.cs" />
     <Compile Include="Models\Categories\CategoryModel.cs" />
     <Compile Include="Models\Meta\MetaDataViewModel.cs" />

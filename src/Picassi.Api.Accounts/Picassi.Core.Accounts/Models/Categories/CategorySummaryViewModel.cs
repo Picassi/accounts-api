@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Picassi.Core.Accounts.DAL.Entities;
 
@@ -6,17 +7,19 @@ namespace Picassi.Core.Accounts.Models.Categories
 {
     public class CategorySummaryViewModel
     {
-        public int? Id { get; set; }
-        public string Name { get; set; }
-        public decimal Spend { get; set; }
-        public decimal TransactionCount { get; set; }
+        public int? CategoryId { get; set; }
 
-        public CategorySummaryViewModel(Category category, IList<Transaction> list)
-        {
-            Id = category?.Id;
-            Name = category?.Name ?? "Uncategorised";
-            Spend = list.Select(x => x.Amount).DefaultIfEmpty(0).Sum();
-            TransactionCount = list.Count;
-        }
+        public DateTime? From { get; set; }
+
+        public DateTime? To { get; set; }
+
+        public decimal Budget { get; set; }
+
+        public decimal TotalDebit { get; set; }
+
+        public decimal TotalCredit { get; set; }
+
+        public decimal TotalChange { get; set; }
+
     }
 }

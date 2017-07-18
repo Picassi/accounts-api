@@ -63,14 +63,14 @@ namespace Picassi.Api.Accounts.Controllers
         [Route("accounts/{id}/summary")]
         public AccountSummaryViewModel GetAccountSummary(int id, [FromUri]DateRange period)
         {
-            return _accountSummariser.GetAccountSummary(new AccountPeriodViewModel { AccountId = id, From = period.Start, To = period.End });
+            return _accountSummariser.GetAccountSummary(id, period.Start, period.End);
         }
 
         [HttpGet]
         [Route("accounts/summary")]
-        public AccountsStatusViewModel GetAccountsSummary()
+        public AccountSummaryViewModel GetAccountsSummary([FromUri]DateRange period)
         {
-            return _accountSummariser.GetAccountsSummary();
+            return _accountSummariser.GetAccountSummary(null, period.Start, period.End);
         }
     }
 }

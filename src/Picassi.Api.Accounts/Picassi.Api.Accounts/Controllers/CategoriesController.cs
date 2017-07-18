@@ -16,12 +16,12 @@ namespace Picassi.Api.Accounts.Controllers
     public class CategoriesController : ApiController
     {
         private readonly ICategoriesDataService _dataService;
-        private readonly ICategorySummaryService _categorySummaryService;
+        private readonly ICategorySummariser _categorySummariser;
 
-        public CategoriesController(ICategoriesDataService dataService, ICategorySummaryService categorySummaryService)
+        public CategoriesController(ICategoriesDataService dataService, ICategorySummariser categorySummariser)
         {
             _dataService = dataService;
-            _categorySummaryService = categorySummaryService;
+            _categorySummariser = categorySummariser;
         }
 
         [HttpGet]
@@ -33,9 +33,9 @@ namespace Picassi.Api.Accounts.Controllers
 
         [HttpGet]
         [Route("categories/summary")]
-        public ResultsViewModel<CategorySummaryViewModel> GetCategoriesSumary([FromUri]CategoriesQueryModel query)
+        public IEnumerable<CategorySummaryViewModel> GetCategoriesSumary([FromUri]CategoriesQueryModel query)
         {
-            return _categorySummaryService.GetCategorySummaries(query);
+            return _categorySummariser.GetCategorySummaries(query?.DateFrom, query?.DateTo);
         }
 
         [HttpPost]

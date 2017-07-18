@@ -8,7 +8,7 @@ namespace Picassi.Core.Accounts.Services.Reports
 {
     public interface IAccountBalanceService
     {
-        decimal GetAccountBalance(int accountId, DateTime date);
+        decimal GetAccountBalance(int? accountId, DateTime date);
         void SetTransactionBalances(int accountId, DateTime date);
         void SetTransactionBalances(int accountId, DateTime date, Transaction transaction, decimal initialBalance, decimal balanceAfter);
         
@@ -23,7 +23,7 @@ namespace Picassi.Core.Accounts.Services.Reports
             _dataContext = dataContext;
         }
 
-        public decimal GetAccountBalance(int accountId, DateTime date)
+        public decimal GetAccountBalance(int? accountId, DateTime date)
         {
             return GetTransactionForAccountBalance(accountId, date)?.Balance ?? 0;
         }
@@ -81,18 +81,25 @@ namespace Picassi.Core.Accounts.Services.Reports
             }
         }
 
-        private Transaction GetTransactionForAccountBalance(int accountId, DateTime date)
+        private Transaction GetTransactionForAccountBalance(int? accountId, DateTime date)
         {
-            var lastTransaction = _dataContext
-                .GetDataContext().Transactions.Where(x => x.AccountId == accountId && x.Date < date)
+            var lastTransaction = GetTransactionsForAccount(accountId)
+                .Where(x => x.Date < date)
                 .OrderByDescending(transaction => transaction.Date)
                 .ThenByDescending(transaction => transaction.Ordinal)
                 .FirstOrDefault();
-            var firstTransactionToday = _dataContext
-                .GetDataContext().Transactions.Where(x => x.AccountId == accountId && x.Date == date)
+            var firstTransactionToday = GetTransactionsForAccount(accountId)
+                .Where(x => x.Date == date)
                 .OrderBy(transaction => transaction.Ordinal)
                 .FirstOrDefault();
-            return (lastTransaction ?? firstTransactionToday);
+            return lastTransaction ?? firstTransactionToday;
+        }
+
+        private IQueryable<Transaction> GetTransactionsForAccount(int? accountId)
+        {
+            return accountId == null
+                ? _dataContext.GetDataContext().Transactions.AsQueryable()
+                : _dataContext.GetDataContext().Transactions.Where(x => x.AccountId == accountId);
         }
     }
 }
