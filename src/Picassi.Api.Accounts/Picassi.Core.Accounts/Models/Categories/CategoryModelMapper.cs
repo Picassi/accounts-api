@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Picassi.Core.Accounts.DAL.Entities;
 using Picassi.Core.Accounts.Services;
@@ -19,6 +21,11 @@ namespace Picassi.Core.Accounts.Models.Categories
         public void Patch(CategoryModel model, Category entity)
         {
             Mapper.Map(model, entity);
+        }
+
+        public IEnumerable<CategoryModel> MapList(IEnumerable<Category> results)
+        {
+            return results.Select(Map);
         }
     }
 }

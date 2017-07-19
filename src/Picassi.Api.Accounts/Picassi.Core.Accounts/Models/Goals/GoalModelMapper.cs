@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Picassi.Core.Accounts.DAL.Entities;
 using Picassi.Core.Accounts.Services;
@@ -19,6 +21,11 @@ namespace Picassi.Core.Accounts.Models.Goals
         public void Patch(GoalModel model, Goal entity)
         {
             Mapper.Map(model, entity);
+        }
+
+        public IEnumerable<GoalModel> MapList(IEnumerable<Goal> results)
+        {
+            return results.Select(Map);
         }
     }
 }

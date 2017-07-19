@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Picassi.Core.Accounts.DAL.Entities;
 using Picassi.Core.Accounts.Services;
 
@@ -49,6 +51,11 @@ namespace Picassi.Core.Accounts.Models.Transactions
             entity.Date = model.Date;
             entity.Balance = model.Balance;
             entity.Amount = model.Amount;
+        }
+
+        public IEnumerable<AccountTransactionModel> MapList(IEnumerable<Transaction> results)
+        {
+            return results.Select(Map);
         }
     }
 }

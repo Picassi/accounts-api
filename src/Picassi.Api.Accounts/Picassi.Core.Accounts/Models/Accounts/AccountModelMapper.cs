@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Picassi.Core.Accounts.DAL.Entities;
 using Picassi.Core.Accounts.Services;
@@ -34,6 +36,11 @@ namespace Picassi.Core.Accounts.Models.Accounts
         public void Patch(AccountModel model, Account entity)
         {
             entity.Name = model.Name;
+        }
+
+        public IEnumerable<AccountModel> MapList(IEnumerable<Account> results)
+        {
+            return results.Select(Map);
         }
     }
 }

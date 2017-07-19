@@ -104,10 +104,10 @@ namespace Picassi.Core.Accounts.DAL.Services
                 Id = transaction.Id,
                 Description = transaction.Description,
                 AccountId = accountId,
-                LinkedAccountId = transaction.FromId == accountId ? transaction.ToId : transaction.FromId,
+                LinkedAccountId = transaction.ToId,
                 CategoryId = transaction.CategoryId,
                 CategoryName = transaction.CategoryName,
-                Amount = transaction.FromId == accountId ? -transaction.Amount : transaction.Amount,
+                Amount = transaction.Amount,
                 Balance = transaction.Balance,
                 Date = transaction.Date,
             }).ToList();

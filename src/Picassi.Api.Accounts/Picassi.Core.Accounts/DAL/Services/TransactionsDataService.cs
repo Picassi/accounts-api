@@ -18,11 +18,11 @@ namespace Picassi.Core.Accounts.DAL.Services
             int[] categories = null,
             DateTime? dateFrom = null,
             DateTime? dateTo = null,
-            bool showUncategorised = true,
+            bool? showUncategorised = true,
             int? pageSize = null,
             int? pageNumber = null,
             string sortBy = null,
-            bool sortAscending = true);
+            bool? sortAscending = true);
 
         TransactionsResultsViewModel QueryWithCount(
             string text = null, 
@@ -30,11 +30,11 @@ namespace Picassi.Core.Accounts.DAL.Services
             int[] categories = null,
             DateTime? dateFrom = null,
             DateTime? dateTo = null,
-            bool showUncategorised = true,
+            bool? showUncategorised = null,
             int? pageSize = null,
             int? pageNumber = null,
             string sortBy = null,
-            bool sortAscending = true);
+            bool? sortAscending = null);
     }
 
     public class TransactionsDataService : GenericDataService<TransactionModel, Transaction>, ITransactionsDataService
@@ -50,14 +50,15 @@ namespace Picassi.Core.Accounts.DAL.Services
             int[] categories = null,
             DateTime? dateFrom = null,
             DateTime? dateTo = null,
-            bool showUncategorised = true,
+            bool? showUncategorised = null,
             int? pageSize = null,
             int? pageNumber = null,
             string sortBy = null,
-            bool sortAscending = true)
+            bool? sortAscending = null)
         {
             var transactions = DbProvider.GetDataContext().Transactions.Include(x => x.Category);
-            var results = FilterTransactions(text, accounts, categories, dateFrom, dateTo, showUncategorised, pageSize, pageNumber, sortBy, sortAscending, transactions).ToList();
+            var results = FilterTransactions(text, accounts, categories, dateFrom, dateTo, showUncategorised != false, 
+                pageSize, pageNumber, sortBy, sortAscending != false, transactions).ToList();
 
             return Mapper.Map<IEnumerable<TransactionModel>>(results);
         }
@@ -68,21 +69,23 @@ namespace Picassi.Core.Accounts.DAL.Services
             int[] categories = null,
             DateTime? dateFrom = null,
             DateTime? dateTo = null,
-            bool showUncategorised = true,
+            bool? showUncategorised = null,
             int? pageSize = null,
             int? pageNumber = null,
             string sortBy = null,
-            bool sortAscending = true)
+            bool? sortAscending = null)
         {
-            var transactions = DbProvider.GetDataContext().Transactions.Include(x => x.Category);
-            var results = FilterTransactions(text, accounts, categories, dateFrom, dateTo, showUncategorised, pageSize, pageNumber, sortBy, sortAscending, transactions).ToList();
-            var count = FilterTransactionsWithoutPaging(text, accounts, categories, dateFrom, dateTo, showUncategorised, transactions).Count();
+            var transactions = DbProvider.GetDataContext().Transactions.Include(x => x.Category).Include(x => x.Account);
+            var results = FilterTransactions(text, accounts, categories, dateFrom, dateTo, showUncategorised != false, 
+                pageSize, pageNumber, sortBy, sortAscending != false, transactions).ToList();
+            var count = FilterTransactionsWithoutPaging(text, accounts, categories, dateFrom, dateTo, showUncategorised != false, 
+                transactions).Count();
 
             return new TransactionsResultsViewModel
             {
                 TotalLines = count,
                 Total = results.Sum(x => x.Amount),
-                Lines = Mapper.Map<IEnumerable<TransactionModel>>(results)
+                Lines = ModelMapper.MapList(results)
             };
         }
 
