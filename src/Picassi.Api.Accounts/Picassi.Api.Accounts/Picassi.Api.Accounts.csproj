@@ -222,6 +222,7 @@
     <Compile Include="Controllers\AccountTransactionsController.cs" />
     <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Controllers\ProjectionsController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\TagsController.cs" />
     <Compile Include="Controllers\GoalsController.cs" />
     <Compile Include="Controllers\EventsController.cs" />
