@@ -8,6 +8,8 @@ namespace Picassi.Core.Accounts.DAL.Entities
 
         public string Name { get; set; }
 
+        public virtual ICollection<Budget> Budget { get; set; }
+
         public virtual ICollection<Transaction> Transactions { get; set; }
 
         public virtual ICollection<ScheduledTransaction> ScheduledTransactions { get; set; }

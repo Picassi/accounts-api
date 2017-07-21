@@ -1,5 +1,6 @@
 ﻿using System;
 using Picassi.Core.Accounts.DAL.Entities;
+using Picassi.Core.Accounts.Time.Periods;
 
 namespace Picassi.Core.Accounts.Models.ScheduledTransactions
 {
@@ -18,7 +19,7 @@ namespace Picassi.Core.Accounts.Models.ScheduledTransactions
         public decimal Amount { get; set; }
         public DateTime? Date { get; set; }
         public int? DaysBefore { get; set; }
-        public Period? Recurrence { get; set; }
+        public PeriodType? Recurrence { get; set; }
         public int? RecurrenceDayOfMonth { get; set; }
         public int? RecurrenceWeekOfMonth { get; set; }
         public int? RecurrenceDayOfWeek { get; set; }

@@ -1,4 +1,5 @@
 ﻿using Picassi.Core.Accounts.DAL.Entities;
+using Picassi.Core.Accounts.Time.Periods;
 
 namespace Picassi.Core.Accounts.Models.Budgets
 {
@@ -8,7 +9,7 @@ namespace Picassi.Core.Accounts.Models.Budgets
 
         public decimal Amount { get; set; }
 
-        public Period Period { get; set; }
+        public PeriodType Period { get; set; }
 
         public int AggregationPeriod { get; set; }
 

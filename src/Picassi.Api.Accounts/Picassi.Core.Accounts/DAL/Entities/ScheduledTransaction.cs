@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using Picassi.Core.Accounts.Enums;
+using Picassi.Core.Accounts.Time.Periods;
 
 namespace Picassi.Core.Accounts.DAL.Entities
 {
@@ -32,7 +33,7 @@ namespace Picassi.Core.Accounts.DAL.Entities
 
         public int? DaysBefore { get; set; }
 
-        public Period? Recurrence { get; set; }
+        public PeriodType? Recurrence { get; set; }
 
         public int? RecurrenceDayOfMonth { get; set; }
 

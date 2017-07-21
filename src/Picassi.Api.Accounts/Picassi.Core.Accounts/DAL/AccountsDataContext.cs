@@ -21,7 +21,7 @@ namespace Picassi.Core.Accounts.DAL
             return Database.SqlQuery<T>(sql, parms);
         }
 
-        public AccountsDataContext()
+        public AccountsDataContext() : base("Accounts")
         {
             
         }
