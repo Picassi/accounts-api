@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Cors;
@@ -63,14 +64,28 @@ namespace Picassi.Api.Accounts.Controllers
         [Route("accounts/{id}/summary")]
         public AccountSummaryViewModel GetAccountSummary(int id, [FromUri]DateRange period)
         {
-            return _accountSummariser.GetAccountSummary(id, period?.Start, period?.End);
+            var start = period?.Start ?? DateTime.Today.AddMonths(-1);
+            var end = period?.End ?? DateTime.Today;
+            return _accountSummariser.GetAccountSummary(id, start, end);
         }
 
         [HttpGet]
         [Route("accounts/summary")]
-        public AccountSummaryViewModel GetAccountsSummary([FromUri]DateRange period)
+        public IEnumerable<AccountSummaryViewModel> GetAccountsSummaries([FromUri]DateRange period)
         {
-            return _accountSummariser.GetAccountSummary(null, period?.Start, period?.End);
+            var start = period?.Start ?? DateTime.Today.AddMonths(-1);
+            var end = period?.End ?? DateTime.Today;
+            return _accountSummariser.GetAccountSummaries(start, end);
         }
+
+	    [HttpGet]
+	    [Route("wealth-summary")]
+	    public WealthSummaryViewModel GetAccountsSummary([FromUri]DateRange period)
+	    {
+	        var start = period?.Start ?? DateTime.Today.AddMonths(-1);
+	        var end = period?.End ?? DateTime.Today;
+	        return _accountSummariser.GetWealthSummary(start, end);
+	    }
+
     }
 }

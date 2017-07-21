@@ -15,30 +15,47 @@ namespace Picassi.Core.Accounts.Models.Transactions
     {
         public Transaction CreateEntity(TransactionModel model)
         {
-            return Mapper.Map<Transaction>(model);
-        }
-
-        public TransactionModel Map(Transaction model)
-        {
-            return new TransactionModel
+            return new Transaction
             {
                 Amount = model.Amount,
                 Date = model.Date,
                 AccountId = model.AccountId,
-                AccountName = model.Account?.Name,
                 ToId = model.AccountId,
-                ToName = model.Account?.Name,
                 CategoryId = model.CategoryId,
-                CategoryName = model.Category?.Name,
                 Description = model.Description,
                 Balance = model.Balance,
                 Id = model.Id,
             };
         }
 
+        public TransactionModel Map(Transaction entity)
+        {
+            return new TransactionModel
+            {
+                Amount = entity.Amount,
+                Date = entity.Date,
+                AccountId = entity.AccountId,
+                AccountName = entity.Account?.Name,
+                ToId = entity.AccountId,
+                ToName = entity.Account?.Name,
+                CategoryId = entity.CategoryId,
+                CategoryName = entity.Category?.Name,
+                Description = entity.Description,
+                Balance = entity.Balance,
+                Id = entity.Id,
+            };
+        }
+
         public void Patch(TransactionModel model, Transaction entity)
         {
-            Mapper.Map(model, entity);
+            entity.Amount = model.Amount;
+            entity.Date = model.Date;
+            entity.AccountId = model.AccountId;
+            entity.ToId = model.AccountId;
+            entity.CategoryId = model.CategoryId;
+            entity.Description = model.Description;
+            entity.Balance = model.Balance;
+            entity.Id = model.Id;
         }
 
         public IEnumerable<TransactionModel> MapList(IEnumerable<Transaction> results)

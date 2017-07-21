@@ -12,10 +12,10 @@
 
         public decimal Debit { get; set; }
 
-        public decimal Balance { get; set; }
+        public decimal? Balance { get; set; }
 
         public string CategoryName { get; set; }
 
-        public int Ordinal { get; set; }
+        public int? Ordinal { get; set; }
     }
 }

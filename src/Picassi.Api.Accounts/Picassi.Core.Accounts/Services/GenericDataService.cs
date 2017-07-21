@@ -26,7 +26,7 @@ namespace Picassi.Core.Accounts.Services
         {
             var dataModel = ModelMapper.CreateEntity(model);
             DbProvider.GetDataContext().Set<TEntity>().Add(dataModel);
-            DbProvider.GetDataContext().SaveChanges();
+            DbProvider.GetDataContext().SaveChanges();            
             return ModelMapper.Map(dataModel);
         }
 

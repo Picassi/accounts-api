@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using AutoMapper;
 using Picassi.Core.Accounts.DAL.Entities;
+using Picassi.Core.Accounts.Exceptions;
 using Picassi.Core.Accounts.Models.Transactions;
 using Picassi.Core.Accounts.Services;
 using Picassi.Utils.Data.Extensions;
@@ -42,6 +43,25 @@ namespace Picassi.Core.Accounts.DAL.Services
         public TransactionsDataService(ITransactionModelMapper modelMapper, IAccountsDatabaseProvider dbProvider) 
             : base(modelMapper, dbProvider)
         {
+        }
+
+        public override TransactionModel Create(TransactionModel model)
+        {
+            var dataModel = ModelMapper.CreateEntity(model);
+            DbProvider.GetDataContext().Transactions.Add(dataModel);
+            DbProvider.GetDataContext().SaveChanges();
+            return Get(dataModel.Id);
+        }
+
+        public override TransactionModel Get(int id)
+        {
+            var entity = DbProvider.GetDataContext().Transactions
+                .Include("Account")
+                .Include("Category")
+                .SingleOrDefault(x => x.Id == id);
+            if (entity == null) throw new EntityNotFoundException<Transaction>(id);
+
+            return ModelMapper.Map(entity);
         }
 
         public IEnumerable<TransactionModel> Query(

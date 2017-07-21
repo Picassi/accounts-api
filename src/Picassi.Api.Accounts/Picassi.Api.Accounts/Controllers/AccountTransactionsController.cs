@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
@@ -60,9 +61,9 @@ namespace Picassi.Api.Accounts.Controllers
 
         [HttpPost]
         [Route("accounts/{accountId}/transactions/upload")]
-        public void UploadProcessedTransactions(int accountId, [FromBody]TransactionUploadModel[] transactions)
+        public IList<TransactionUploadResult> UploadProcessedTransactions(int accountId, [FromBody]TransactionUploadModel[] transactions)
         {
-           _transactionUploadService.AddTransactionsToAccount(accountId, transactions.ToList());
+           return _transactionUploadService.AddTransactionsToAccount(accountId, transactions.ToList());
         }
 
         [HttpPost]
