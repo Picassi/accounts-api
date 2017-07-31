@@ -42,7 +42,7 @@ namespace Picassi.Api.Accounts.Controllers
         [Route("categories")]
         public CategoryModel CreateCategory([FromBody]CategoryModel model)
         {
-            if (string.IsNullOrEmpty(model.Name))
+            if (string.IsNullOrEmpty(model?.Name))
             {
                 throw new InvalidOperationException("Cannot create category with empty name");
             }

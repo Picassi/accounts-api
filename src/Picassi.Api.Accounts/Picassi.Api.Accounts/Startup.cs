@@ -6,6 +6,7 @@ using Owin;
 using Picassi.Core.Accounts.DAL.Entities;
 using Picassi.Core.Accounts.Events;
 using Picassi.Core.Accounts.Models.Accounts;
+using Picassi.Generator.Accounts;
 using Picassi.Utils.Api.Authorization;
 using Picassi.Utils.Api.Filters;
 using Picassi.Utils.Api.Helpers;
@@ -24,7 +25,8 @@ namespace Picassi.Api.Accounts
                 webApiAssembly,
                 Assembly.GetAssembly(typeof(AccountAutomapperProfile)),
                 Assembly.GetAssembly(typeof(Account)),
-                Assembly.GetAssembly(typeof(IAuthenticationConfigurator))
+                Assembly.GetAssembly(typeof(IAuthenticationConfigurator)),
+                Assembly.GetAssembly(typeof(ITestDataGenerator))
             };
 
             var container = AutofacConfig.BuildContainer(config, webApiAssembly, 
