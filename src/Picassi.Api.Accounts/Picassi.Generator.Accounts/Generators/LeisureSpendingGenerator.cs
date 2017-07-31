@@ -8,7 +8,7 @@ using Picassi.Core.Accounts.Models.Transactions;
 
 namespace Picassi.Generator.Accounts.Generators
 {
-    public class FoodSpendingGenerator : IModelDataGenerator
+    public class LeisureSpendingGenerator : IModelDataGenerator
     {
         public Type Type => typeof(Transaction);
 
@@ -16,7 +16,7 @@ namespace Picassi.Generator.Accounts.Generators
         private readonly ICategoriesDataService _categoriesDataService;
         private readonly ITransactionGenerator _transactionGenerator;
 
-        public FoodSpendingGenerator(IAccountDataService accountDataService, ICategoriesDataService categoriesDataService, ITransactionGenerator transactionGenerator)
+        public LeisureSpendingGenerator(IAccountDataService accountDataService, ICategoriesDataService categoriesDataService, ITransactionGenerator transactionGenerator)
         {
             _accountDataService = accountDataService;
             _categoriesDataService = categoriesDataService;
@@ -27,11 +27,11 @@ namespace Picassi.Generator.Accounts.Generators
         public void Generate(DataGenerationContext context)
         {
             var account = _accountDataService.Query(new AccountQueryModel {Name = "Main"}).Single();
-            var category = _categoriesDataService.Query(new CategoriesQueryModel {Name = "Food"}).Single();
+            var category = _categoriesDataService.Query(new CategoriesQueryModel {Name = "Leisure" }).Single();
 
-            _transactionGenerator.AddTransactions(account, category, 3, 90, "Local Food Shop", (decimal)13.22);
-            _transactionGenerator.AddTransactions(account, category, 7, 90, "Weekly Shop", (decimal)50.23);
-            _transactionGenerator.AddTransactions(account, category, 6, 90, "Takeaway", (decimal)24.20);
+            _transactionGenerator.AddTransactions(account, category, 10, 90, "Cinema", (decimal)28.60);
+            _transactionGenerator.AddTransactions(account, category, 14, 90, "After Work Beers", (decimal)32.44);
+            _transactionGenerator.AddTransactions(account, category, 28, 90, "Theatre", (decimal)73.50);
         }
     }
 }

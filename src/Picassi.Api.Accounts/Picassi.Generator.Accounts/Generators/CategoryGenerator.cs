@@ -10,7 +10,7 @@ namespace Picassi.Generator.Accounts.Generators
         public Type Type => typeof(Category);
 
         private readonly string[] _categories = {
-            "Food", "Bills"
+            "Food", "Bills", "Leisure", "Transport"
         };
 
         private readonly ICategoriesDataService _dataService;

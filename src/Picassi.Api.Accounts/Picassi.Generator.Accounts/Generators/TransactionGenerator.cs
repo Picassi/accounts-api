@@ -37,7 +37,7 @@ namespace Picassi.Generator.Accounts.Generators
                     CategoryId = category.Id,
                     CategoryName = category.Name,
                     Date = DateTime.Today.AddDays(i - 90),
-                    Description = "Food",
+                    Description = description,
                     Ordinal = 1,
                 });
             }

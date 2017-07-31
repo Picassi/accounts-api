@@ -53,6 +53,9 @@
     <Compile Include="DatabaseCleaner.cs" />
     <Compile Include="Generators\AccountGenerator.cs" />
     <Compile Include="Generators\CategoryGenerator.cs" />
+    <Compile Include="Generators\LeisureSpendingGenerator.cs" />
+    <Compile Include="Generators\BillsSpendingGenerator.cs" />
+    <Compile Include="Generators\TransportSpendingGenerator.cs" />
     <Compile Include="Generators\FoodSpendingGenerator.cs" />
     <Compile Include="Generators\TransactionGenerator.cs" />
     <Compile Include="IModelDataGenerator.cs" />
