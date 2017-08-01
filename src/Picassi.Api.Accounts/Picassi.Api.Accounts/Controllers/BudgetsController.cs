@@ -58,13 +58,11 @@ namespace Picassi.Api.Accounts.Controllers
             return _dataService.Delete(id);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("budgets/progress")]
-        public IEnumerable<BudgetSummary> GetBudgets([FromUri]DateRange range)
+        public IEnumerable<BudgetSummary> GetBudgetReports(BudgetsQueryModel query)
         {
-            var from = range?.Start ?? DateTime.Today.AddMonths(-1);
-            var to = range?.Start ?? DateTime.Today;
-            return _budgetReportsCompiler.GetBudgetReports(from, to);
+            return _budgetReportsCompiler.GetBudgetReports(query);
         }
 
     }

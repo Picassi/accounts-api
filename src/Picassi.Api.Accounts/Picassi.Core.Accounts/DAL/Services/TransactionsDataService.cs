@@ -78,7 +78,7 @@ namespace Picassi.Core.Accounts.DAL.Services
         {
             var transactions = DbProvider.GetDataContext().Transactions.Include(x => x.Category);
             var results = FilterTransactions(text, accounts, categories, dateFrom, dateTo, showUncategorised != false, 
-                pageSize, pageNumber, sortBy, sortAscending != false, transactions).ToList();
+                pageSize, pageNumber, sortBy, sortAscending == true, transactions).ToList();
 
             return Mapper.Map<IEnumerable<TransactionModel>>(results);
         }
@@ -167,7 +167,7 @@ namespace Picassi.Core.Accounts.DAL.Services
             if (field == null)
             {
                 field = "Date";
-                ascending = true;
+                ascending = false;
             }
 
             return transactions.OrderBy(field, @ascending).ThenBy("Ordinal", @ascending);

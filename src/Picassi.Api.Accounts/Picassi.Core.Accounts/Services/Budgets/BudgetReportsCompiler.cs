@@ -10,7 +10,7 @@ namespace Picassi.Core.Accounts.Services.Budgets
 {
     public interface IBudgetReportsCompiler
     {
-        IEnumerable<BudgetSummary> GetBudgetReports(DateTime from, DateTime to);
+        IEnumerable<BudgetSummary> GetBudgetReports(BudgetsQueryModel query);
     }
     public class BudgetReportsCompiler : IBudgetReportsCompiler
     {
@@ -23,28 +23,62 @@ namespace Picassi.Core.Accounts.Services.Budgets
             _periodCalculator = periodCalculator;
         }
 
-        public IEnumerable<BudgetSummary> GetBudgetReports(DateTime from, DateTime to)
+        public IEnumerable<BudgetSummary> GetBudgetReports(BudgetsQueryModel query)
         {
-            var categories = _databaseProvider.GetDataContext().Categories.Include("Budget").ToList();
-            var transactions = _databaseProvider.GetDataContext().Transactions
-                .Where(x => x.Date >= from && x.Date <= to)
+            var from = query?.DateFrom ?? DateTime.Today.AddDays(-30);
+            var to = query?.DateTo ?? DateTime.Today;
+
+            var categories = GetCategories(query);
+            var transactions = GetTransactionGroups(query, @from, to);
+
+            return MapToBudgets(categories, transactions, @from, to);
+        }
+
+        private IEnumerable<Category> GetCategories(BudgetsQueryModel query)
+        {
+            var categoriesQuery = _databaseProvider.GetDataContext().Categories.Include("Budget").AsQueryable();
+
+            if (query?.Categories != null && query.Categories.Count > 0)
+            {
+                categoriesQuery = categoriesQuery.Where(x => query.Categories.Contains(x.Id));
+            }
+
+            var categories = categoriesQuery.ToList();
+            return categories;
+        }
+
+        private List<IGrouping<int?, Transaction>> GetTransactionGroups(BudgetsQueryModel query, DateTime @from, DateTime to)
+        {
+            var transactionsQuery = _databaseProvider.GetDataContext().Transactions
+                .Where(x => x.Date >= @from && x.Date <= to);
+
+            if (query?.Accounts != null && query.Accounts.Count > 0)
+            {
+                transactionsQuery = transactionsQuery.Where(x => query.Accounts.Contains(x.AccountId));
+            }
+
+            var transactions = transactionsQuery
                 .GroupBy(x => x.CategoryId)
                 .ToList();
+            return transactions;
+        }
 
+        private IEnumerable<BudgetSummary> MapToBudgets(IEnumerable<Category> categories, List<IGrouping<int?, Transaction>> transactions, DateTime @from, DateTime to)
+        {
             foreach (var c in categories)
             {
                 var transactionsForCategory = transactions.FirstOrDefault(t => t.Key == c.Id)
-                    ?.Select(t => t).ToList() ?? new List<Transaction>();
+                                                  ?.Select(t => t).ToList() ?? new List<Transaction>();
                 if (c.Budget.Any())
                 {
                     foreach (var b in c.Budget)
                     {
-                        yield return MapToBudgetSummary(c, b, transactionsForCategory, from, to);
+                        yield return MapToBudgetSummary(c, b, transactionsForCategory, @from, to);
                     }
                 }
                 else
                 {
-                    yield return MapToBudgetSummary(c, null, transactionsForCategory, from, to);
+                    yield return MapToBudgetSummary(c, null, transactionsForCategory, @from, to);
                 }
             }
         }
