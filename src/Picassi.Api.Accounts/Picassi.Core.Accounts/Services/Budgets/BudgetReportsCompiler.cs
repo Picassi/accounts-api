@@ -87,10 +87,14 @@ namespace Picassi.Core.Accounts.Services.Budgets
         {
             return new BudgetSummary
             {
+                BudgetId = budget?.Id,
                 CategoryId = category.Id,
                 CategoryName = category.Name,
                 Budget = budget == null ? null : (decimal?)GetBudgetAmount(budget, from, to),
-                Spent = transactions.Sum(x => x.Amount)
+                Spent = transactions.Sum(x => x.Amount),
+                BudgetAggregationPeriod = budget?.AggregationPeriod,
+                BudgetAmount = budget?.Amount,
+                BudgetPeriod = budget?.Period
             };
         }
 
@@ -99,7 +103,7 @@ namespace Picassi.Core.Accounts.Services.Budgets
             var numberOfPeriods = _periodCalculator.GetNumberOfPeriods(
                 new PeriodDefinition(budget.Period, budget.AggregationPeriod),
                 new DateRange(from, to));
-            return budget.Amount * numberOfPeriods;
+            return decimal.Round(budget.Amount * numberOfPeriods, 2, MidpointRounding.AwayFromZero);
         }
     }
 }

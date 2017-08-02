@@ -1,4 +1,6 @@
-﻿namespace Picassi.Core.Accounts.Time.Periods
+﻿using System;
+
+namespace Picassi.Core.Accounts.Time.Periods
 {
     public class MonthPeriodTypeDefinition : IPeriodTypeDefinition
     {
@@ -6,7 +8,10 @@
 
         public decimal GetQuantityBetweenPoints(DateRange range)
         {
-            return (decimal)(range.End - range.Start).TotalDays / (Constants.DaysPerYear / Constants.MonthsPerYear);
+            decimal monthsDifference = ((range.End.Year - range.Start.Year) * 12) + range.End.Month - range.Start.Month;
+            var numDaysInMonth = DateTime.DaysInMonth(range.End.Year, range.End.Month);
+            monthsDifference += (decimal) (range.End.Day - range.Start.Day) / numDaysInMonth;
+            return monthsDifference;
         }
     }
 }
