@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountBalanceChartRequest.cs" />
     <Compile Include="AccountBalanceModel.cs" />
     <Compile Include="Events\CreateEventJson.cs" />
     <Compile Include="Events\EventJson.cs" />

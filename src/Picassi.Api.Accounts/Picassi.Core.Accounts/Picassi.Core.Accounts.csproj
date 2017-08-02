@@ -104,6 +104,9 @@
     </Compile>
     <Compile Include="Models\Budgets\BudgetSummary.cs" />
     <Compile Include="Models\Categories\CategoryModelMapper.cs" />
+    <Compile Include="Models\DataPoint.cs" />
+    <Compile Include="Models\DataSeriesModel.cs" />
+    <Compile Include="Models\LineChartModel.cs" />
     <Compile Include="Models\ModelledTransactions\TransactionCategoriesGroupedByPeriodModel.cs" />
     <Compile Include="Models\ModelledTransactions\TransactionsGroupedByCategoryModel.cs" />
     <Compile Include="Models\Tags\TagModelMapper.cs" />
@@ -156,6 +159,7 @@
     <Compile Include="Events\Messages\TransactionMoved.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Budgets\BudgetReportsCompiler.cs" />
+    <Compile Include="Services\Charts\ChartCompiler.cs" />
     <Compile Include="Services\Projections\AccountProjector.cs" />
     <Compile Include="Services\Projections\FlowProjectors\FlowProjectorProvider.cs" />
     <Compile Include="Enums\FlowUserType.cs" />

@@ -159,7 +159,7 @@ namespace Picassi.Core.Accounts.DAL.Services
 
         private static IQueryable<Transaction> PageResults(IQueryable<Transaction> transactions, int? pageNumber, int? pageSize)
         {
-            return transactions.Skip(((pageNumber ?? 1) - 1) * (pageSize ?? 20)).Take(pageSize ?? 20);
+            return pageSize < 0 ? transactions : transactions.Skip(((pageNumber ?? 1) - 1) * (pageSize ?? 20)).Take(pageSize ?? 20);
         }
 
         private static IQueryable<Transaction> OrderResults(IQueryable<Transaction> transactions, string field, bool ascending)

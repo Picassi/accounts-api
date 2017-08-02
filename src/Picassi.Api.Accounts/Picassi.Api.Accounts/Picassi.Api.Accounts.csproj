@@ -218,6 +218,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountsApiModule.cs" />
+    <Compile Include="Controllers\ChartsController.cs" />
     <Compile Include="Controllers\ModelledTransactionsController.cs" />
     <Compile Include="Controllers\AccountTransactionsController.cs" />
     <Compile Include="Controllers\AccountsController.cs" />
