@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Picassi.Core.Accounts.DAL;
 using Picassi.Core.Accounts.DAL.Services;
 using Picassi.Core.Accounts.Models.Accounts;
 using Picassi.Core.Accounts.Models.Categories;
@@ -19,10 +18,12 @@ namespace Picassi.Generator.Accounts.Generators
     public class TransactionGenerator : ITransactionGenerator
     {
         private readonly ITransactionsDataService _transactionsDataService;
+        private readonly IAccountsDatabaseProvider _dbProvider;
 
-        public TransactionGenerator(ITransactionsDataService transactionsDataService)
+        public TransactionGenerator(ITransactionsDataService transactionsDataService, IAccountsDatabaseProvider dbProvider)
         {
             _transactionsDataService = transactionsDataService;
+            _dbProvider = dbProvider;
         }
 
         public void AddTransactions(AccountModel account, CategoryModel category, int frequency, int period, string description, decimal amount)
@@ -38,9 +39,18 @@ namespace Picassi.Generator.Accounts.Generators
                     CategoryName = category.Name,
                     Date = DateTime.Today.AddDays(i - 90),
                     Description = description,
-                    Ordinal = 1,
+                    Ordinal = 1
                 });
             }
+
+            var ordinal = 1;
+            foreach (var transaction in _dbProvider.GetDataContext().Transactions.OrderBy(x => x.Date)
+                .ThenBy(x => x.Ordinal))
+            {
+                transaction.Ordinal = ordinal;
+                ordinal++;
+            }
+            _dbProvider.GetDataContext().SaveChanges();
         }
 
     }

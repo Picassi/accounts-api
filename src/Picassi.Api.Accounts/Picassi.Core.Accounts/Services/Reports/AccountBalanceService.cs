@@ -10,6 +10,8 @@ namespace Picassi.Core.Accounts.Services.Reports
     {
         decimal GetAccountBalance(int? accountId, DateTime date);
         void SetTransactionBalances(int accountId, DateTime date);
+
+        void SetTransactionBalancesFromNow(int accountId, decimal modelBalance);
         void SetTransactionBalances(int accountId, DateTime date, Transaction transaction, decimal initialBalance, decimal balanceAfter);
         
     }
@@ -34,6 +36,13 @@ namespace Picassi.Core.Accounts.Services.Reports
             var initialBalance = transaction?.Balance ?? 0;
             var balanceAfter = initialBalance - transaction?.Amount ?? 0;
             SetTransactionBalances(accountId, date, transaction, initialBalance, balanceAfter);
+        }
+
+        public void SetTransactionBalancesFromNow(int accountId, decimal balanceAfter)
+        {
+            var transaction = GetTransactionForAccountBalance(accountId, DateTime.Today.AddDays(1));
+            var initialBalance = balanceAfter - transaction?.Amount ?? 0;
+            SetTransactionBalances(accountId, DateTime.Today.AddDays(1), transaction, initialBalance, balanceAfter);
         }
 
         public void SetTransactionBalances(int accountId, DateTime date, Transaction transaction, decimal initialBalance, decimal balanceAfter)

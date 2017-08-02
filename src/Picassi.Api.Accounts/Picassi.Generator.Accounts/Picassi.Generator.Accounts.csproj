@@ -58,6 +58,7 @@
     <Compile Include="Generators\TransportSpendingGenerator.cs" />
     <Compile Include="Generators\FoodSpendingGenerator.cs" />
     <Compile Include="Generators\TransactionGenerator.cs" />
+    <Compile Include="Generators\WagesIncomeGenerator.cs" />
     <Compile Include="IModelDataGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataGenerationContext.cs" />

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using Picassi.Api.Accounts.Contract;
 using Picassi.Core.Accounts.DAL.Services;
 using Picassi.Core.Accounts.Models.Accounts;
 using Picassi.Core.Accounts.Services.Reports;
@@ -16,13 +17,15 @@ namespace Picassi.Api.Accounts.Controllers
 	{
         private readonly IAccountDataService _dataService;
 	    private readonly IAccountSummariser _accountSummariser;
+	    private readonly IAccountBalanceService _accountBalanceService;
 
         public AccountsController(
             IAccountDataService dataService, 
-            IAccountSummariser accountSummariser)
+            IAccountSummariser accountSummariser, IAccountBalanceService accountBalanceService)
         {
             _dataService = dataService;
             _accountSummariser = accountSummariser;
+            _accountBalanceService = accountBalanceService;
         }
 
         [HttpGet]
@@ -68,6 +71,13 @@ namespace Picassi.Api.Accounts.Controllers
             var end = period?.End ?? DateTime.Today;
             return _accountSummariser.GetAccountSummary(id, start, end);
         }
+
+	    [HttpPost]
+	    [Route("accounts/{id}/set-balance")]
+	    public void SetBalance(int id, AccountBalanceModel model)
+	    {
+	        _accountBalanceService.SetTransactionBalancesFromNow(id, model.Balance);
+	    }
 
         [HttpGet]
         [Route("accounts/summary")]

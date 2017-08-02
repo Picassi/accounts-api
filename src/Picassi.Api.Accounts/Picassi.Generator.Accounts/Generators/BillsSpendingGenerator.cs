@@ -28,11 +28,11 @@ namespace Picassi.Generator.Accounts.Generators
             var account = _accountDataService.Query(new AccountQueryModel {Name = "Main"}).Single();
             var category = _categoriesDataService.Query(new CategoriesQueryModel {Name = "Bills"}).Single();
 
-            _transactionGenerator.AddTransactions(account, category, 30, 90, "Rent", (decimal)1300);
-            _transactionGenerator.AddTransactions(account, category, 30, 90, "Gas & Electric", (decimal)62.34);
-            _transactionGenerator.AddTransactions(account, category, 30, 90, "Water", (decimal)24.23);
-            _transactionGenerator.AddTransactions(account, category, 30, 90, "Council Tax", (decimal)116);
-            _transactionGenerator.AddTransactions(account, category, 30, 90, "Internet", (decimal)32.24);
+            _transactionGenerator.AddTransactions(account, category, 30, 90, "Rent", -(decimal)1300);
+            _transactionGenerator.AddTransactions(account, category, 30, 90, "Gas & Electric", -(decimal)62.34);
+            _transactionGenerator.AddTransactions(account, category, 30, 90, "Water", -(decimal)24.23);
+            _transactionGenerator.AddTransactions(account, category, 30, 90, "Council Tax", -(decimal)116);
+            _transactionGenerator.AddTransactions(account, category, 30, 90, "Internet", -(decimal)32.24);
         }
     }
 }

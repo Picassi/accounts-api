@@ -25,6 +25,7 @@ namespace Picassi.Core.Accounts.Models.Transactions
                 Description = model.Description,
                 Balance = model.Balance,
                 Id = model.Id,
+                Ordinal = model.Ordinal
             };
         }
 
@@ -43,6 +44,7 @@ namespace Picassi.Core.Accounts.Models.Transactions
                 Description = entity.Description,
                 Balance = entity.Balance,
                 Id = entity.Id,
+                Ordinal = entity.Ordinal
             };
         }
 
@@ -56,6 +58,7 @@ namespace Picassi.Core.Accounts.Models.Transactions
             entity.Description = model.Description;
             entity.Balance = model.Balance;
             entity.Id = model.Id;
+            entity.Ordinal = model.Ordinal;
         }
 
         public IEnumerable<TransactionModel> MapList(IEnumerable<Transaction> results)

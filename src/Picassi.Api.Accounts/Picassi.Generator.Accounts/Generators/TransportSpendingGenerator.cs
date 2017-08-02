@@ -4,7 +4,6 @@ using Picassi.Core.Accounts.DAL.Entities;
 using Picassi.Core.Accounts.DAL.Services;
 using Picassi.Core.Accounts.Models.Accounts;
 using Picassi.Core.Accounts.Models.Categories;
-using Picassi.Core.Accounts.Models.Transactions;
 
 namespace Picassi.Generator.Accounts.Generators
 {
@@ -29,8 +28,8 @@ namespace Picassi.Generator.Accounts.Generators
             var account = _accountDataService.Query(new AccountQueryModel {Name = "Main"}).Single();
             var category = _categoriesDataService.Query(new CategoriesQueryModel {Name = "Transport"}).Single();
 
-            _transactionGenerator.AddTransactions(account, category, 3, 90, "Oyster Card Top Up", 20);
-            _transactionGenerator.AddTransactions(account, category, 21, 90, "Train Fare", (decimal)48.65);
+            _transactionGenerator.AddTransactions(account, category, 3, 90, "Oyster Card Top Up", -20);
+            _transactionGenerator.AddTransactions(account, category, 21, 90, "Train Fare", -(decimal)48.65);
         }
     }
 }
