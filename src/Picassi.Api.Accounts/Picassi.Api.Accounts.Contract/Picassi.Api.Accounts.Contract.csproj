@@ -46,6 +46,8 @@
     <Compile Include="Events\EventJson.cs" />
     <Compile Include="Events\EventsQueryJson.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SpendingByCategoryRequest.cs" />
+    <Compile Include="SpendingVersusBudgetRequest.cs" />
     <Compile Include="UniversalSearchResultSection.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -16,17 +16,32 @@ namespace Picassi.Core.Accounts.Models.Budgets
     {
         public Budget CreateEntity(BudgetModel model)
         {
-            return Mapper.Map<Budget>(model);
+            return new Budget
+            {
+                AggregationPeriod = model.AggregationPeriod,
+                Amount = model.Amount,
+                CategoryId = model.CategoryId,
+                Period = model.Period
+            };
         }
 
         public BudgetModel Map(Budget model)
         {
-            return Mapper.Map<BudgetModel>(model);
+            return new BudgetModel
+            {
+                Id = model.Id,
+                AggregationPeriod = model.AggregationPeriod,
+                Amount = model.Amount,
+                CategoryId = model.CategoryId,
+                Period = model.Period
+            };
         }
 
         public void Patch(BudgetModel model, Budget entity)
         {
-            Mapper.Map(model, entity);
+            entity.Amount = model.Amount;
+            entity.Period = model.Period;
+            entity.AggregationPeriod = model.AggregationPeriod;
         }
 
         public IEnumerable<BudgetModel> MapList(IEnumerable<Budget> results)

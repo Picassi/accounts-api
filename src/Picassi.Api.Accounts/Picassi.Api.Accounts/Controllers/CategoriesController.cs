@@ -20,10 +20,11 @@ namespace Picassi.Api.Accounts.Controllers
         private readonly ICategorySummariser _categorySummariser;
         private readonly IBudgetsDataService _budgetsDataService;
 
-        public CategoriesController(ICategoriesDataService dataService, ICategorySummariser categorySummariser)
+        public CategoriesController(ICategoriesDataService dataService, ICategorySummariser categorySummariser, IBudgetsDataService budgetsDataService)
         {
             _dataService = dataService;
             _categorySummariser = categorySummariser;
+            _budgetsDataService = budgetsDataService;
         }
 
         [HttpGet]
@@ -61,16 +62,20 @@ namespace Picassi.Api.Accounts.Controllers
                 throw new InvalidOperationException("Cannot create category with empty name");
             }
 
-            var existingCategory = _dataService.Query(new CategoriesQueryModel { Name = model?.Category.Name }).FirstOrDefault();
+            var existingCategory = _dataService.Query(new CategoriesQueryModel { Name = model.Category.Name }).FirstOrDefault();
             if (existingCategory != null)
             {
                 throw new InvalidOperationException($"Category {existingCategory.Name} already exists");
             }
 
             var categoryModel = _dataService.Create(model.Category);
-            model.Budget.CategoryId = categoryModel.Id;
 
-            _budgetsDataService.Create(model.Budget);
+            if (model.Budget != null)
+            {
+                model.Budget.CategoryId = categoryModel.Id;
+                model.Budget.AggregationPeriod = 1;
+                _budgetsDataService.Create(model.Budget);
+            }
 
             return categoryModel;
         }

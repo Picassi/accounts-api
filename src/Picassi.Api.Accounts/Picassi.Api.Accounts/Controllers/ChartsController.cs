@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
@@ -9,7 +10,7 @@ using Picassi.Utils.Api.Attributes;
 namespace Picassi.Api.Accounts.Controllers
 {
 	[EnableCors(origins: "*", headers: "*", methods: "*")]
-    //[PicassiApiAuthorise]
+    [PicassiApiAuthorise]
     public class ChartsController : ApiController
 	{
 	    private readonly IChartCompiler _chartCompiler;
@@ -31,5 +32,23 @@ namespace Picassi.Api.Accounts.Controllers
                 Type = "spline"
             };
         }
-   }
+
+	    [HttpPost]
+	    [Route("charts/spending-by-category")]
+	    public PieChartModel GetSpendingByCategory([FromBody]AccountBalanceChartRequest query)
+	    {
+	        var data = _chartCompiler.GetSpendingByCategoryDataSeries(query.DateFrom, query.DateTo);
+	        return new PieChartModel
+	        {
+	            Series = data
+	        };
+	    }
+
+	    [HttpPost]
+	    [Route("charts/spending-versus-budget")]
+	    public LineChartModel GetSpendingVersusBudget([FromBody]AccountBalanceChartRequest query)
+	    {
+            throw new NotImplementedException();
+	    }
+    }
 }
