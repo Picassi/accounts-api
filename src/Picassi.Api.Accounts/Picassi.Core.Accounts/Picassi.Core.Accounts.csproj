@@ -104,6 +104,7 @@
     </Compile>
     <Compile Include="Models\Budgets\BudgetSummary.cs" />
     <Compile Include="Models\Categories\CategoryModelMapper.cs" />
+    <Compile Include="Models\CategoryWithBudget.cs" />
     <Compile Include="Models\DataPoint.cs" />
     <Compile Include="Models\DataSeriesModel.cs" />
     <Compile Include="Models\LineChartModel.cs" />
