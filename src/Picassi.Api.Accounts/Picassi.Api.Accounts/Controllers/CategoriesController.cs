@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
@@ -17,6 +18,7 @@ namespace Picassi.Api.Accounts.Controllers
     {
         private readonly ICategoriesDataService _dataService;
         private readonly ICategorySummariser _categorySummariser;
+        private readonly IBudgetsDataService _budgetsDataService;
 
         public CategoriesController(ICategoriesDataService dataService, ICategorySummariser categorySummariser)
         {
@@ -48,6 +50,29 @@ namespace Picassi.Api.Accounts.Controllers
             }
             var existingCategory = _dataService.Query(new CategoriesQueryModel { Name = model.Name }).FirstOrDefault();
             return existingCategory ?? _dataService.Create(model);
+        }
+
+        [HttpPost]
+        [Route("category-and-budget")]
+        public CategoryModel CreateCategoryWithBudget([FromBody]CategoryWithBudget model)
+        {
+            if (string.IsNullOrEmpty(model?.Category?.Name))
+            {
+                throw new InvalidOperationException("Cannot create category with empty name");
+            }
+
+            var existingCategory = _dataService.Query(new CategoriesQueryModel { Name = model?.Category.Name }).FirstOrDefault();
+            if (existingCategory != null)
+            {
+                throw new InvalidOperationException($"Category {existingCategory.Name} already exists");
+            }
+
+            var categoryModel = _dataService.Create(model.Category);
+            model.Budget.CategoryId = categoryModel.Id;
+
+            _budgetsDataService.Create(model.Budget);
+
+            return categoryModel;
         }
 
         [HttpGet]
