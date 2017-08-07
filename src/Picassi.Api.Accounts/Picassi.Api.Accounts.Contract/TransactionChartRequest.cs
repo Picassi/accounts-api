@@ -2,7 +2,7 @@
 
 namespace Picassi.Api.Accounts.Contract
 {
-    public class AccountBalanceChartRequest
+    public class TransactionChartRequest
     {
         public int[] Accounts { get; set; }
         public int[] Categories { get; set; }

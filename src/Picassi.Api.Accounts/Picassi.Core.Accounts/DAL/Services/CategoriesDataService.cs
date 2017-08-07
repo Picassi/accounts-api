@@ -25,7 +25,17 @@ namespace Picassi.Core.Accounts.DAL.Services
         {
             var queryResults = DbProvider.GetDataContext().Categories.AsQueryable();
 
-            if (query?.Name != null) queryResults = queryResults.Where(x => x.Name.Contains(query.Name));
+            if (query?.Ids != null && query.Ids.Length > 0)
+            {
+                queryResults = queryResults.Where(x => query.Ids.Contains(x.Id));
+            }
+
+            if (query?.Name != null)
+            {
+                queryResults = queryResults.Where(x => x.Name.Contains(query.Name));
+            }
+
+
             queryResults = query == null ? queryResults : OrderResults(queryResults, query.SortBy, query.SortAscending);
             return Mapper.Map<IEnumerable<CategoryModel>>(queryResults);
         }

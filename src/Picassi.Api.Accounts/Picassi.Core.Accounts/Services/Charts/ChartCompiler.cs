@@ -1,35 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Picassi.Core.Accounts.DAL.Services;
 using Picassi.Core.Accounts.Models;
+using Picassi.Core.Accounts.Models.Accounts;
+using Picassi.Core.Accounts.Models.Categories;
 using Picassi.Core.Accounts.Models.Transactions;
+using Picassi.Core.Accounts.Time.Periods;
 
 namespace Picassi.Core.Accounts.Services.Charts
 {
     public interface IChartCompiler
     {
-        IEnumerable<ImplicitDataSeriesModel> GetAccountBalanceDataSeries(DateTime from, DateTime to);
+        IEnumerable<PeriodSummaryDataSeries> GetTransactionSeriesData(DateTime from, DateTime to, PeriodType period, 
+            GroupingType groupingType, int[] accounts = null, int[] categories = null);
         IList<DataSeriesModel> GetSpendingByCategoryDataSeries(DateTime from, DateTime to);
     }
 
     public class ChartCompiler : IChartCompiler
     {
+        private readonly IAccountDataService _accountDataService;
+        private readonly ICategoriesDataService _categoriesDataService;
         private readonly ITransactionsDataService _transactionsDataService;
+        private readonly ITransactionPeriodSummariser _transactionPeriodSummariser;
 
-        public ChartCompiler(ITransactionsDataService transactionsDataService)
+        public ChartCompiler(IAccountDataService accountDataService, ICategoriesDataService categoriesDataService, ITransactionsDataService transactionsDataService, ITransactionPeriodSummariser transactionPeriodSummariser)
         {
+            _accountDataService = accountDataService;
+            _categoriesDataService = categoriesDataService;
             _transactionsDataService = transactionsDataService;
+            _transactionPeriodSummariser = transactionPeriodSummariser;
         }
 
-        public IEnumerable<ImplicitDataSeriesModel> GetAccountBalanceDataSeries(DateTime from, DateTime to)
-        {
-            var transactions = _transactionsDataService.Query(dateFrom: from, dateTo: to, pageSize: -1);
 
-            return transactions.GroupBy(t => t.AccountId).Select(g => new ImplicitDataSeriesModel
+        public IEnumerable<PeriodSummaryDataSeries> GetTransactionSeriesData(DateTime from, DateTime to, PeriodType period, 
+            GroupingType groupingType, int[] accounts = null, int[] categories = null)
+        {
+            var transactions = _transactionsDataService.Query(dateFrom: from, dateTo: to, pageSize: -1, 
+                accounts: accounts?.Length > 0 ? accounts : null,
+                categories: categories?.Length > 0 ? categories : null);
+            var groups = GroupTransactions(groupingType, transactions, accounts, categories);
+
+            return groups.Select(g => new PeriodSummaryDataSeries
             {
                 Name = g.Key.ToString(),
-                Data = GetBalanceDataPoints(from, to, g.OrderBy(t => t.Date).ThenBy(t => t.Ordinal)).ToList()
+                Data = _transactionPeriodSummariser.GetDataPoints(from, to, period, g).ToList()
             });
         }
 
@@ -67,20 +83,35 @@ namespace Picassi.Core.Accounts.Services.Charts
             return new[] {spendingSeries, incomeSeries};
         }
 
-        private static IEnumerable<object[]> GetBalanceDataPoints(DateTime from, DateTime to, IOrderedEnumerable<TransactionModel> transactions)
+        private IEnumerable<IGrouping<int?, TransactionModel>> GroupTransactions(
+            GroupingType groupingType, IEnumerable<TransactionModel> transactions, int[] accountIds, int[] categoryIds)
         {
-            var balances = new Dictionary<DateTime, decimal>();
-            var lastRecorded = from;
-
-            foreach (var transaction in transactions)
+            switch (groupingType)
             {
-                for (var dt = lastRecorded; dt <= transaction.Date; dt = dt.AddDays(1))
-                {
-                    balances[dt] = transaction.Balance;
-                }
-                lastRecorded = transaction.Date;
+                case GroupingType.Accounts:
+                    var accounts = _accountDataService.Query(new AccountQueryModel { Ids = accountIds }).Select(a => a.Id);
+                    return accounts.Select(a => new Grouping<int?, TransactionModel>(a, transactions.Where(t => t.AccountId == a)));
+                case GroupingType.Categories:
+                    var categories = _categoriesDataService.Query(new CategoriesQueryModel { Ids = categoryIds }).Select(c => c.Id);
+                    return categories.Select(c => new Grouping<int?, TransactionModel>(c, transactions.Where(t => t.CategoryId == c)));
+                default:
+                    throw new InvalidEnumArgumentException();
             }
-            return balances.Select(b => new object[] { b.Key.ToString("dd/MM/yyyy"), b.Value });
+        }
+
+
+        public class Grouping<TKey, TElement> : List<TElement>, IGrouping<TKey, TElement>
+        {
+            public Grouping(TKey key, IEnumerable<TElement> enumerable) : base(enumerable)
+            {
+                Key = key;                
+            }
+
+            public TKey Key
+            {
+                get;
+                set;
+            }
         }
     }
 }

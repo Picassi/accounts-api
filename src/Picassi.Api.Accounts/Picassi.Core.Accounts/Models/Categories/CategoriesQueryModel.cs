@@ -6,6 +6,7 @@ namespace Picassi.Core.Accounts.Models.Categories
 {
     public class CategoriesQueryModel
     {
+        public int[] Ids { get; set; }
         public string Name { get; set; }
         public DateTime? DateFrom { get; set; }
         public DateTime? DateTo { get; set; }

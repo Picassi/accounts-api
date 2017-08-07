@@ -5,6 +5,7 @@ using System.Web.Http.Cors;
 using Picassi.Api.Accounts.Contract;
 using Picassi.Core.Accounts.Models;
 using Picassi.Core.Accounts.Services.Charts;
+using Picassi.Core.Accounts.Time.Periods;
 using Picassi.Utils.Api.Attributes;
 
 namespace Picassi.Api.Accounts.Controllers
@@ -22,20 +23,34 @@ namespace Picassi.Api.Accounts.Controllers
 
 	    [HttpPost]
         [Route("charts/account-balance")]
-        public LineChartModel GetAccounts([FromBody]AccountBalanceChartRequest query)
+        public LineChartModel GetAccounts([FromBody]TransactionChartRequest query)
         {
-            var dataPoints = _chartCompiler.GetAccountBalanceDataSeries(query.DateFrom, query.DateTo).ToList();
+            var dataPoints = _chartCompiler.GetTransactionSeriesData(query.DateFrom, query.DateTo, PeriodType.Day, GroupingType.Accounts).ToList();
             return new LineChartModel
             {
-                Labels = dataPoints[0].Data.Select(x => x[0].ToString()).ToList(),
+                Labels = dataPoints[0].Data.Select(x => x.PeriodStart.ToString("dd/MM/yyyy")).ToList(),
                 Series = dataPoints,
                 Type = "spline"
             };
         }
 
 	    [HttpPost]
+	    [Route("charts/category-spending")]
+	    public LineChartModel GetCategories([FromBody]TransactionChartRequest query)
+	    {
+	        var dataPoints = _chartCompiler.GetTransactionSeriesData(query.DateFrom, query.DateTo, PeriodType.Week, 
+                GroupingType.Categories, query.Accounts, query.Categories).ToList();
+	        return new LineChartModel
+	        {
+	            Labels = dataPoints[0].Data.Select(x => x.PeriodStart.ToString("dd/MM/yyyy")).ToList(),
+	            Series = dataPoints,
+	            Type = "spline"
+	        };
+	    }
+
+        [HttpPost]
 	    [Route("charts/spending-by-category")]
-	    public PieChartModel GetSpendingByCategory([FromBody]AccountBalanceChartRequest query)
+	    public PieChartModel GetSpendingByCategory([FromBody]TransactionChartRequest query)
 	    {
 	        var data = _chartCompiler.GetSpendingByCategoryDataSeries(query.DateFrom, query.DateTo);
 	        return new PieChartModel
@@ -46,7 +61,7 @@ namespace Picassi.Api.Accounts.Controllers
 
 	    [HttpPost]
 	    [Route("charts/spending-versus-budget")]
-	    public LineChartModel GetSpendingVersusBudget([FromBody]AccountBalanceChartRequest query)
+	    public LineChartModel GetSpendingVersusBudget([FromBody]TransactionChartRequest query)
 	    {
             throw new NotImplementedException();
 	    }

@@ -22,6 +22,11 @@ namespace Picassi.Core.Accounts.DAL.Services
         {
             var queryResults = DbProvider.GetDataContext().Accounts.AsQueryable();
 
+            if (accounts?.Ids != null && accounts.Ids.Length > 0)
+            {
+                queryResults = queryResults.Where(x => accounts.Ids.Contains(x.Id));
+            }
+
             if (accounts?.Name != null)
             {
                 queryResults = queryResults.Where(x => x.Name.Contains(accounts.Name));
