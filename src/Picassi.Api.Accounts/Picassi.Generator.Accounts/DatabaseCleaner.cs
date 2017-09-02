@@ -30,9 +30,12 @@ namespace Picassi.Generator.Accounts
             context.SaveChanges();
         }
 
-        private static void DropCollection<T>(DbSet<T> dbSet) where T : class
+        private static void DropCollection<T>(IDbSet<T> dbSet) where T : class
         {
-            dbSet.RemoveRange(dbSet);
+            foreach (var item in dbSet)
+            {
+                dbSet.Remove(item);
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Net.Http;
-using Picassi.Auth.Clients;
+using Picassi.Api.Accounts.Client.Auth;
 
 namespace Picassi.Api.Accounts.Client
 {

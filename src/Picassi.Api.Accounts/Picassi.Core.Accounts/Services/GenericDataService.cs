@@ -25,14 +25,14 @@ namespace Picassi.Core.Accounts.Services
         public virtual TModel Create(TModel model)
         {
             var dataModel = ModelMapper.CreateEntity(model);
-            DbProvider.GetDataContext().Set<TEntity>().Add(dataModel);
+            DbProvider.GetDataContext().GetDbSet<TEntity>().Add(dataModel);
             DbProvider.GetDataContext().SaveChanges();            
             return ModelMapper.Map(dataModel);
         }
 
         public virtual TModel Get(int id)
         {
-            var entity = DbProvider.GetDataContext().Set<TEntity>().Find(id);
+            var entity = DbProvider.GetDataContext().GetDbSet<TEntity>().Find(id);
             if (entity == null) throw new EntityNotFoundException<TEntity>(id);
 
             return ModelMapper.Map(entity);
@@ -40,7 +40,7 @@ namespace Picassi.Core.Accounts.Services
 
         public virtual TModel Update(int id, TModel model)
         {
-            var entity = DbProvider.GetDataContext().Set<TEntity>().Find(id);
+            var entity = DbProvider.GetDataContext().GetDbSet<TEntity>().Find(id);
             if (entity == null) throw new EntityNotFoundException<TEntity>(id);
 
             ModelMapper.Patch(model, entity);
@@ -50,10 +50,10 @@ namespace Picassi.Core.Accounts.Services
 
         public virtual bool Delete(int id)
         {
-            var entity = DbProvider.GetDataContext().Set<TEntity>().Find(id);
+            var entity = DbProvider.GetDataContext().GetDbSet<TEntity>().Find(id);
             if (entity == null) throw new EntityNotFoundException<TEntity>(id);
 
-            DbProvider.GetDataContext().Set<TEntity>().Remove(entity);
+            DbProvider.GetDataContext().GetDbSet<TEntity>().Remove(entity);
             DbProvider.GetDataContext().SaveChanges();
 
             return true;

@@ -1,5 +1,5 @@
-﻿using Picassi.Api.Accounts.Contract.Events;
-using Picassi.Auth.Clients;
+﻿using Picassi.Api.Accounts.Client.Auth;
+using Picassi.Api.Accounts.Contract.Events;
 
 namespace Picassi.Api.Accounts.Client
 {

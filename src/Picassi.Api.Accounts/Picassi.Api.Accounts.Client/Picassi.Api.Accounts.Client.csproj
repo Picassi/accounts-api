@@ -34,10 +34,6 @@
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Picassi.Auth.Clients, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Picassi.Auth.Clients.1.0.0.33\lib\net452\Picassi.Auth.Clients.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.ServiceModel" />
@@ -51,6 +47,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractApiClient.cs" />
+    <Compile Include="Auth\ApiClient.cs" />
+    <Compile Include="Auth\AuthenticationStyle.cs" />
+    <Compile Include="Auth\BasicAuthenticationHeaderValue.cs" />
+    <Compile Include="Auth\ClientCredentialsProvider.cs" />
+    <Compile Include="Auth\ClientCredentialsTokenManager.cs" />
+    <Compile Include="Auth\HttpClientExtensions.cs" />
+    <Compile Include="Auth\HttpResponseException.cs" />
+    <Compile Include="Auth\IResourceOwnerProvider.cs" />
+    <Compile Include="Auth\ITokenManager.cs" />
+    <Compile Include="Auth\JObjectExtensions.cs" />
+    <Compile Include="Auth\OidcConstants.cs" />
+    <Compile Include="Auth\ResourceOwnerTokenManager.cs" />
+    <Compile Include="Auth\ResponseErrorType.cs" />
+    <Compile Include="Auth\TokenClient.cs" />
+    <Compile Include="Auth\TokenClientExtensions.cs" />
+    <Compile Include="Auth\TokenResponse.cs" />
     <Compile Include="TransactionsApiClient.cs" />
     <Compile Include="EventsApiClient.cs" />
     <Compile Include="PicassiAccountsApiClient.cs" />
@@ -68,6 +80,7 @@
       <Name>Picassi.Api.Accounts.Contract</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

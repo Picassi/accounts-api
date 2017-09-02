@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using Picassi.Core.Accounts.DAL.Entities;
 using Picassi.Core.Accounts.Models.ScheduledTransactions;

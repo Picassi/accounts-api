@@ -76,7 +76,7 @@ namespace Picassi.Core.Accounts.DAL.Services
             bool? sortAscending = null)
         {
             var transactions = DbProvider.GetDataContext().Transactions.Include(x => x.Category);
-            var results = FilterTransactions(text, accounts, categories, dateFrom, dateTo, showUncategorised != false, 
+            var results = FilterTransactions(text, accounts, categories, dateFrom, dateTo, showUncategorised, 
                 pageSize, pageNumber, sortBy, sortAscending == true, transactions).ToList();
 
             return ModelMapper.MapList(results);
@@ -95,7 +95,7 @@ namespace Picassi.Core.Accounts.DAL.Services
             bool? sortAscending = null)
         {
             var transactions = DbProvider.GetDataContext().Transactions.Include(x => x.Category).Include(x => x.Account);
-            var results = FilterTransactions(text, accounts, categories, dateFrom, dateTo, showUncategorised != false, 
+            var results = FilterTransactions(text, accounts, categories, dateFrom, dateTo, showUncategorised, 
                 pageSize, pageNumber, sortBy, sortAscending != false, transactions).ToList();
             var count = FilterTransactionsWithoutPaging(text, accounts, categories, dateFrom, dateTo, showUncategorised != false, 
                 transactions).Count();
@@ -109,10 +109,11 @@ namespace Picassi.Core.Accounts.DAL.Services
         }
 
         private static IEnumerable<Transaction> FilterTransactions(string text, int[] accounts, int[] categories,
-            DateTime? dateFrom, DateTime? dateTo, bool showUncategorised, int? pageSize, int? pageNumber,
+            DateTime? dateFrom, DateTime? dateTo, bool? showUncategorised, int? pageSize, int? pageNumber,
             string sortBy, bool sortAscending, IQueryable <Transaction> transactions)
         {
-            transactions = FilterTransactionsWithoutPaging(text, accounts, categories, dateFrom, dateTo, showUncategorised, transactions);
+            transactions = FilterTransactionsWithoutPaging(text, accounts, categories, dateFrom, dateTo, 
+                ShouldShouldUncategorised(showUncategorised, categories), transactions);
             transactions = OrderResults(transactions, sortBy, sortAscending);
             transactions = PageResults(transactions, pageNumber, pageSize);
             return transactions;
@@ -171,5 +172,11 @@ namespace Picassi.Core.Accounts.DAL.Services
 
             return transactions.OrderBy(field, @ascending).ThenBy("Ordinal", @ascending);
         }
+
+        private static bool ShouldShouldUncategorised(bool? showUncategorised, int[] categories)
+        {
+            return (showUncategorised == null && categories == null) || showUncategorised == true;
+        }
+
     }
 }

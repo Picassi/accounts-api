@@ -38,7 +38,10 @@ namespace Picassi.Core.Accounts.Services.Transactions
             if (transactionModels.All(t => t.Success))
             {
                 var successfulTransactions = transactionModels.Where(t => t.Success).Select(t => t.Transaction).ToList();
-                _dbProvider.GetDataContext().Transactions.AddRange(successfulTransactions);
+                foreach (var t in successfulTransactions)
+                {
+                    _dbProvider.GetDataContext().Transactions.Add(t);
+                }
                 _dbProvider.GetDataContext().SaveChanges();
                 _balanceService.SetTransactionBalances(accountId, successfulTransactions.Min(transaction => transaction.Date));
             }

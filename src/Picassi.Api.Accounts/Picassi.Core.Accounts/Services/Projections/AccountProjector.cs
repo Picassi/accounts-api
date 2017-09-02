@@ -49,7 +49,11 @@ namespace Picassi.Core.Accounts.Services.Projections
         private void AddUpdatedTransactions(DateTime start, DateTime end)
         {
             var transactions = GenerateTransactions(start, end);
-            _dataContext.GetDataContext().ModelledTransactions.AddRange(transactions);
+            foreach (var t in transactions)
+            {
+                _dataContext.GetDataContext().ModelledTransactions.Add(t);
+
+            }
             _dataContext.GetDataContext().SaveChanges();
         }
 

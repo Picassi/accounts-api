@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Net;
 using System.Reflection;
-using Autofac;
 using Picassi.Api.Accounts.Client;
 using Picassi.Core.Accounts.DAL;
-using Picassi.Utils.Api.Test;
 
 namespace Picassi.Api.Accounts.Tests.Framework
 {
@@ -15,7 +12,7 @@ namespace Picassi.Api.Accounts.Tests.Framework
         private ApiSandbox _sandbox;
 
         public IPicassiAccountsApiClient ApiClient { get; }
-        public IAccountsDatabaseProvider Database { get; set; }
+        public IAccountsDatabaseProvider DbProvider { get; set; }
 
         public SandboxWrapper()
         {
@@ -23,21 +20,21 @@ namespace Picassi.Api.Accounts.Tests.Framework
 
             System.Data.Entity.Database.SetInitializer(new DropCreateDatabaseAlways<AccountsDataContext>());
 
+            DbProvider = new FakeDatabaseProvider();
+
             var builder = new ApiTestEnvironmentBuilder()
                 .WithServicePort(TestPortProvider.GetFreeLocalhostBinding())
                 .WithAuthPort(TestPortProvider.GetFreeLocalhostBinding())
                 .WithWebApiAssembly(Assembly.GetAssembly(typeof(AccountsApiModule)))
-                .WithAutofacModules(new AccountsApiModule())
+                .WithAutofacModules(new TestAccountsApiModule(DbProvider))
                 .WithScopes("accounts-user")
                 .WithApplicationConfiguration("accounts-api", new[] { "accounts-user" })
                 .WithMobileClientConfiguration("picassi-server", new[] { "accounts-user" });
 
             _sandbox = builder.BuildApiSandbox();
 
-            var apiClient = builder.BuildClient("picassi-server");
+            var apiClient = builder.BuildClient("picassi-server");        
             ApiClient = new PicassiAccountsApiClient(apiClient);
-
-            Database = TestAutofacConfig.Container.Resolve<IAccountsDatabaseProvider>();
         }
 
         public void Dispose()

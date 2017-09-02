@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Picassi.Auth.Clients;
+using Picassi.Api.Accounts.Client.Auth;
 using Picassi.Core.Accounts.Models.Transactions;
 
 namespace Picassi.Api.Accounts.Client
@@ -35,16 +36,26 @@ namespace Picassi.Api.Accounts.Client
                 var value = p.GetValue(obj, null);
                 if (value is ICollection enumerable)
                 {
+
                     result.AddRange(from object v in enumerable select
-                        $"{p.Name}={HttpUtility.UrlEncode(v.ToString())}");
+                        $"{p.Name}={HttpUtility.UrlEncode(GetStringRepresentation(v))}");
                 }
                 else
                 {
-                    result.Add($"{p.Name}={HttpUtility.UrlEncode(value.ToString())}");
+                    result.Add($"{p.Name}={HttpUtility.UrlEncode(GetStringRepresentation(value))}");
                 }
             }
 
             return string.Join("&", result.ToArray());
+        }
+
+        private static string GetStringRepresentation(object o)
+        {
+            if (o is DateTime)
+            {
+                return ((DateTime) o).ToString("yyyy-MM-dd");
+            }
+            return Convert.ToString(o);
         }
     }
 }

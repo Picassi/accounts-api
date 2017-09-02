@@ -4,21 +4,33 @@ using Picassi.Core.Accounts.DAL.Entities;
 
 namespace Picassi.Core.Accounts.DAL
 {
-    public class AccountsDataContext : DbContext
+    public interface IAccountsDataContext
     {
-        public DbSet<Account> Accounts { get; set; }
-        public DbSet<Budget> Budgets { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Event> Events { get; set; }
-        public DbSet<Goal> Goals { get; set; }
-        public DbSet<ModelledTransaction> ModelledTransactions { get; set; }
-        public DbSet<ScheduledTransaction> ScheduledTransactions { get; set; }
-        public DbSet<Tag> Tags { get; set; }
-        public DbSet<Transaction> Transactions { get; set; }
-        public DbRawSqlQuery<T> Query<T>(string sql, params object[] parms)
-        {
-            return Database.SqlQuery<T>(sql, parms);
-        }
+        IDbSet<Account> Accounts { get; set; }
+        IDbSet<Budget> Budgets { get; set; }
+        IDbSet<Category> Categories { get; set; }
+        IDbSet<Event> Events { get; set; }
+        IDbSet<Goal> Goals { get; set; }
+        IDbSet<ModelledTransaction> ModelledTransactions { get; set; }
+        IDbSet<ScheduledTransaction> ScheduledTransactions { get; set; }
+        IDbSet<Tag> Tags { get; set; }
+        IDbSet<Transaction> Transactions { get; set; }
+        Database Database { get; }
+        IDbSet<TModel> GetDbSet<TModel>() where TModel : class;
+        int SaveChanges();
+    }
+
+    public class AccountsDataContext : DbContext, IAccountsDataContext
+    {
+        public IDbSet<Account> Accounts { get; set; }
+        public IDbSet<Budget> Budgets { get; set; }
+        public IDbSet<Category> Categories { get; set; }
+        public IDbSet<Event> Events { get; set; }
+        public IDbSet<Goal> Goals { get; set; }
+        public IDbSet<ModelledTransaction> ModelledTransactions { get; set; }
+        public IDbSet<ScheduledTransaction> ScheduledTransactions { get; set; }
+        public IDbSet<Tag> Tags { get; set; }
+        public IDbSet<Transaction> Transactions { get; set; }
 
         public AccountsDataContext() : base("Accounts")
         {
@@ -33,6 +45,11 @@ namespace Picassi.Core.Accounts.DAL
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema("accounts");
+        }
+
+        public IDbSet<TModel> GetDbSet<TModel>() where TModel : class
+        {
+            return Set<TModel>();
         }
     }
 }

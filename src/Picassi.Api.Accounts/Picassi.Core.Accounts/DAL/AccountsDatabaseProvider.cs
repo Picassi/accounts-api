@@ -7,7 +7,7 @@ namespace Picassi.Core.Accounts.DAL
 {
     public interface IAccountsDatabaseProvider
     {
-        AccountsDataContext GetDataContext();
+        IAccountsDataContext GetDataContext();
     }
 
     public class AccountsDatabaseProvider : IAccountsDatabaseProvider
@@ -22,7 +22,7 @@ namespace Picassi.Core.Accounts.DAL
             _context = context;
         }
 
-        public AccountsDataContext GetDataContext()
+        public IAccountsDataContext GetDataContext()
         {
             return _dataContext ?? (_dataContext = BuildDataContext());
         }
