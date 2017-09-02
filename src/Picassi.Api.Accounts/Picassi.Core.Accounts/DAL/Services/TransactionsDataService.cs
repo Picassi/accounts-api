@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using AutoMapper;
 using Picassi.Core.Accounts.DAL.Entities;
 using Picassi.Core.Accounts.Exceptions;
 using Picassi.Core.Accounts.Models.Transactions;
@@ -80,7 +79,7 @@ namespace Picassi.Core.Accounts.DAL.Services
             var results = FilterTransactions(text, accounts, categories, dateFrom, dateTo, showUncategorised != false, 
                 pageSize, pageNumber, sortBy, sortAscending == true, transactions).ToList();
 
-            return Mapper.Map<IEnumerable<TransactionModel>>(results);
+            return ModelMapper.MapList(results);
         }
 
         public TransactionsResultsViewModel QueryWithCount(

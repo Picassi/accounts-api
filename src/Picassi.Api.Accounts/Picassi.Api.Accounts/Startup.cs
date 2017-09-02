@@ -22,7 +22,7 @@ namespace Picassi.Api.Accounts
             var dependentAssemblies = new[]
             {
                 webApiAssembly,
-                Assembly.GetAssembly(typeof(AccountAutomapperProfile)),
+                Assembly.GetAssembly(typeof(AccountModel)),
                 Assembly.GetAssembly(typeof(Account)),
                 Assembly.GetAssembly(typeof(IAuthenticationConfigurator)),
                 Assembly.GetAssembly(typeof(ITestDataGenerator))

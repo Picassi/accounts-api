@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
 using Picassi.Core.Accounts.DAL.Entities;
 using Picassi.Core.Accounts.Services;
 
@@ -10,17 +9,25 @@ namespace Picassi.Core.Accounts.Models.Categories
     {
         public Category CreateEntity(CategoryModel model)
         {
-            return Mapper.Map<Category>(model);
+            return new Category
+            {
+                Id = model.Id,
+                Name = model.Name
+            };
         }
 
         public CategoryModel Map(Category model)
         {
-            return Mapper.Map<CategoryModel>(model);
+            return new CategoryModel
+            {
+                Id = model.Id,
+                Name = model.Name
+            };
         }
 
         public void Patch(CategoryModel model, Category entity)
         {
-            Mapper.Map(model, entity);
+            entity.Name = model.Name;
         }
 
         public IEnumerable<CategoryModel> MapList(IEnumerable<Category> results)

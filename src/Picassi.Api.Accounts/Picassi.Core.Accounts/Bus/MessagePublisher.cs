@@ -34,6 +34,8 @@ namespace Picassi.Core.Accounts.Bus
 
         private void PublishMessage<T>(IExchangeConfig tracking, string type, T model)
         {
+            return; // Currently disabled
+
             using (var connection = _factory.CreateConnection())
             {
                 using (var channel = connection.CreateModel())

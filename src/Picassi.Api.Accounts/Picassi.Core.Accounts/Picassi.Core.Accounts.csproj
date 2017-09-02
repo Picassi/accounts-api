@@ -43,10 +43,6 @@
       <HintPath>..\packages\Autofac.4.5.0\lib\net45\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="AutoMapper, Version=4.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -145,7 +141,6 @@
     <Compile Include="Models\Budgets\BudgetModelMapper.cs" />
     <Compile Include="Models\Tags\TagsQueryModel.cs" />
     <Compile Include="Models\Tags\TagAccountSummaryResult.cs" />
-    <Compile Include="Models\Tags\TagAutomapperProfile.cs" />
     <Compile Include="Models\Tags\TagModel.cs" />
     <Compile Include="Models\Tags\TagSummaryQueryModel.cs" />
     <Compile Include="Models\Tags\TagSummaryResult.cs" />
@@ -216,33 +211,25 @@
     <Compile Include="Time\Periods\QuarterPeriodTypeDefinition.cs" />
     <Compile Include="Time\Periods\SecondPeriodTypeDefinition.cs" />
     <Compile Include="Time\Periods\YearPeriodTypeDefinition.cs" />
-    <Compile Include="Models\Accounts\AccountAutomapperProfile.cs" />
     <Compile Include="Models\Accounts\AccountQueryModel.cs" />
     <Compile Include="Models\Accounts\AccountsStatusViewModel.cs" />
     <Compile Include="Models\Accounts\AccountSummaryViewModel.cs" />
     <Compile Include="Models\Accounts\AccountModel.cs" />
-    <Compile Include="Models\Budgets\BudgetAutomapperProfile.cs" />
     <Compile Include="Models\Budgets\BudgetsQueryModel.cs" />
     <Compile Include="Models\Budgets\BudgetModel.cs" />
-    <Compile Include="Models\Goals\GoalAutomapperProfile.cs" />
     <Compile Include="Models\Goals\GoalsQueryModel.cs" />
     <Compile Include="Models\Goals\GoalModel.cs" />
-    <Compile Include="Models\ModelledTransactions\ModelledTransactionAutomapperProfile.cs" />
     <Compile Include="Models\ModelledTransactions\ModelledTransactionQueryModel.cs" />
     <Compile Include="Models\ModelledTransactions\ModelledTransactionModel.cs" />
-    <Compile Include="Models\Events\EventsAutomapperProfile.cs" />
     <Compile Include="Models\Events\EventsQueryModel.cs" />
     <Compile Include="Models\Events\EventModel.cs" />
     <Compile Include="Models\Categories\CategoriesQueryModel.cs" />
     <Compile Include="Models\Categories\CategoryAccountSummaryResult.cs" />
-    <Compile Include="Models\Categories\CategoryAutomapperProfile.cs" />
     <Compile Include="Models\Categories\CategorySummaryQueryModel.cs" />
     <Compile Include="Models\Categories\CategorySummaryResult.cs" />
     <Compile Include="Models\Categories\CategorySummaryViewModel.cs" />
     <Compile Include="Models\Categories\CategoryModel.cs" />
     <Compile Include="Models\Meta\MetaDataViewModel.cs" />
-    <Compile Include="Models\ResultsViewModel.cs" />
-    <Compile Include="Models\ScheduledTransactions\ScheduledTransactionAutomapperProfile.cs" />
     <Compile Include="Models\ScheduledTransactions\ScheduledTransactionQueryModel.cs" />
     <Compile Include="Models\ScheduledTransactions\ScheduledTransactionModel.cs" />
     <Compile Include="Models\Statements\StatementLineViewModel.cs" />
@@ -253,20 +240,21 @@
     <Compile Include="Models\Transactions\TransactionModelMapper.cs" />
     <Compile Include="Models\Transactions\AccountTransactionModelMapper.cs" />
     <Compile Include="Models\Transactions\SimpleTransactionQueryModel.cs" />
-    <Compile Include="Models\Transactions\TransactionAutomapperProfile.cs" />
     <Compile Include="Models\Transactions\AccountTransactionsQueryModel.cs" />
-    <Compile Include="Models\Transactions\TransactionsQueryModel.cs" />
-    <Compile Include="Models\Transactions\TransactionsResultsViewModel.cs" />
     <Compile Include="Models\Transactions\TransactionSummaryModel.cs" />
     <Compile Include="Models\Transactions\TransactionUploadModel.cs" />
     <Compile Include="Models\Transactions\AccountTransactionModel.cs" />
-    <Compile Include="Models\Transactions\TransactionModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Picassi.Api.Accounts.Contract\Picassi.Api.Accounts.Contract.csproj">
+      <Project>{8D318D2C-0A4D-46CB-AA26-04BB0832A429}</Project>
+      <Name>Picassi.Api.Accounts.Contract</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201705271109030_InitialCreate.resx">
       <DependentUpon>201705271109030_InitialCreate.cs</DependentUpon>

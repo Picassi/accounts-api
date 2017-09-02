@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
 using Picassi.Core.Accounts.DAL.Entities;
 using Picassi.Core.Accounts.Models.Categories;
 using Picassi.Core.Accounts.Services;
@@ -36,7 +35,7 @@ namespace Picassi.Core.Accounts.DAL.Services
 
 
             queryResults = query == null ? queryResults : OrderResults(queryResults, query.SortBy, query.SortAscending);
-            return Mapper.Map<IEnumerable<CategoryModel>>(queryResults);
+            return ModelMapper.MapList(queryResults);
         }
 
         private static IQueryable<Category> OrderResults(IQueryable<Category> categories, string field, bool ascending)

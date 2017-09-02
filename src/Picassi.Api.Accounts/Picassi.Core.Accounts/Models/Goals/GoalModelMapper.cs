@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
 using Picassi.Core.Accounts.DAL.Entities;
 using Picassi.Core.Accounts.Services;
 
@@ -10,17 +10,17 @@ namespace Picassi.Core.Accounts.Models.Goals
     {
         public Goal CreateEntity(GoalModel model)
         {
-            return Mapper.Map<Goal>(model);
+            throw new NotImplementedException();
         }
 
         public GoalModel Map(Goal model)
         {
-            return Mapper.Map<GoalModel>(model);
+            throw new NotImplementedException();
         }
 
         public void Patch(GoalModel model, Goal entity)
         {
-            Mapper.Map(model, entity);
+            throw new NotImplementedException();
         }
 
         public IEnumerable<GoalModel> MapList(IEnumerable<Goal> results)

@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
 using Picassi.Core.Accounts.DAL.Entities;
 using Picassi.Core.Accounts.Services;
 
@@ -10,17 +10,17 @@ namespace Picassi.Core.Accounts.Models.ModelledTransactions
     {
         public ModelledTransaction CreateEntity(ModelledTransactionModel model)
         {
-            return Mapper.Map<ModelledTransaction>(model);
+            throw new NotImplementedException();
         }
 
         public ModelledTransactionModel Map(ModelledTransaction model)
         {
-            return Mapper.Map<ModelledTransactionModel>(model);
+            throw new NotImplementedException();
         }
 
         public void Patch(ModelledTransactionModel model, ModelledTransaction entity)
         {
-            Mapper.Map(model, entity);
+            throw new NotImplementedException();
         }
 
         public IEnumerable<ModelledTransactionModel> MapList(IEnumerable<ModelledTransaction> results)

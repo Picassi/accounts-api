@@ -65,6 +65,10 @@
     <Compile Include="TestDataGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Picassi.Api.Accounts.Contract\Picassi.Api.Accounts.Contract.csproj">
+      <Project>{8D318D2C-0A4D-46CB-AA26-04BB0832A429}</Project>
+      <Name>Picassi.Api.Accounts.Contract</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Picassi.Core.Accounts\Picassi.Core.Accounts.csproj">
       <Project>{ac94699b-b1af-46ef-b657-ffee06e52ea4}</Project>
       <Name>Picassi.Core.Accounts</Name>

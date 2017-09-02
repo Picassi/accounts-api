@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
 using Picassi.Core.Accounts.DAL.Entities;
 using Picassi.Core.Accounts.Models.Tags;
 using Picassi.Core.Accounts.Services;
@@ -26,7 +25,7 @@ namespace Picassi.Core.Accounts.DAL.Services
 
             if (query?.Name != null) queryResults = queryResults.Where(x => x.Name.Contains(query.Name));
             queryResults = query == null ? queryResults : OrderResults(queryResults, query.SortBy, query.SortAscending);
-            return Mapper.Map<IEnumerable<TagModel>>(queryResults);
+            return ModelMapper.MapList(queryResults);
         }
 
         private static IQueryable<Tag> OrderResults(IQueryable<Tag> tags, string field, bool ascending)
