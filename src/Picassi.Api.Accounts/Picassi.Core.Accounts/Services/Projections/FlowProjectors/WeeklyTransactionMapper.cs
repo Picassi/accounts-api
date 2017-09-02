@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Picassi.Core.Accounts.DAL.Entities;
 
 namespace Picassi.Core.Accounts.Services.Projections.FlowProjectors

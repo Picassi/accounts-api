@@ -5,7 +5,6 @@ using Picassi.Api.Accounts.Contract.Events;
 using Picassi.Api.Accounts.Mappers;
 using Picassi.Core.Accounts.DAL.Services;
 using Picassi.Core.Accounts.Models.Events;
-using Picassi.Utils.Api.Attributes;
 
 namespace Picassi.Api.Accounts.Controllers
 {

@@ -1,7 +1,6 @@
 ﻿using System.Web.Http;
 using System.Web.Http.Cors;
 using Picassi.Generator.Accounts;
-using Picassi.Utils.Api.Attributes;
 
 namespace Picassi.Api.Accounts.Controllers
 {

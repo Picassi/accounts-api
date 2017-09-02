@@ -1,7 +1,6 @@
 ﻿using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using Picassi.Core.Accounts.DAL.Entities;
-using Picassi.Utils.Data;
 
 namespace Picassi.Core.Accounts.DAL
 {

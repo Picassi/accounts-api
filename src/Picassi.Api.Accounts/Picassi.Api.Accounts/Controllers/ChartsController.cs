@@ -6,7 +6,6 @@ using Picassi.Api.Accounts.Contract;
 using Picassi.Core.Accounts.Models;
 using Picassi.Core.Accounts.Services.Charts;
 using Picassi.Core.Accounts.Time.Periods;
-using Picassi.Utils.Api.Attributes;
 
 namespace Picassi.Api.Accounts.Controllers
 {

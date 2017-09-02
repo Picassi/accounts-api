@@ -5,7 +5,6 @@ using System.Web.Http.Cors;
 using Picassi.Core.Accounts.DAL.Services;
 using Picassi.Core.Accounts.Models;
 using Picassi.Core.Accounts.Models.ModelledTransactions;
-using Picassi.Utils.Api.Attributes;
 
 namespace Picassi.Api.Accounts.Controllers
 {

@@ -5,33 +5,36 @@ using System.Web.Http.Cors;
 using Picassi.Api.Accounts.Contract;
 using Picassi.Core.Accounts.DAL.Services;
 using Picassi.Core.Accounts.Models.Accounts;
+using Picassi.Core.Accounts.Services;
 using Picassi.Core.Accounts.Services.Reports;
 using Picassi.Core.Accounts.Time;
-using Picassi.Utils.Api.Attributes;
 
 namespace Picassi.Api.Accounts.Controllers
 {
 	[EnableCors(origins: "*", headers: "*", methods: "*")]
-    [PicassiApiAuthorise]
+    [PicassiApiAuthorise]    
     public class AccountsController : ApiController
 	{
         private readonly IAccountDataService _dataService;
 	    private readonly IAccountSummariser _accountSummariser;
 	    private readonly IAccountBalanceService _accountBalanceService;
+	    private readonly IUserTracking _userTracking;
 
         public AccountsController(
             IAccountDataService dataService, 
-            IAccountSummariser accountSummariser, IAccountBalanceService accountBalanceService)
+            IAccountSummariser accountSummariser, IAccountBalanceService accountBalanceService, IUserTracking userTracking)
         {
             _dataService = dataService;
             _accountSummariser = accountSummariser;
             _accountBalanceService = accountBalanceService;
+            _userTracking = userTracking;
         }
 
         [HttpGet]
         [Route("accounts")]
         public IEnumerable<AccountModel> GetAccounts([FromUri]AccountQueryModel query)
         {
+            _userTracking.UserActive();
             return _dataService.Query(query);
         }
 
@@ -92,6 +95,7 @@ namespace Picassi.Api.Accounts.Controllers
 	    [Route("wealth-summary")]
 	    public WealthSummaryViewModel GetAccountsSummary([FromUri]DateRange period)
 	    {
+	        _userTracking.UserActive();
 	        var start = period?.Start ?? DateTime.Today.AddMonths(-1);
 	        var end = period?.End ?? DateTime.Today;
 	        return _accountSummariser.GetWealthSummary(start, end);

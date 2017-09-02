@@ -6,7 +6,6 @@ using Picassi.Core.Accounts.DAL.Services;
 using Picassi.Core.Accounts.Models;
 using Picassi.Core.Accounts.Models.Transactions;
 using Picassi.Core.Accounts.Services.Transactions;
-using Picassi.Utils.Api.Attributes;
 
 namespace Picassi.Api.Accounts.Controllers
 {

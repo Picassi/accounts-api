@@ -1,5 +1,4 @@
-﻿using Picassi.Core.Accounts.DAL.Entities;
-using Picassi.Core.Accounts.Time.Periods;
+﻿using Picassi.Core.Accounts.Time.Periods;
 
 namespace Picassi.Core.Accounts.Models.Budgets
 {

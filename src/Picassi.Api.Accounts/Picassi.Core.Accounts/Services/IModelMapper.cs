@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using Picassi.Core.Accounts.DAL.Entities;
-using Picassi.Core.Accounts.Models.Transactions;
 
 namespace Picassi.Core.Accounts.Services
 {

@@ -3,14 +3,13 @@ using System.Web.Http;
 using Autofac;
 using Newtonsoft.Json;
 using Owin;
+using Picassi.Api.Accounts.Authorization;
+using Picassi.Api.Accounts.Config;
+using Picassi.Api.Accounts.Filters;
 using Picassi.Core.Accounts.DAL.Entities;
 using Picassi.Core.Accounts.Events;
 using Picassi.Core.Accounts.Models.Accounts;
 using Picassi.Generator.Accounts;
-using Picassi.Utils.Api.Authorization;
-using Picassi.Utils.Api.Filters;
-using Picassi.Utils.Api.Helpers;
-using Picassi.Utils.Api.Init;
 
 namespace Picassi.Api.Accounts
 {
@@ -39,7 +38,6 @@ namespace Picassi.Api.Accounts
             }
 
             WebApiConfig.Register(config);
-            AutomapperHelper.MapFromAssemblies(dependentAssemblies);
             JsonConfig.ConfigureJson(config, DateTimeZoneHandling.Unspecified);
             config.EnsureInitialized();
             config.Filters.Add(new ApiExceptionHandlingAttribute());

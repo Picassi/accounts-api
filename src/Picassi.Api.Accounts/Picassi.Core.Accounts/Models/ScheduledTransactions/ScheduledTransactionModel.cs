@@ -1,5 +1,4 @@
 ﻿using System;
-using Picassi.Core.Accounts.DAL.Entities;
 using Picassi.Core.Accounts.Time.Periods;
 
 namespace Picassi.Core.Accounts.Models.ScheduledTransactions

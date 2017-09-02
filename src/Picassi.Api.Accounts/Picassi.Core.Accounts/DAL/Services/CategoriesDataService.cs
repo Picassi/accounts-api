@@ -2,10 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Picassi.Core.Accounts.DAL.Entities;
-using Picassi.Core.Accounts.Models.Budgets;
 using Picassi.Core.Accounts.Models.Categories;
 using Picassi.Core.Accounts.Services;
-using Picassi.Utils.Data.Extensions;
+using Picassi.Core.Accounts.Extensions;
 
 namespace Picassi.Core.Accounts.DAL.Services
 {

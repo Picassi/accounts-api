@@ -7,7 +7,7 @@ using Picassi.Core.Accounts.DAL.Entities;
 using Picassi.Core.Accounts.Exceptions;
 using Picassi.Core.Accounts.Models.Transactions;
 using Picassi.Core.Accounts.Services;
-using Picassi.Utils.Data.Extensions;
+using Picassi.Core.Accounts.Extensions;
 
 namespace Picassi.Core.Accounts.DAL.Services
 {

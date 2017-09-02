@@ -7,7 +7,6 @@ using Picassi.Core.Accounts.DAL.Services;
 using Picassi.Core.Accounts.Models;
 using Picassi.Core.Accounts.Models.Categories;
 using Picassi.Core.Accounts.Services.Reports;
-using Picassi.Utils.Api.Attributes;
 
 namespace Picassi.Api.Accounts.Controllers
 {
