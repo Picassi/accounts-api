@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Picassi.Api.Accounts.Contract.Transactions;
 using Picassi.Core.Accounts.DAL.Entities;
 using Picassi.Core.Accounts.Services;
 

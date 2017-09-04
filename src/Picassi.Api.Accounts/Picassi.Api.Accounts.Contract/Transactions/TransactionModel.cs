@@ -1,6 +1,6 @@
 using System;
 
-namespace Picassi.Core.Accounts.Models.Transactions
+namespace Picassi.Api.Accounts.Contract.Transactions
 {
     public class TransactionModel
     {

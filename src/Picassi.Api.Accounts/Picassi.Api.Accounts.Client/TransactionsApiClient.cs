@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Picassi.Api.Accounts.Client.Auth;
-using Picassi.Core.Accounts.Models.Transactions;
+using Picassi.Api.Accounts.Contract.Transactions;
 
 namespace Picassi.Api.Accounts.Client
 {

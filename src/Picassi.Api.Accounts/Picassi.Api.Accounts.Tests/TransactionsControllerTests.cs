@@ -3,6 +3,7 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using Picassi.Api.Accounts.Contract.Events;
+using Picassi.Api.Accounts.Contract.Transactions;
 using Picassi.Api.Accounts.Tests.Builders;
 using Picassi.Api.Accounts.Tests.Framework;
 using Picassi.Core.Accounts.DAL.Entities;

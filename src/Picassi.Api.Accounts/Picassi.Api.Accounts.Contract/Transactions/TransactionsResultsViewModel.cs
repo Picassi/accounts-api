@@ -1,4 +1,6 @@
-﻿namespace Picassi.Core.Accounts.Models.Transactions
+﻿using Picassi.Core.Accounts.Models;
+
+namespace Picassi.Api.Accounts.Contract.Transactions
 {
     public class TransactionsResultsViewModel : ResultsViewModel<TransactionModel>
     {

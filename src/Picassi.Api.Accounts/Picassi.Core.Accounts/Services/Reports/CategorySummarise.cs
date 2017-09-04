@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Picassi.Api.Accounts.Contract.Transactions;
 using Picassi.Core.Accounts.DAL.Services;
 using Picassi.Core.Accounts.Models.Categories;
 using Picassi.Core.Accounts.Models.Transactions;

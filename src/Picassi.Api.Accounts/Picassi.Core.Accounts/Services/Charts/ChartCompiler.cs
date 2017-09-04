@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Picassi.Api.Accounts.Contract.Transactions;
 using Picassi.Core.Accounts.DAL.Services;
 using Picassi.Core.Accounts.Models;
 using Picassi.Core.Accounts.Models.Accounts;

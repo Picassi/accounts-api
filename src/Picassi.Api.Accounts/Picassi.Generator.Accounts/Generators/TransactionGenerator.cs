@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
+using Picassi.Api.Accounts.Contract.Transactions;
 using Picassi.Core.Accounts.DAL;
 using Picassi.Core.Accounts.DAL.Services;
 using Picassi.Core.Accounts.Models.Accounts;

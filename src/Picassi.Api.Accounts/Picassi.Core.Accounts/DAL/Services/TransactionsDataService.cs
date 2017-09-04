@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using Picassi.Api.Accounts.Contract.Transactions;
 using Picassi.Core.Accounts.DAL.Entities;
 using Picassi.Core.Accounts.Exceptions;
 using Picassi.Core.Accounts.Models.Transactions;
