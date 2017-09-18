@@ -20,7 +20,7 @@ namespace Picassi.Core.Accounts.Services.Projections.FlowProjectors
 
         public IFlowProjector GetProjectorForFlow(ScheduledTransaction flow)
         {
-            return _flowProjectors.Single(x => x.Type == flow.Type);
+            return _flowProjectors.Single(x => x.Type == flow.Recurrence);
         }
     }
 }

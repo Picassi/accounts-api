@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Picassi.Core.Accounts.DAL.Entities
 {
-    public class Event
+    public class Event : IEntity
     {
         public int Id { get; set; }
 

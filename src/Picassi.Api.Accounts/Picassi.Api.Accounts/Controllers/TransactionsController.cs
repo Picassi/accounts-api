@@ -22,7 +22,7 @@ namespace Picassi.Api.Accounts.Controllers
         public TransactionsResultsViewModel GetTransactions([FromUri]TransactionsQueryModel query)
         {
             return _dataService.QueryWithCount(query?.Text, query?.Accounts, query?.Categories, query?.DateFrom, query?.DateTo, 
-                query?.ShowUncategorised, query?.PageSize, query?.PageNumber, query?.SortBy, query?.SortAscending);
+                query?.ShowUncategorised, query?.ShowAllCategorised, query?.PageSize, query?.PageNumber, query?.SortBy, query?.SortAscending);
         }
 
         [HttpPost]

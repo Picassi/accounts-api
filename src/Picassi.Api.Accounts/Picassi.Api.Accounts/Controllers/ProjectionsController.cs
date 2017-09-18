@@ -1,11 +1,12 @@
-﻿using System.Web.Http;
+﻿using System;
+using System.Web.Http;
 using System.Web.Http.Cors;
 using Picassi.Core.Accounts.Services.Projections;
 
 namespace Picassi.Api.Accounts.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    [PicassiApiAuthorise]
+    //[PicassiApiAuthorise]
     public class ProjectionsController : ApiController
     {
         private readonly IAccountProjector _accountProjector;
@@ -15,10 +16,13 @@ namespace Picassi.Api.Accounts.Controllers
             _accountProjector = accountProjector;
         }
 
-        [HttpPost]
-        [Route("accounts/project")]
-        public bool GenerateProjection([FromBody]ProjectionGenerationParameters query)
+        //[HttpPost]
+        [HttpGet]
+        [Route("projections")]
+        //public bool GenerateProjection([FromBody]ProjectionGenerationParameters query)
+        public bool GenerateProjection()
         {
+            var query = new ProjectionGenerationParameters {Start = DateTime.Now, End = DateTime.Now.AddYears(1)};
             return _accountProjector.ProjectAccounts(query);
         }
 

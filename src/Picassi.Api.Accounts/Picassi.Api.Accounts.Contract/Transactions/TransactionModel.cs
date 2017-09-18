@@ -16,5 +16,6 @@ namespace Picassi.Api.Accounts.Contract.Transactions
         public decimal Amount { get; set; }
         public decimal Balance { get; set; }
         public DateTime Date { get; set; }
+        public int? ScheduledTransactionId { get; set; }
     }
 }

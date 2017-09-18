@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using Picassi.Core.Accounts.DAL.Entities;
+using Picassi.Core.Accounts.Exceptions;
 using Picassi.Core.Accounts.Models.Categories;
 using Picassi.Core.Accounts.Services;
 using Picassi.Core.Accounts.Extensions;
@@ -33,9 +35,24 @@ namespace Picassi.Core.Accounts.DAL.Services
                 queryResults = queryResults.Where(x => x.Name.Contains(query.Name));
             }
 
-
             queryResults = query == null ? queryResults : OrderResults(queryResults, query.SortBy, query.SortAscending);
             return ModelMapper.MapList(queryResults);
+        }
+
+        public override bool Delete(int id)
+        {
+            var entity = DbProvider.GetDataContext().Categories.Find(id);
+            if (entity == null) throw new EntityNotFoundException<Category>(id);
+
+            var transactions = DbProvider.GetDataContext().Transactions.Where(t => t.CategoryId == id);
+            foreach (var t in transactions) t.CategoryId = null;
+
+            var budgets = DbProvider.GetDataContext().Budgets.Where(t => t.CategoryId == id);
+            foreach (var b in budgets) DbProvider.GetDataContext().Budgets.Remove(b);
+
+            DbProvider.GetDataContext().Categories.Remove(entity);
+            DbProvider.GetDataContext().SaveChanges();
+            return true;
         }
 
         private static IQueryable<Category> OrderResults(IQueryable<Category> categories, string field, bool ascending)

@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using Picassi.Core.Accounts.DAL.Entities;
-using Picassi.Core.Accounts.Enums;
 using Picassi.Core.Accounts.Time;
+using Picassi.Core.Accounts.Time.Periods;
 
 namespace Picassi.Core.Accounts.Services.Projections.FlowProjectors
 {
     public class WeeklyFlowProjector : IFlowProjector
     {
-        public FlowUserType Type => FlowUserType.Weekly;
+        public PeriodType Type => PeriodType.Week;
 
         private readonly IWeeklyTransactionMapper _weeklyTransactionMapper;
 
@@ -52,7 +52,8 @@ namespace Picassi.Core.Accounts.Services.Projections.FlowProjectors
                 Date = date,
                 Description = weeklyTransaction.Description,
                 ScheduledTransactionId = weeklyTransaction.Id,
-                AccountId = weeklyTransaction.AccountId
+                AccountId = weeklyTransaction.AccountId,
+                CategoryId = weeklyTransaction.CategoryId
             };
         }
 
@@ -64,7 +65,8 @@ namespace Picassi.Core.Accounts.Services.Projections.FlowProjectors
                 Date = transaction.Date,
                 Description = transaction.Description,
                 ScheduledTransactionId = transaction.ScheduledTransactionId,
-                AccountId = accountId
+                AccountId = accountId,
+                CategoryId = transaction.CategoryId
             };
         }
 

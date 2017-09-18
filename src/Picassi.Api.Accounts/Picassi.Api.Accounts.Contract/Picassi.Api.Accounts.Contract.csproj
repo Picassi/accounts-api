@@ -40,6 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Calendar\CalendarCell.cs" />
+    <Compile Include="Calendar\CalendarColumn.cs" />
+    <Compile Include="Calendar\CalendarQuery.cs" />
+    <Compile Include="Calendar\CalendarRow.cs" />
+    <Compile Include="Calendar\CalendarViewModel.cs" />
+    <Compile Include="Calendar\ReportingPeriod.cs" />
     <Compile Include="ResultsViewModel.cs" />
     <Compile Include="TransactionChartRequest.cs" />
     <Compile Include="AccountBalanceModel.cs" />

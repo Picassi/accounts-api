@@ -2,7 +2,7 @@
 
 namespace Picassi.Core.Accounts.DAL.Entities
 {
-    public class Budget
+    public class Budget : IEntity
     {
         public int Id { get; set; }
 
@@ -14,6 +14,10 @@ namespace Picassi.Core.Accounts.DAL.Entities
 
         public int CategoryId { get; set; }
 
+        public int AccountId { get; set; }
+
         public virtual Category Category { get; set; }
+
+        public virtual Account Account { get; set; }
     }
 }

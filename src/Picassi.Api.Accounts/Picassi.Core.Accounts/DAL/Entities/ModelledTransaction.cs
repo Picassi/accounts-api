@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Picassi.Core.Accounts.DAL.Entities
 {
-    public class ModelledTransaction
+    public class ModelledTransaction : IEntity
     {
         public int Id { get; set; }
 
@@ -21,6 +21,8 @@ namespace Picassi.Core.Accounts.DAL.Entities
 
         public int? EventId { get; set; }
 
+        public int? BudgetId { get; set; }
+
         public int? ScheduledTransactionId { get; set; }
 
         public decimal Amount { get; set; }
@@ -36,6 +38,8 @@ namespace Picassi.Core.Accounts.DAL.Entities
         public virtual Category Category { get; set; }
 
         public virtual Event Event { get; set; }
+
+        public virtual Budget Budget { get; set; }
 
         public virtual ScheduledTransaction ScheduledTransaction { get; set; }
     }

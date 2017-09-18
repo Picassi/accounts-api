@@ -11,7 +11,7 @@ namespace Picassi.Core.Accounts.Services
         bool Delete(int id);
     }
 
-    public abstract class GenericDataService<TModel, TEntity> : IGenericDataService<TModel> where TEntity : class 
+    public abstract class GenericDataService<TModel, TEntity> : IGenericDataService<TModel> where TEntity : class, IEntity
     {
         protected readonly IModelMapper<TModel, TEntity> ModelMapper;
         protected readonly IAccountsDatabaseProvider DbProvider;
@@ -26,8 +26,8 @@ namespace Picassi.Core.Accounts.Services
         {
             var dataModel = ModelMapper.CreateEntity(model);
             DbProvider.GetDataContext().GetDbSet<TEntity>().Add(dataModel);
-            DbProvider.GetDataContext().SaveChanges();            
-            return ModelMapper.Map(dataModel);
+            DbProvider.GetDataContext().SaveChanges();
+            return Get(dataModel.Id);
         }
 
         public virtual TModel Get(int id)
@@ -45,7 +45,7 @@ namespace Picassi.Core.Accounts.Services
 
             ModelMapper.Patch(model, entity);
             DbProvider.GetDataContext().SaveChanges();
-            return ModelMapper.Map(entity);
+            return Get(id);
         }
 
         public virtual bool Delete(int id)

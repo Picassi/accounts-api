@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using Picassi.Core.Accounts.DAL.Entities;
-using Picassi.Core.Accounts.Enums;
 using Picassi.Core.Accounts.Time;
+using Picassi.Core.Accounts.Time.Periods;
 
 namespace Picassi.Core.Accounts.Services.Projections.FlowProjectors
 {
     public class MonthlyFlowProjector : IFlowProjector
     {
-        public FlowUserType Type => FlowUserType.Monthly;
+        public PeriodType Type => PeriodType.Month;
 
         private readonly IMonthlyTransactionMapper _monthlyTransactionMapper;
 
@@ -54,6 +54,7 @@ namespace Picassi.Core.Accounts.Services.Projections.FlowProjectors
                 Description = monthlyTransaction.Description,
                 ScheduledTransactionId = monthlyTransaction.Id,
                 AccountId = monthlyTransaction.AccountId,
+                CategoryId = monthlyTransaction.CategoryId
             };
         }
 
@@ -64,8 +65,9 @@ namespace Picassi.Core.Accounts.Services.Projections.FlowProjectors
                 Amount = -transaction.Amount,
                 Date = transaction.Date,
                 Description = transaction.Description,
-                ScheduledTransactionId = transaction.ScheduledTransactionId,
-                AccountId = accountId
+                BudgetId = transaction.ScheduledTransactionId,
+                AccountId = accountId,
+                CategoryId = transaction.CategoryId
             };
         }
     }

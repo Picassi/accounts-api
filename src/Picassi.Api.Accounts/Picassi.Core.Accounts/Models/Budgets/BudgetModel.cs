@@ -13,5 +13,7 @@ namespace Picassi.Core.Accounts.Models.Budgets
         public int AggregationPeriod { get; set; }
 
         public int CategoryId { get; set; }
+
+        public int AccountId { get; set; }
     }
 }

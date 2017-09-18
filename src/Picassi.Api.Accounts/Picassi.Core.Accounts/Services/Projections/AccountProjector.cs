@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Picassi.Core.Accounts.DAL;
 using Picassi.Core.Accounts.DAL.Entities;
+using Picassi.Core.Accounts.Services.Projections.BudgetProjectors;
 using Picassi.Core.Accounts.Services.Projections.FlowProjectors;
 
 namespace Picassi.Core.Accounts.Services.Projections
@@ -16,12 +17,14 @@ namespace Picassi.Core.Accounts.Services.Projections
     {
         private readonly IAccountsDatabaseProvider _dataContext;
         private readonly IFlowProjectorProvider _flowProjectorProvider;
+        private readonly IBudgetProjectorProvider _budgetProjectorProvider;
         private readonly IProjectionBalanceService _projectionBalanceService;
 
-        public AccountProjector(IAccountsDatabaseProvider dataContext, IFlowProjectorProvider flowProjectorProvider, IProjectionBalanceService projectionBalanceService)
+        public AccountProjector(IAccountsDatabaseProvider dataContext, IFlowProjectorProvider flowProjectorProvider, IBudgetProjectorProvider budgetProjectorProvider, IProjectionBalanceService projectionBalanceService)
         {
             _dataContext = dataContext;
             _flowProjectorProvider = flowProjectorProvider;
+            _budgetProjectorProvider = budgetProjectorProvider;
             _projectionBalanceService = projectionBalanceService;
         }
 
@@ -49,6 +52,9 @@ namespace Picassi.Core.Accounts.Services.Projections
         private void AddUpdatedTransactions(DateTime start, DateTime end)
         {
             var transactions = GenerateTransactions(start, end);
+            transactions = GenerateBudgets(start, end, transactions);
+            AddOrdinalValues(transactions);
+
             foreach (var t in transactions)
             {
                 _dataContext.GetDataContext().ModelledTransactions.Add(t);
@@ -57,16 +63,34 @@ namespace Picassi.Core.Accounts.Services.Projections
             _dataContext.GetDataContext().SaveChanges();
         }
 
-        private IEnumerable<ModelledTransaction> GenerateTransactions(DateTime start, DateTime end)
+        private IList<ModelledTransaction> GenerateTransactions(DateTime start, DateTime end)
         {
-            var transactions = _dataContext.GetDataContext().ScheduledTransactions
+            return _dataContext.GetDataContext().ScheduledTransactions
                 .ToList()
                 .SelectMany(flow => GetTransactionsForFlow(flow, start, end))
-                .OrderBy(flow => flow.Date);
+                .ToList();
+        }
 
-            AddOrdinalValues(transactions);
+        private IList<ModelledTransaction> GenerateBudgets(DateTime start, DateTime end, IList<ModelledTransaction> existingTransactions)
+        {
+            return _dataContext.GetDataContext().Budgets
+                .ToList()
+                .SelectMany(budget => GetTransactionsForBudget(budget, start, end, existingTransactions))
+                .Union(existingTransactions)
+                .OrderBy(transaction => transaction.Date)
+                .ToList();
+        }
 
-            return transactions;
+        private IEnumerable<ModelledTransaction> GetTransactionsForFlow(ScheduledTransaction flow, DateTime start, DateTime end)
+        {
+            var projector = _flowProjectorProvider.GetProjectorForFlow(flow);
+            return projector.GetProjectionsForFlow(flow, start, end);
+        }
+
+        private IEnumerable<ModelledTransaction> GetTransactionsForBudget(Budget budget, DateTime start, DateTime end, IList<ModelledTransaction> existingTransactions)
+        {
+            var projector = _budgetProjectorProvider.GetProjectorForFlow(budget);
+            return projector.GetProjectionsForBudget(budget, start, end, existingTransactions);
         }
 
         private static void AddOrdinalValues(IEnumerable<ModelledTransaction> transactions)
@@ -76,12 +100,6 @@ namespace Picassi.Core.Accounts.Services.Projections
             {
                 transaction.Ordinal = ordinal++;
             }
-        }
-
-        private IEnumerable<ModelledTransaction> GetTransactionsForFlow(ScheduledTransaction flow, DateTime start, DateTime end)
-        {
-            var projector = _flowProjectorProvider.GetProjectorForFlow(flow);
-            return projector.GetProjectionsForFlow(flow, start, end);
         }
 
         private void UpdateBalances(DateTime start)

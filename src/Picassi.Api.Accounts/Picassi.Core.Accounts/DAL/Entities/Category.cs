@@ -2,7 +2,7 @@
 
 namespace Picassi.Core.Accounts.DAL.Entities
 {
-    public class Category
+    public class Category : IEntity
     {
         public int Id { get; set; }
 

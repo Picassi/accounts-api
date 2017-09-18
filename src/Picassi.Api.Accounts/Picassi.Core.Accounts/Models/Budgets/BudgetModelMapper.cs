@@ -20,7 +20,8 @@ namespace Picassi.Core.Accounts.Models.Budgets
                 AggregationPeriod = model.AggregationPeriod,
                 Amount = model.Amount,
                 CategoryId = model.CategoryId,
-                Period = model.Period
+                Period = model.Period,
+                AccountId = model.AccountId
             };
         }
 
@@ -32,7 +33,8 @@ namespace Picassi.Core.Accounts.Models.Budgets
                 AggregationPeriod = model.AggregationPeriod,
                 Amount = model.Amount,
                 CategoryId = model.CategoryId,
-                Period = model.Period
+                Period = model.Period,
+                AccountId = model.AccountId
             };
         }
 
@@ -41,6 +43,7 @@ namespace Picassi.Core.Accounts.Models.Budgets
             entity.Amount = model.Amount;
             entity.Period = model.Period;
             entity.AggregationPeriod = model.AggregationPeriod;
+            entity.AccountId = model.AccountId;
         }
 
         public IEnumerable<BudgetModel> MapList(IEnumerable<Budget> results)

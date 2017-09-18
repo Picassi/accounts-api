@@ -25,7 +25,8 @@ namespace Picassi.Core.Accounts.Models.Transactions
                 Description = model.Description,
                 Balance = model.Balance,
                 Id = model.Id,
-                Ordinal = model.Ordinal
+                Ordinal = model.Ordinal,
+                ScheduledTransactionId = model.ScheduledTransactionId
             };
         }
 
@@ -44,7 +45,8 @@ namespace Picassi.Core.Accounts.Models.Transactions
                 Description = entity.Description,
                 Balance = entity.Balance,
                 Id = entity.Id,
-                Ordinal = entity.Ordinal
+                Ordinal = entity.Ordinal,
+                ScheduledTransactionId = entity.ScheduledTransactionId
             };
         }
 
@@ -59,6 +61,7 @@ namespace Picassi.Core.Accounts.Models.Transactions
             entity.Balance = model.Balance;
             entity.Id = model.Id;
             entity.Ordinal = model.Ordinal;
+            entity.ScheduledTransactionId = model.ScheduledTransactionId;
         }
 
         public IEnumerable<TransactionModel> MapList(IEnumerable<Transaction> results)

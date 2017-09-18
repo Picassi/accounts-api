@@ -19,6 +19,8 @@ namespace Picassi.Core.Accounts.Models.ScheduledTransactions
                 EventId = model.EventId,
                 Amount = model.Amount,
                 Date = model.Date,
+                Start = model.Start,
+                End = model.End,
                 DaysBefore = model.DaysBefore,
                 Recurrence = model.Recurrence,
                 RecurrenceDayOfMonth = model.RecurrenceDayOfMonth,
@@ -42,11 +44,13 @@ namespace Picassi.Core.Accounts.Models.ScheduledTransactions
                 EventId = model.EventId,
                 Amount = model.Amount,
                 Date = model.Date,
+                Start = model.Start,
+                End = model.End,
                 DaysBefore = model.DaysBefore,
                 Recurrence = model.Recurrence,
                 RecurrenceDayOfMonth = model.RecurrenceDayOfMonth,
                 RecurrenceWeekOfMonth = model.RecurrenceWeekOfMonth,
-                RecurrenceDayOfWeek = (int?)model.RecurrenceDayOfWeek
+                RecurrenceDayOfWeek = model.RecurrenceDayOfWeek
             };
         }
 
@@ -59,6 +63,8 @@ namespace Picassi.Core.Accounts.Models.ScheduledTransactions
             entity.EventId = model.EventId;
             entity.Amount = model.Amount;
             entity.Date = model.Date;
+            entity.Start = model.Start;
+            entity.End = model.End;
             entity.DaysBefore = model.DaysBefore;
             entity.Recurrence = model.Recurrence;
             entity.RecurrenceDayOfMonth = model.RecurrenceDayOfMonth;

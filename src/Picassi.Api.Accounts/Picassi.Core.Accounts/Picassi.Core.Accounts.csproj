@@ -98,6 +98,7 @@
     <Compile Include="DAL\AccountsDataContext.cs" />
     <Compile Include="DAL\AccountsDatabaseProvider.cs" />
     <Compile Include="DAL\Entities\Tag.cs" />
+    <Compile Include="DAL\IEntity.cs" />
     <Compile Include="DAL\Migrator.cs" />
     <Compile Include="Events\DefaultEventBus.cs" />
     <Compile Include="Events\HandlerResolver.cs" />
@@ -109,6 +110,26 @@
     <Compile Include="Migrations\201707211855095_AddBudgetRelationshipToCategory.cs" />
     <Compile Include="Migrations\201707211855095_AddBudgetRelationshipToCategory.Designer.cs">
       <DependentUpon>201707211855095_AddBudgetRelationshipToCategory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709102112508_LinkTransactionToScheduledTransaction.cs" />
+    <Compile Include="Migrations\201709102112508_LinkTransactionToScheduledTransaction.Designer.cs">
+      <DependentUpon>201709102112508_LinkTransactionToScheduledTransaction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709181843095_UpdatesToBudgetProjection.cs" />
+    <Compile Include="Migrations\201709181843095_UpdatesToBudgetProjection.Designer.cs">
+      <DependentUpon>201709181843095_UpdatesToBudgetProjection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709181851039_AddDefaultAccountSetting.cs" />
+    <Compile Include="Migrations\201709181851039_AddDefaultAccountSetting.Designer.cs">
+      <DependentUpon>201709181851039_AddDefaultAccountSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709181910105_RemovedUserFlowTypeFromFlow.cs" />
+    <Compile Include="Migrations\201709181910105_RemovedUserFlowTypeFromFlow.Designer.cs">
+      <DependentUpon>201709181910105_RemovedUserFlowTypeFromFlow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709181921311_CorrectIsDefault.cs" />
+    <Compile Include="Migrations\201709181921311_CorrectIsDefault.Designer.cs">
+      <DependentUpon>201709181921311_CorrectIsDefault.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Budgets\BudgetSummary.cs" />
     <Compile Include="Models\Categories\CategoryModelMapper.cs" />
@@ -170,9 +191,16 @@
     <Compile Include="Events\Messages\TransactionMoved.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Budgets\BudgetReportsCompiler.cs" />
+    <Compile Include="Services\Calendar\CalendarCompiler.cs" />
+    <Compile Include="Services\Calendar\CalendarPaymentsCompiler.cs" />
+    <Compile Include="Services\Calendar\CalendarReportsCompiler.cs" />
     <Compile Include="Services\Charts\ChartCompiler.cs" />
     <Compile Include="Services\Charts\TransactionPeriodSummariser.cs" />
     <Compile Include="Services\Charts\TransactionPeriodSummary.cs" />
+    <Compile Include="Services\Projections\BudgetProjectors\BudgetProjectorProvider.cs" />
+    <Compile Include="Services\Projections\BudgetProjectors\IBudgetProjector.cs" />
+    <Compile Include="Services\Projections\BudgetProjectors\MonthlyBudgetProjector.cs" />
+    <Compile Include="Services\Projections\BudgetProjectors\WeeklyBudgetProjector.cs" />
     <Compile Include="Services\UserIdentityProvider.cs" />
     <Compile Include="Services\UserTracking.cs" />
     <Compile Include="Services\Projections\AccountProjector.cs" />
@@ -261,6 +289,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201707211855095_AddBudgetRelationshipToCategory.resx">
       <DependentUpon>201707211855095_AddBudgetRelationshipToCategory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709102112508_LinkTransactionToScheduledTransaction.resx">
+      <DependentUpon>201709102112508_LinkTransactionToScheduledTransaction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709181843095_UpdatesToBudgetProjection.resx">
+      <DependentUpon>201709181843095_UpdatesToBudgetProjection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709181851039_AddDefaultAccountSetting.resx">
+      <DependentUpon>201709181851039_AddDefaultAccountSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709181910105_RemovedUserFlowTypeFromFlow.resx">
+      <DependentUpon>201709181910105_RemovedUserFlowTypeFromFlow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709181921311_CorrectIsDefault.resx">
+      <DependentUpon>201709181921311_CorrectIsDefault.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

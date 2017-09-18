@@ -17,10 +17,12 @@ namespace Picassi.Core.Accounts.Models.ScheduledTransactions
         public int? EventId { get; set; }
         public decimal Amount { get; set; }
         public DateTime? Date { get; set; }
+        public DateTime? Start { get; set; }
+        public DateTime? End { get; set; }
         public int? DaysBefore { get; set; }
         public PeriodType? Recurrence { get; set; }
         public int? RecurrenceDayOfMonth { get; set; }
         public int? RecurrenceWeekOfMonth { get; set; }
-        public int? RecurrenceDayOfWeek { get; set; }
+        public DayOfWeek? RecurrenceDayOfWeek { get; set; }
     }
 }

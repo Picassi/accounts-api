@@ -12,7 +12,7 @@ namespace Picassi.Core.Accounts.DAL.Services
     public interface IModelledTransactionsDataService : IGenericDataService<ModelledTransactionModel>
     {
         ResultsViewModel<ModelledTransactionModel> Query(int accountId, ModelledTransactionQueryModel query);
-        IList<TransactionCategoriesGroupedByPeriodModel> QueryWeekly(int accountId, ModelledTransactionQueryModel query);
+        IList<TransactionCategoriesGroupedByPeriodModel> QueryGrouped(ModelledTransactionQueryModel query);
     }
 
     public class ModelledTransactionsDataService : GenericDataService<ModelledTransactionModel, ModelledTransaction>, IModelledTransactionsDataService
@@ -30,7 +30,7 @@ namespace Picassi.Core.Accounts.DAL.Services
             var orderedResults = queryResults.OrderBy(t => t.Date).ThenBy(t => t.Ordinal).AsQueryable();
             var allResults = queryResults.Count();
 
-            var actualResults = PageResults(query.PageNumber, query.PageSize, orderedResults);
+            var actualResults = PageResults(query.PageNumber, query.PageSize, orderedResults).ToList();
 
             return new ResultsViewModel<ModelledTransactionModel>
             {
@@ -39,10 +39,10 @@ namespace Picassi.Core.Accounts.DAL.Services
             };
         }
 
-        public IList<TransactionCategoriesGroupedByPeriodModel> QueryWeekly(int accountId, ModelledTransactionQueryModel query)
+        public IList<TransactionCategoriesGroupedByPeriodModel> QueryGrouped(ModelledTransactionQueryModel query)
         {
             var baseDate = DateTime.Today;
-            var queryResults = GetBaseTransactions(accountId);
+            var queryResults = DbProvider.GetDataContext().ModelledTransactions.Include("Category");
             var results = GetPeriodSummaries(queryResults, baseDate);
             var resultsWithDefaults = GetResultsWithDefaults(results, baseDate, results.Max(r => r.StartDate));
             AssignBalances(resultsWithDefaults);

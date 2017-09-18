@@ -18,7 +18,8 @@ namespace Picassi.Core.Accounts.Models.Accounts
             return new Account
             {
                 LastUpdated = DateTime.Now,
-                Name = model.Name
+                Name = model.Name,
+                IsDefault = model.IsDefault
             };
         }
 
@@ -28,13 +29,15 @@ namespace Picassi.Core.Accounts.Models.Accounts
             {
                 Id = model.Id,
                 LastUpdated = model.LastUpdated,
-                Name = model.Name
+                Name = model.Name,
+                IsDefault = model.IsDefault
             };
         }
 
         public void Patch(AccountModel model, Account entity)
         {
             entity.Name = model.Name;
+            entity.IsDefault = model.IsDefault;
         }
 
         public IEnumerable<AccountModel> MapList(IEnumerable<Account> results)

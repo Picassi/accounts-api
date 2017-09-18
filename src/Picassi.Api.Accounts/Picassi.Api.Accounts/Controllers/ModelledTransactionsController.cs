@@ -30,7 +30,7 @@ namespace Picassi.Api.Accounts.Controllers
 	    [Route("accounts/{accountId}/projected-transactions/weekly")]
 	    public IEnumerable<TransactionCategoriesGroupedByPeriodModel> GetWeeklyTransactionsForAccount(int accountId, [FromUri]ModelledTransactionQueryModel query)
 	    {
-	        return _transactionDataService.QueryWeekly(accountId, query);
+	        return _transactionDataService.QueryGrouped(query);
 	    }
 
 

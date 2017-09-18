@@ -5,7 +5,7 @@ using Picassi.Core.Accounts.Time.Periods;
 
 namespace Picassi.Core.Accounts.DAL.Entities
 {
-    public class ScheduledTransaction
+    public class ScheduledTransaction : IEntity
     {
         public int Id { get; set; }
 
@@ -22,8 +22,6 @@ namespace Picassi.Core.Accounts.DAL.Entities
         public int? EventId { get; set; }
 
         public decimal Amount { get; set; }
-
-        public FlowUserType Type { get; set; }
 
         public DateTime? Date { get; set; }
 

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Picassi.Core.Accounts.DAL.Entities
 {
-    public class Transaction
+    public class Transaction : IEntity
     {
         public int Id { get; set; }
 
@@ -23,12 +23,16 @@ namespace Picassi.Core.Accounts.DAL.Entities
 
         public decimal Balance { get; set; }
 
-        public DateTime Date { get; set; }        
+        public DateTime Date { get; set; }    
+        
+        public int? ScheduledTransactionId { get; set; }
 
         public virtual Account Account { get; set; }
 
         public virtual Account To { get; set; }
 
         public virtual Category Category { get; set; }
+
+        public virtual ScheduledTransaction ScheduledTransaction { get; set; }
     }
 }
