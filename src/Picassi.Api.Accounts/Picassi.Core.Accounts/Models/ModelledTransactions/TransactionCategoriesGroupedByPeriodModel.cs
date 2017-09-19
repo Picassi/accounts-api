@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Picassi.Core.Accounts.DAL.Services;
 
 namespace Picassi.Core.Accounts.Models.ModelledTransactions
 {
@@ -18,5 +19,12 @@ namespace Picassi.Core.Accounts.Models.ModelledTransactions
         public decimal Balance { get; set; }
 
         public DateTime StartDate { get; set; }
+    }
+
+    public class TransactionsGroupedByPeriodModel
+    {
+        public DateTime StartDate { get; set; }
+
+        public IList<ProjectedTransaction> Transactions { get; set; }
     }
 }

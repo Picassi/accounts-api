@@ -10,8 +10,8 @@ namespace Picassi.Core.Accounts.Models.ModelledTransactions
         public int[] Categories { get; set; }
         public bool ShowAllCategorised { get; set; }
         public bool ShowUncategorised { get; set; }
-        public DateTime? DateFrom { get; set; }
-        public DateTime? DateTo { get; set; }
+        public DateTime DateFrom { get; set; }
+        public DateTime DateTo { get; set; }
         public string SortBy { get; set; }
         public bool SortAscending { get; set; }
     }

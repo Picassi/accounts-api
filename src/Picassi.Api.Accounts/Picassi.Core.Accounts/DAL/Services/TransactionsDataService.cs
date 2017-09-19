@@ -146,7 +146,7 @@ namespace Picassi.Core.Accounts.DAL.Services
 
         private static IQueryable<Transaction> FilterAccounts(IQueryable<Transaction> transactions, int[] accountIds)
         {
-            return accountIds == null || accountIds.Length == 0
+            return accountIds == null
                 ? transactions
                 : transactions.Where(x => accountIds.Contains((int) x.AccountId));
         }

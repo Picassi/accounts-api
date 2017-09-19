@@ -9,7 +9,7 @@ using Picassi.Core.Accounts.Services.Calendar;
 namespace Picassi.Api.Accounts.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    //[PicassiApiAuthorise]
+    [PicassiApiAuthorise]
     public class CalendarController : ApiController
     {
         private readonly ICalendarCompiler _calendarCompiler;
@@ -23,20 +23,17 @@ namespace Picassi.Api.Accounts.Controllers
 
         [HttpGet]
         [Route("calendar")]
-        public CalendarViewModel GetCalendar([FromUri]CalendarQuery query)
+        public CalendarViewModel GetCalendar([FromUri] CalendarQuery query)
         {
             return _calendarCompiler.Compile(query);
         }
 
         [HttpGet]
         [Route("reports/modelled-spending-summary")]
-        public IList<TransactionCategoriesGroupedByPeriodModel> GetModelledSpendingSummary()
+        public IList<TransactionCategoriesGroupedByPeriodModel> GetModelledSpendingSummary(
+            [FromUri] CalendarQuery query)
         {
-            return _calendarReportsCompiler.GetReport(new CalendarReportsQuery
-            {
-                Start = DateTime.Now.AddDays(2),
-                End = DateTime.Now.AddYears(1)
-            });
+            return _calendarReportsCompiler.GetReport(query);
         }
     }
 }

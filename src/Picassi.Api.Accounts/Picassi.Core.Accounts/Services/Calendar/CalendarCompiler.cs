@@ -14,31 +14,11 @@ namespace Picassi.Core.Accounts.Services.Calendar
     {
         public CalendarViewModel Compile(CalendarQuery query)
         {
-            var start = GetStartOfPeriod(query.Start ?? DateTime.UtcNow, query.PanelPeriod);
-            var end = GetEndDate(start, query.PanelPeriod);
+            var start = CalendarUtilities.GetStartOfPeriod(query.Start ?? DateTime.UtcNow, query.PanelPeriod);
+            var end = CalendarUtilities.GetEndDate(start, query.PanelPeriod);
             var cells = CompileCells(start, end, query.CellPeriod);
             return CompileCalendar(start, end, query.RowPeriod, cells);
         }
-
-        private DateTime GetEndDate(DateTime start, ReportingPeriod period)
-        {
-            switch (period)
-            {
-                case ReportingPeriod.Day:
-                    return start.AddDays(1);
-                case ReportingPeriod.Week:
-                    return start.AddDays(7);
-                case ReportingPeriod.Month:
-                    return start.AddMonths(1);
-                case ReportingPeriod.Quarter:
-                    return start.AddMonths(3);
-                case ReportingPeriod.Year:
-                    return start.AddMonths(1);
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(period), period, null);
-            }
-        }
-
         private IList<CalendarCell> CompileCells(DateTime start, DateTime end, ReportingPeriod period)
         {
             var func = GetDateIncrementFunction(period);
@@ -50,8 +30,9 @@ namespace Picassi.Core.Accounts.Services.Calendar
             while (start < end)
             {
                 var endPeriod = iterationFunc(start);
+                var cell = CompileCell(start, endPeriod);                
                 start = endPeriod;
-                yield return CompileCell(start, endPeriod);
+                yield return cell;
             }
         }
 
@@ -59,46 +40,38 @@ namespace Picassi.Core.Accounts.Services.Calendar
         {
             return new CalendarCell
             {
-                Name = start.ToShortDateString(),
+                Name = start.Day.ToString(),
                 Date = start
             };
         }
 
         private CalendarViewModel CompileCalendar(DateTime start, DateTime end, ReportingPeriod period, IList<CalendarCell> cells)
         {
-            var periodStart = GetStartOfPeriod(start, period);
+            var periodStart = CalendarUtilities.GetStartOfPeriod(start, period);
             var viewModel = new CalendarViewModel();
             while (periodStart < end)
             {
+                var calendarCells = new List<CalendarCell>();
+                if (start > periodStart) calendarCells.AddRange(GetPaddingCells(periodStart, start));
+
                 var periodEnd = GetDateIncrementFunction(period)(periodStart);
-                var row = new CalendarRow
-                {
-                    Cells = cells.Where(c => c.Date >= periodStart && c.Date < periodEnd).OrderBy(c => c.Date).ToList()
-                };
+                calendarCells.AddRange(cells.Where(c => c.Date >= periodStart && c.Date < periodEnd).OrderBy(c => c.Date).ToList());
+
+                if (periodEnd > end) calendarCells.AddRange(GetPaddingCells(end, periodEnd));
+
+                var row = new CalendarRow { Cells = calendarCells };
                 periodStart = periodEnd;
                 viewModel.Rows.Add(row);
             }
             return viewModel;
         }
 
-        private DateTime GetStartOfPeriod(DateTime start, ReportingPeriod period)
+        private static IEnumerable<CalendarCell> GetPaddingCells(DateTime start, DateTime end)
         {
-            switch (period)
+            return Enumerable.Range(0, (end - start).Days).Select(i => new CalendarCell
             {
-                case ReportingPeriod.Day:
-                    return start.Date;
-                case ReportingPeriod.Week:
-                    var daysDifference = (int)start.DayOfWeek - (int)DayOfWeek.Monday;
-                    return start.Date.AddDays((daysDifference + 7) % 7 - 7);
-                case ReportingPeriod.Month:
-                    return new DateTime(start.Year, start.Month, 1);
-                case ReportingPeriod.Quarter:
-                    return new DateTime(start.Year, start.Month - start.Month % 3, 1);
-                case ReportingPeriod.Year:
-                    return new DateTime(start.Year, 1, 1);
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(period), period, null);
-            }
+                Date = start.AddDays(i)
+            });
         }
 
         private Func<DateTime, DateTime> GetDateIncrementFunction(ReportingPeriod period)
@@ -119,5 +92,49 @@ namespace Picassi.Core.Accounts.Services.Calendar
                     throw new ArgumentOutOfRangeException(nameof(period), period, null);
             }
         }
+    }
+
+    public class CalendarUtilities
+    {
+        public static DateTime GetStartOfPeriod(DateTime start, ReportingPeriod period)
+        {
+            switch (period)
+            {
+                case ReportingPeriod.Day:
+                    return start.Date;
+                case ReportingPeriod.Week:
+                    var daysDifference = (int)start.DayOfWeek - (int)DayOfWeek.Monday;
+                    return start.Date.AddDays((daysDifference + 7) % 7 - 7);
+                case ReportingPeriod.Month:
+                    return new DateTime(start.Year, start.Month, 1);
+                case ReportingPeriod.Quarter:
+                    return new DateTime(start.Year, start.Month - start.Month % 3, 1);
+                case ReportingPeriod.Year:
+                    return new DateTime(start.Year, 1, 1);
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(period), period, null);
+            }
+        }
+
+        public static DateTime GetEndDate(DateTime start, ReportingPeriod period)
+        {
+            switch (period)
+            {
+                case ReportingPeriod.Day:
+                    return start.AddDays(1);
+                case ReportingPeriod.Week:
+                    return start.AddDays(7);
+                case ReportingPeriod.Month:
+                    return start.AddMonths(1);
+                case ReportingPeriod.Quarter:
+                    return start.AddMonths(3);
+                case ReportingPeriod.Year:
+                    return start.AddMonths(1);
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(period), period, null);
+            }
+        }
+
+
     }
 }
