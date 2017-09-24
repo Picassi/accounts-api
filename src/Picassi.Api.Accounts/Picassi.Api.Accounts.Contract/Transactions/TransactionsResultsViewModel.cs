@@ -1,6 +1,4 @@
-﻿using Picassi.Core.Accounts.Models;
-
-namespace Picassi.Api.Accounts.Contract.Transactions
+﻿namespace Picassi.Api.Accounts.Contract.Transactions
 {
     public class TransactionsResultsViewModel : ResultsViewModel<TransactionModel>
     {

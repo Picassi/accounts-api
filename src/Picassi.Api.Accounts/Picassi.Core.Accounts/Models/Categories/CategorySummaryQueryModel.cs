@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Picassi.Core.Accounts.Enums;
+using Picassi.Api.Accounts.Contract.Enums;
 using Picassi.Core.Accounts.Time;
 
 namespace Picassi.Core.Accounts.Models.Categories

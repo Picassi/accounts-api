@@ -1,4 +1,6 @@
-﻿namespace Picassi.Core.Accounts.Time.Periods
+﻿using Picassi.Api.Accounts.Contract.Enums;
+
+namespace Picassi.Core.Accounts.Time.Periods
 {
     public class HourPeriodTypeDefinition : IPeriodTypeDefinition
     {

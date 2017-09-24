@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using Picassi.Api.Accounts.Contract;
 using Picassi.Api.Accounts.Contract.Transactions;
 using Picassi.Core.Accounts.DAL.Services;
 using Picassi.Core.Accounts.Models.Transactions;
@@ -52,5 +54,12 @@ namespace Picassi.Api.Accounts.Controllers
         {
             return _dataService.Delete(id);
         }
+
+	    [HttpPost]
+	    [Route("actions/transactions/bulk/set-recurrence")]
+	    public IEnumerable<TransactionModel> SetTransactionRecurrence([FromBody]SetTransactionRecurrenceRequest model)
+	    {
+	        return _dataService.SetTransactionRecurrences(model.TransactionIds, model.Recurrence);
+	    }
     }
 }

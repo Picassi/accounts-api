@@ -20,10 +20,7 @@ namespace Picassi.Api.Accounts.Config
 
             config.Formatters.Remove(config.Formatters.XmlFormatter);
             config.MapHttpAttributeRoutes();
-            config.Routes.MapHttpRoute(DefaultRoute, "{controller}/{id}", new { id = RouteParameter.Optional });
-
-            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            config.Formatters.JsonFormatter.SerializerSettings.Converters = new JsonConverter[] { new StringEnumConverter()};
+            config.Routes.MapHttpRoute(DefaultRoute, "{controller}/{id}", new { id = RouteParameter.Optional });        
         }
     }
 }

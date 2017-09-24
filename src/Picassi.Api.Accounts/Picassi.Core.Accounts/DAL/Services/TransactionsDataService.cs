@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using Picassi.Api.Accounts.Contract.Enums;
 using Picassi.Api.Accounts.Contract.Transactions;
 using Picassi.Core.Accounts.DAL.Entities;
 using Picassi.Core.Accounts.Exceptions;
@@ -38,6 +39,8 @@ namespace Picassi.Core.Accounts.DAL.Services
             int? pageNumber = null,
             string sortBy = null,
             bool? sortAscending = null);
+
+        IEnumerable<TransactionModel> SetTransactionRecurrences(IList<int> transactionIds, PeriodType? recurrence);
     }
 
     public class TransactionsDataService : GenericDataService<TransactionModel, Transaction>, ITransactionsDataService
@@ -113,6 +116,56 @@ namespace Picassi.Core.Accounts.DAL.Services
             };
         }
 
+        public IEnumerable<TransactionModel> SetTransactionRecurrences(IList<int> transactionIds, PeriodType? recurrence)
+        {
+            var transactions = DbProvider.GetDataContext().Transactions
+                .Include(t => t.ScheduledTransaction)
+                .Where(t => transactionIds.Contains(t.Id)).ToList();
+
+            foreach (var transaction in transactions)
+            {                
+                if (recurrence != null)
+                {
+                    if (transaction.ScheduledTransactionId == null)
+                    {
+                        var scheduledTransaction = new ScheduledTransaction
+                        {
+                            AccountId = transaction.AccountId,
+                            ToId = transaction.ToId,
+                            Amount = transaction.Amount,
+                            CategoryId = transaction.CategoryId,
+                            Recurrence = recurrence,
+                            RecurrenceDayOfMonth = recurrence == PeriodType.Month ? transaction.Date.Day : (int?)null,
+                            RecurrenceDayOfWeek = recurrence == PeriodType.Week ? transaction.Date.DayOfWeek : (DayOfWeek?)null
+                        };
+                        DbProvider.GetDataContext().ScheduledTransactions.Add(scheduledTransaction);
+                        //DbProvider.GetDataContext().SaveChanges();
+                        transaction.ScheduledTransaction = scheduledTransaction;
+                    }
+                    else
+                    {
+                        transaction.ScheduledTransaction.Recurrence = recurrence;
+                        transaction.ScheduledTransaction.RecurrenceDayOfMonth =
+                            recurrence == PeriodType.Month ? transaction.Date.Day : (int?) null;
+                        transaction.ScheduledTransaction.RecurrenceDayOfWeek =
+                            recurrence == PeriodType.Week ? transaction.Date.DayOfWeek : (DayOfWeek?) null;
+                    }
+                }
+                else
+                {
+                    transaction.ScheduledTransactionId = null;
+                    DbProvider.GetDataContext().ScheduledTransactions.Remove(transaction.ScheduledTransaction);
+                }
+            }
+
+            DbProvider.GetDataContext().SaveChanges();
+
+            var results = DbProvider.GetDataContext().Transactions
+                .Include(t => t.Category).Include(t => t.Account).Include(t => t.To)
+                .Where(t => transactionIds.Contains(t.Id)).ToList();
+            return ModelMapper.MapList(results);
+        }
+
         private static IEnumerable<Transaction> FilterTransactions(string text, int[] accounts, int[] categories,
             DateTime? dateFrom, DateTime? dateTo, bool? showUncategorised, bool? showAllCategories, int? pageSize, int? pageNumber,
             string sortBy, bool sortAscending, IQueryable <Transaction> transactions)
@@ -184,3 +237,4 @@ namespace Picassi.Core.Accounts.DAL.Services
 
     }
 }
+

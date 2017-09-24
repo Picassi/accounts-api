@@ -20,17 +20,17 @@ namespace Picassi.Api.Accounts.Controllers
         [Route("settings")]
 	    public SettingsViewModel GetSettings()
         {
-            var defaultAccount = _dataService.Query(null).Single(a => a.IsDefault);
+            var defaultAccount = _dataService.Query(null).SingleOrDefault(a => a.IsDefault);
 
             return new SettingsViewModel
             {
-                DefaultAccountId = defaultAccount.Id
+                DefaultAccountId = defaultAccount?.Id
             };
         }
     }
 
     public class SettingsViewModel
     {
-        public int DefaultAccountId { get; set; }
+        public int? DefaultAccountId { get; set; }
     }
 }

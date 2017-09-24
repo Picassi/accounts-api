@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Picassi.Core.Accounts.Models
+namespace Picassi.Api.Accounts.Contract
 {
     public class ResultsViewModel<T>
     {

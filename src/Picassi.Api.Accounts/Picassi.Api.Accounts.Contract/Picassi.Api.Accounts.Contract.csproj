@@ -46,7 +46,13 @@
     <Compile Include="Calendar\CalendarRow.cs" />
     <Compile Include="Calendar\CalendarViewModel.cs" />
     <Compile Include="Calendar\ReportingPeriod.cs" />
+    <Compile Include="Enums\FlowUserType.cs" />
+    <Compile Include="Enums\PeriodType.cs" />
+    <Compile Include="Enums\ReportSource.cs" />
+    <Compile Include="Enums\ReportType.cs" />
+    <Compile Include="Enums\SummaryReportType.cs" />
     <Compile Include="ResultsViewModel.cs" />
+    <Compile Include="SetTransactionRecurrenceRequest.cs" />
     <Compile Include="TransactionChartRequest.cs" />
     <Compile Include="AccountBalanceModel.cs" />
     <Compile Include="Events\CreateEventJson.cs" />

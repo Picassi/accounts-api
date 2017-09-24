@@ -92,7 +92,7 @@ namespace Picassi.Core.Accounts.Services.Budgets
                 CategoryId = category.Id,
                 CategoryName = category.Name,
                 Budget = budget == null ? null : (decimal?)GetBudgetAmount(budget, from, to),
-                Spent = -transactions.Sum(x => x.Amount),
+                Spent = transactions.Sum(x => x.Amount),
                 BudgetAggregationPeriod = budget?.AggregationPeriod,
                 BudgetAmount = budget?.Amount,
                 BudgetPeriod = budget?.Period

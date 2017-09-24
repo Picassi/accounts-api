@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Picassi.Api.Accounts.Contract.Enums;
 using Picassi.Api.Accounts.Contract.Transactions;
 using Picassi.Core.Accounts.DAL.Services;
 using Picassi.Core.Accounts.Models;
@@ -58,7 +59,9 @@ namespace Picassi.Core.Accounts.Services.Charts
             {
                 Name = g.Key,
                 Spending = Math.Abs(g.Sum(t => t.Amount))
-            }).ToList();
+            })
+            .OrderBy(d => d.Name)
+            .ToList();
 
             var spendingSeries = new DataSeriesModel
             {

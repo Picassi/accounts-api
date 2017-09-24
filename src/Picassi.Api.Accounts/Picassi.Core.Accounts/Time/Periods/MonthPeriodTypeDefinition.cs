@@ -1,4 +1,5 @@
 ﻿using System;
+using Picassi.Api.Accounts.Contract.Enums;
 
 namespace Picassi.Core.Accounts.Time.Periods
 {

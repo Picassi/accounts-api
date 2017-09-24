@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using Picassi.Core.Accounts.Enums;
+using Picassi.Api.Accounts.Contract.Enums;
 using Picassi.Core.Accounts.Time.Periods;
 
 namespace Picassi.Core.Accounts.DAL.Entities

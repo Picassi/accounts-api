@@ -9,18 +9,10 @@ namespace Picassi.Api.Accounts.Config
     {
         public static void ConfigureJson(HttpConfiguration config, DateTimeZoneHandling timeZoneHandling)
         {
-            var json = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
-            var jSettings = new JsonSerializerSettings()
-            {
-                Formatting = Formatting.Indented,
-                DateTimeZoneHandling = timeZoneHandling,
-                ContractResolver = new CamelCasePropertyNamesContractResolver()
-            };
-            jSettings.Converters.Add(new IsoDateTimeConverter());
-            json.SerializerSettings = jSettings;
-
-            var jsonFormatters = config.Formatters.JsonFormatter;
-            jsonFormatters.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
+            config.Formatters.JsonFormatter.SerializerSettings.Formatting = Formatting.Indented;
+            config.Formatters.JsonFormatter.SerializerSettings.DateTimeZoneHandling = timeZoneHandling;
+            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            config.Formatters.JsonFormatter.SerializerSettings.Converters = new JsonConverter[] { new StringEnumConverter(), new IsoDateTimeConverter() };
 
         }
     }

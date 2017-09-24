@@ -7,13 +7,13 @@ namespace Picassi.Core.Accounts.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class RemovedUserFlowTypeFromFlow : IMigrationMetadata
+    public sealed partial class Initialise : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(RemovedUserFlowTypeFromFlow));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Initialise));
         
         string IMigrationMetadata.Id
         {
-            get { return "201709181910105_RemovedUserFlowTypeFromFlow"; }
+            get { return "201709191739331_Initialise"; }
         }
         
         string IMigrationMetadata.Source

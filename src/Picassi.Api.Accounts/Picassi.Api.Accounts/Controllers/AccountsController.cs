@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using Picassi.Api.Accounts.Contract;
@@ -42,6 +43,11 @@ namespace Picassi.Api.Accounts.Controllers
         [Route("accounts")]
         public AccountModel CreateAccount([FromBody]AccountModel accountModel)
         {
+            if (_dataService.Query(null).Count(a => a.IsDefault) == 0)
+            {
+                accountModel.IsDefault = true;
+            }
+
             return _dataService.Create(accountModel);
         }
 

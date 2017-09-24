@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Picassi.Api.Accounts.Contract;
 
 namespace Picassi.Core.Accounts.Models.Tags
 {

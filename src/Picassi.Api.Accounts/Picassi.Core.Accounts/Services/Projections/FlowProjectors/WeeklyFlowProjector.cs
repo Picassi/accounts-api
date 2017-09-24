@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Picassi.Api.Accounts.Contract.Enums;
 using Picassi.Core.Accounts.DAL.Entities;
 using Picassi.Core.Accounts.Time;
 using Picassi.Core.Accounts.Time.Periods;

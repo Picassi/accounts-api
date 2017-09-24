@@ -20,7 +20,7 @@ namespace Picassi.Core.Accounts.Models.Transactions
                 Amount = model.Amount,
                 Date = model.Date,
                 AccountId = model.AccountId,
-                ToId = model.AccountId,
+                ToId = model.ToId,
                 CategoryId = model.CategoryId,
                 Description = model.Description,
                 Balance = model.Balance,
@@ -38,8 +38,8 @@ namespace Picassi.Core.Accounts.Models.Transactions
                 Date = entity.Date,
                 AccountId = entity.AccountId,
                 AccountName = entity.Account?.Name,
-                ToId = entity.AccountId,
-                ToName = entity.Account?.Name,
+                ToId = entity.ToId,
+                ToName = entity.To?.Name,
                 CategoryId = entity.CategoryId,
                 CategoryName = entity.Category?.Name,
                 Description = entity.Description,
@@ -55,7 +55,7 @@ namespace Picassi.Core.Accounts.Models.Transactions
             entity.Amount = model.Amount;
             entity.Date = model.Date;
             entity.AccountId = model.AccountId;
-            entity.ToId = model.AccountId;
+            entity.ToId = model.ToId;
             entity.CategoryId = model.CategoryId;
             entity.Description = model.Description;
             entity.Balance = model.Balance;

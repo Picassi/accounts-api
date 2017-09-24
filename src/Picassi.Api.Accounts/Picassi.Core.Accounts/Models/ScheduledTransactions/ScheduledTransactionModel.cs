@@ -1,4 +1,5 @@
 ﻿using System;
+using Picassi.Api.Accounts.Contract.Enums;
 using Picassi.Core.Accounts.Time.Periods;
 
 namespace Picassi.Core.Accounts.Models.ScheduledTransactions
