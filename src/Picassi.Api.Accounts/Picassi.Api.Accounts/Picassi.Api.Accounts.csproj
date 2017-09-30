@@ -213,6 +213,7 @@
     <Compile Include="Config\JsonConfig.cs" />
     <Compile Include="Config\SwaggerConfig.cs" />
     <Compile Include="Config\WebApiConfig.cs" />
+    <Compile Include="Controllers\AssignmentRulesController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\CalendarController.cs" />
     <Compile Include="Controllers\ChartsController.cs" />

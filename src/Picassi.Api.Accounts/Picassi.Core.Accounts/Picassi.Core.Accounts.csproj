@@ -97,9 +97,11 @@
     <Compile Include="Bus\MessagePublisher.cs" />
     <Compile Include="DAL\AccountsDataContext.cs" />
     <Compile Include="DAL\AccountsDatabaseProvider.cs" />
+    <Compile Include="DAL\Entities\AssignmentRule.cs" />
     <Compile Include="DAL\Entities\Tag.cs" />
     <Compile Include="DAL\IEntity.cs" />
     <Compile Include="DAL\Migrator.cs" />
+    <Compile Include="DAL\Services\AssignmentRulesDataService.cs" />
     <Compile Include="Events\DefaultEventBus.cs" />
     <Compile Include="Events\HandlerResolver.cs" />
     <Compile Include="Extensions\SortExtensions.cs" />
@@ -107,6 +109,13 @@
     <Compile Include="Migrations\201709191739331_Initialise.Designer.cs">
       <DependentUpon>201709191739331_Initialise.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709301054050_AddRules.cs" />
+    <Compile Include="Migrations\201709301054050_AddRules.Designer.cs">
+      <DependentUpon>201709301054050_AddRules.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AssignmentRules\AssignmentRuleQueryModel.cs" />
+    <Compile Include="Models\AssignmentRules\AssignmentRuleModel.cs" />
+    <Compile Include="Models\AssignmentRules\AssignmentRuleModelMapper.cs" />
     <Compile Include="Models\Budgets\BudgetSummary.cs" />
     <Compile Include="Models\Categories\CategoryModelMapper.cs" />
     <Compile Include="Models\CategoryWithBudget.cs" />
@@ -258,6 +267,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201709191739331_Initialise.resx">
       <DependentUpon>201709191739331_Initialise.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709301054050_AddRules.resx">
+      <DependentUpon>201709301054050_AddRules.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

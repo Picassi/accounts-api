@@ -7,6 +7,7 @@ namespace Picassi.Core.Accounts.DAL
     public interface IAccountsDataContext
     {
         IDbSet<Account> Accounts { get; set; }
+        IDbSet<AssignmentRule> AssignmentRules { get; set; }
         IDbSet<Budget> Budgets { get; set; }
         IDbSet<Category> Categories { get; set; }
         IDbSet<Event> Events { get; set; }
@@ -23,6 +24,7 @@ namespace Picassi.Core.Accounts.DAL
     public class AccountsDataContext : DbContext, IAccountsDataContext
     {
         public IDbSet<Account> Accounts { get; set; }
+        public IDbSet<AssignmentRule> AssignmentRules { get; set; }
         public IDbSet<Budget> Budgets { get; set; }
         public IDbSet<Category> Categories { get; set; }
         public IDbSet<Event> Events { get; set; }

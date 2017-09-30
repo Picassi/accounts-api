@@ -11,5 +11,6 @@ namespace Picassi.Core.Accounts.Models.Budgets
         public IList<int> Categories { get; set; }
         public string PageSize { get; set; }
         public string PageNumber { get; set; }
+        public bool IncludeUnset { get; set; }
     }
 }
