@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Picassi.Api.Accounts.Contract.Enums;
 
 namespace Picassi.Core.Accounts.DAL.Entities
 {
@@ -8,6 +9,8 @@ namespace Picassi.Core.Accounts.DAL.Entities
         public int Id { get; set; }
 
         public DateTime? CreatedDate { get; set; }
+
+        public AssignmentRuleType Type { get; set; }
 
         public string DescriptionRegex { get; set; }
 

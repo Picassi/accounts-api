@@ -21,7 +21,8 @@ namespace Picassi.Core.Accounts.Models.AssignmentRules
                 DescriptionRegex = model.DescriptionRegex,
                 Enabled = model.Enabled,
                 Priority = model.Priority,
-                CategoryId = model.CategoryId
+                CategoryId = model.CategoryId,
+                Type = model.Type
             };
         }
 
@@ -34,7 +35,9 @@ namespace Picassi.Core.Accounts.Models.AssignmentRules
                 DescriptionRegex = model.DescriptionRegex,
                 Enabled = model.Enabled,
                 Priority = model.Priority,
-                CategoryId = model.CategoryId
+                CategoryId = model.CategoryId,
+                CategoryName = model.Category?.Name,
+                Type = model.Type
             };
         }
 
@@ -45,6 +48,7 @@ namespace Picassi.Core.Accounts.Models.AssignmentRules
             entity.Enabled = model.Enabled;
             entity.Priority = model.Priority;
             entity.CategoryId = model.CategoryId;
+            entity.Type = model.Type;
         }
 
         public IEnumerable<AssignmentRuleModel> MapList(IEnumerable<AssignmentRule> results)

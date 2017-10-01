@@ -113,6 +113,10 @@
     <Compile Include="Migrations\201709301054050_AddRules.Designer.cs">
       <DependentUpon>201709301054050_AddRules.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710012105121_AddedTypeToRule.cs" />
+    <Compile Include="Migrations\201710012105121_AddedTypeToRule.Designer.cs">
+      <DependentUpon>201710012105121_AddedTypeToRule.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\AssignmentRules\AssignmentRuleQueryModel.cs" />
     <Compile Include="Models\AssignmentRules\AssignmentRuleModel.cs" />
     <Compile Include="Models\AssignmentRules\AssignmentRuleModelMapper.cs" />
@@ -270,6 +274,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709301054050_AddRules.resx">
       <DependentUpon>201709301054050_AddRules.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710012105121_AddedTypeToRule.resx">
+      <DependentUpon>201710012105121_AddedTypeToRule.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

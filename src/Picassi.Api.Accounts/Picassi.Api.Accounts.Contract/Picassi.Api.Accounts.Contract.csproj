@@ -46,6 +46,7 @@
     <Compile Include="Calendar\CalendarRow.cs" />
     <Compile Include="Calendar\CalendarViewModel.cs" />
     <Compile Include="Calendar\ReportingPeriod.cs" />
+    <Compile Include="Enums\AssignmentRuleType.cs" />
     <Compile Include="Enums\FlowUserType.cs" />
     <Compile Include="Enums\PeriodType.cs" />
     <Compile Include="Enums\ReportSource.cs" />

@@ -1,10 +1,13 @@
 ﻿using System;
+using Picassi.Api.Accounts.Contract.Enums;
 
 namespace Picassi.Core.Accounts.Models.AssignmentRules
 {
     public class AssignmentRuleModel
     {
         public int Id { get; set; }
+
+        public AssignmentRuleType Type { get; set; }
 
         public DateTime? CreatedDate { get; set; }
 
@@ -15,5 +18,7 @@ namespace Picassi.Core.Accounts.Models.AssignmentRules
         public int? Priority { get; set; }
 
         public int? CategoryId { get; set; }
+
+        public string CategoryName { get; set; }
     }
 }
