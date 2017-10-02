@@ -11,6 +11,7 @@ namespace Picassi.Core.Accounts.DAL.Services
     public interface IAssignmentRulesDataService : IGenericDataService<AssignmentRuleModel>
     {
         IEnumerable<AssignmentRuleModel> Query(int pageNumber = 1, int pageSize = 20);
+        IEnumerable<AssignmentRuleModel> GetRules(bool? enabled = null);
     }
 
     public class AssignmentRulesDataService : GenericDataService<AssignmentRuleModel, AssignmentRule>, IAssignmentRulesDataService
@@ -38,6 +39,15 @@ namespace Picassi.Core.Accounts.DAL.Services
                 .OrderBy(x => x.Priority)
                 .ThenBy(x => x.CreatedDate)
                 .Skip(skip).Take(pageSize).AsQueryable();
+            return queryResults.ToList().Select(ModelMapper.Map);
+        }
+
+        public IEnumerable<AssignmentRuleModel> GetRules(bool? enabled = null)
+        {
+            var queryResults = DbProvider.GetDataContext().AssignmentRules.Include("Category");
+
+            if (enabled != null) queryResults = queryResults.Where(x => x.Enabled == enabled);
+
             return queryResults.ToList().Select(ModelMapper.Map);
         }
     }

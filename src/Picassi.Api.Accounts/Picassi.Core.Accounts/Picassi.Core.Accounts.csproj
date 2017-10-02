@@ -176,6 +176,13 @@
     <Compile Include="Events\Messages\EntityUpdated.cs" />
     <Compile Include="Events\Messages\TransactionMoved.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AssignmentRules\AssignmentRuleGenerator.cs" />
+    <Compile Include="Services\AssignmentRules\AssignmentRuleHandler.cs" />
+    <Compile Include="Services\AssignmentRules\AssignmentRuleMatcher.cs" />
+    <Compile Include="Services\AssignmentRules\AssignmentRuleProvider.cs" />
+    <Compile Include="Services\AssignmentRules\ExactMatchRuleHandler.cs" />
+    <Compile Include="Services\AssignmentRules\FuzzyMatchRuleHandler.cs" />
+    <Compile Include="Services\AssignmentRules\RegexMatchRuleHandler.cs" />
     <Compile Include="Services\Budgets\BudgetReportsCompiler.cs" />
     <Compile Include="Services\Calendar\CalendarCompiler.cs" />
     <Compile Include="Services\Calendar\CalendarPaymentsCompiler.cs" />

@@ -5,6 +5,7 @@ using Picassi.Api.Accounts.Contract;
 using Picassi.Api.Accounts.Contract.Transactions;
 using Picassi.Core.Accounts.DAL.Services;
 using Picassi.Core.Accounts.Models.Transactions;
+using Picassi.Core.Accounts.Services.AssignmentRules;
 
 namespace Picassi.Api.Accounts.Controllers
 {
@@ -13,10 +14,12 @@ namespace Picassi.Api.Accounts.Controllers
     public class TransactionsController : ApiController
 	{
 	    private readonly ITransactionsDataService _dataService;
+	    private readonly IAssignmentRuleGenerator _assignmentRuleGenerator; 
 
-	    public TransactionsController(ITransactionsDataService dataService)
+	    public TransactionsController(ITransactionsDataService dataService, IAssignmentRuleGenerator assignmentRuleGenerator)
 	    {
 	        _dataService = dataService;
+	        _assignmentRuleGenerator = assignmentRuleGenerator;
 	    }
 
 	    [HttpGet]
@@ -29,8 +32,12 @@ namespace Picassi.Api.Accounts.Controllers
 
         [HttpPost]
         [Route("transactions")]
-        public TransactionModel CreateTransaction([FromBody]TransactionModel transactionModel)
+        public TransactionModel CreateTransaction([FromBody]TransactionModel transactionModel, [FromUri]TransactionUpdateOptions options)
         {
+            if (options?.AutoGenerateRules == true)
+            {
+                _assignmentRuleGenerator.GenerateRule(transactionModel, options);
+            }
             return _dataService.Create(transactionModel);
         }
 
@@ -43,8 +50,12 @@ namespace Picassi.Api.Accounts.Controllers
 
         [HttpPut]
         [Route("transactions/{id}")]
-        public TransactionModel UpdateTransaction(int id, [FromBody]TransactionModel transactionModel)
+        public TransactionModel UpdateTransaction(int id, [FromBody]TransactionModel transactionModel, [FromUri]TransactionUpdateOptions options)
         {
+            if (options?.AutoGenerateRules == true)
+            {
+                _assignmentRuleGenerator.GenerateRule(transactionModel, options);
+            }
             return _dataService.Update(id, transactionModel);
         }
 

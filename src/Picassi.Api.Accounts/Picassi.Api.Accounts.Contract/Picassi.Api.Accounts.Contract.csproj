@@ -65,6 +65,7 @@
     <Compile Include="Transactions\TransactionModel.cs" />
     <Compile Include="Transactions\TransactionsQueryModel.cs" />
     <Compile Include="Transactions\TransactionsResultsViewModel.cs" />
+    <Compile Include="Transactions\TransactionUpdateOptions.cs" />
     <Compile Include="UniversalSearchResultSection.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
