@@ -34,9 +34,9 @@ namespace Picassi.Api.Accounts.Client
             foreach (var p in props)
             {
                 var value = p.GetValue(obj, null);
-                if (value is ICollection enumerable)
+                if (value is ICollection)
                 {
-
+                    var enumerable = value as ICollection;
                     result.AddRange(from object v in enumerable select
                         $"{p.Name}={HttpUtility.UrlEncode(GetStringRepresentation(v))}");
                 }
