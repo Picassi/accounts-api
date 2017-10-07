@@ -9,6 +9,7 @@ namespace Picassi.Api.Accounts.Tests.Framework
     public class FakeAccountsDataContext : IAccountsDataContext
     {
         public IDbSet<Account> Accounts { get; set; }
+        public IDbSet<AssignmentRule> AssignmentRules { get; set; }
         public IDbSet<Budget> Budgets { get; set; }
         public IDbSet<Category> Categories { get; set; }
         public IDbSet<Event> Events { get; set; }
@@ -22,6 +23,7 @@ namespace Picassi.Api.Accounts.Tests.Framework
         public FakeAccountsDataContext()
         {
             Accounts = new FakeDbSet<Account>();
+            AssignmentRules = new FakeDbSet<AssignmentRule>();
             Budgets = new FakeDbSet<Budget>();
             Categories = new FakeDbSet<Category>();
             Events = new FakeDbSet<Event>();

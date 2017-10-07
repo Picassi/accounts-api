@@ -194,6 +194,7 @@
     <Compile Include="Services\Projections\BudgetProjectors\IBudgetProjector.cs" />
     <Compile Include="Services\Projections\BudgetProjectors\MonthlyBudgetProjector.cs" />
     <Compile Include="Services\Projections\BudgetProjectors\WeeklyBudgetProjector.cs" />
+    <Compile Include="Services\Transactions\CategoryAssignmentService.cs" />
     <Compile Include="Services\UserIdentityProvider.cs" />
     <Compile Include="Services\UserTracking.cs" />
     <Compile Include="Services\Projections\AccountProjector.cs" />

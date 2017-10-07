@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Picassi.Api.Accounts.Contract.Transactions;
 using Picassi.Core.Accounts.DAL;
 using Picassi.Core.Accounts.DAL.Entities;
 using Picassi.Core.Accounts.Models.Transactions;
@@ -17,12 +18,14 @@ namespace Picassi.Core.Accounts.Services.Transactions
     public class TransactionUploadService : ITransactionUploadService
     {
         private readonly IAccountsDatabaseProvider _dbProvider;
-        private readonly IAccountBalanceService _balanceService;
+        private readonly ICategoryAssignmentService _categoryAssignmentService;
+        private readonly ITransactionModelMapper _transactionModelMapper;
 
-        public TransactionUploadService(IAccountsDatabaseProvider dbProvider, IAccountBalanceService balanceService)
+        public TransactionUploadService(IAccountsDatabaseProvider dbProvider, ICategoryAssignmentService categoryAssignmentService, ITransactionModelMapper transactionModelMapper)
         {
             _dbProvider = dbProvider;
-            _balanceService = balanceService;
+            _categoryAssignmentService = categoryAssignmentService;
+            _transactionModelMapper = transactionModelMapper;
         }
 
         public IList<TransactionUploadResult> AddTransactionsToAccount(int accountId, ICollection<TransactionUploadModel> transactions)
@@ -45,7 +48,7 @@ namespace Picassi.Core.Accounts.Services.Transactions
 
                 foreach (var t in orderedTransactions)
                 {
-                    _dbProvider.GetDataContext().Transactions.Add(t);
+                    _dbProvider.GetDataContext().Transactions.Add(_transactionModelMapper.CreateEntity(t));
                 }
                 _dbProvider.GetDataContext().SaveChanges();
                 //_balanceService.SetTransactionBalances(accountId, orderedTransactions.First().Balance = orderedTransactions.First);
@@ -58,17 +61,21 @@ namespace Picassi.Core.Accounts.Services.Transactions
 
             try
             {
-                var transaction = new Transaction
+                var date = DateTime.ParseExact(upload.Date, "dd/MM/yyyy", CultureInfo.CurrentCulture);
+
+                var transaction = new TransactionModel
                 {
                     Amount = GetTransactionAmount(upload),
-                    Date = DateTime.ParseExact(upload.Date, "dd/MM/yyyy", CultureInfo.CurrentCulture),
+                    Date = date,
                     Description = upload.Description,
-                    CategoryId = _dbProvider.GetDataContext().Categories.SingleOrDefault(x => x.Name == upload.CategoryName)?.Id,
                     AccountId = baseAccountId,
                     ToId = null,
                     Ordinal = ordinal,
                     Balance = upload.Balance ?? 0
                 };
+
+                _categoryAssignmentService.AssignCategory(transaction);
+
                 return new TransactionUploadResult(upload, transaction);
             }
             catch (Exception e)
@@ -83,11 +90,11 @@ namespace Picassi.Core.Accounts.Services.Transactions
         }
 
 
-        private List<Transaction> AmendTransactionOrder(List<Transaction> transactions, int ordinal)
+        private List<TransactionModel> AmendTransactionOrder(List<TransactionModel> transactions, int ordinal)
         {
             foreach (var candidate in GetCandidateStartTransactions(transactions))
             {
-                var results = new List<Transaction>();
+                var results = new List<TransactionModel>();
                 if (TryOrderTransactionsWithStartCandidate(candidate, transactions, results))
                 {
                     foreach (var transaction in results)
@@ -101,7 +108,7 @@ namespace Picassi.Core.Accounts.Services.Transactions
             return transactions;
         }
 
-        private IEnumerable<Transaction> GetCandidateStartTransactions(List<Transaction> transactions)
+        private IEnumerable<TransactionModel> GetCandidateStartTransactions(List<TransactionModel> transactions)
         {
             var firstDay = transactions.Min(x => x.Date);
             var lastDay = transactions.Max(x => x.Date);
@@ -112,9 +119,9 @@ namespace Picassi.Core.Accounts.Services.Transactions
             return matchingCandidates;
         }
 
-        private static bool TryOrderTransactionsWithStartCandidate(Transaction startPoint, IEnumerable<Transaction> transactions, ICollection<Transaction> results)
+        private static bool TryOrderTransactionsWithStartCandidate(TransactionModel startPoint, IEnumerable<TransactionModel> transactions, ICollection<TransactionModel> results)
         {
-            var transactionPool = new List<Transaction>();
+            var transactionPool = new List<TransactionModel>();
             transactionPool.AddRange(transactions);
             transactionPool.Remove(startPoint);
 
@@ -138,10 +145,10 @@ namespace Picassi.Core.Accounts.Services.Transactions
     {
         public bool Success { get; set; }
         public string Error { get; set; }
-        public Transaction Transaction { get; set; }
+        public TransactionModel Transaction { get; set; }
         public TransactionUploadModel Upload { get; set; }
 
-        public TransactionUploadResult(TransactionUploadModel upload, Transaction transaction)
+        public TransactionUploadResult(TransactionUploadModel upload, TransactionModel transaction)
         {
             Upload = upload;
             Transaction = transaction;
