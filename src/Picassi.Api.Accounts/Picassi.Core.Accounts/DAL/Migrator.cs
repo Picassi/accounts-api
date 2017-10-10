@@ -8,11 +8,13 @@ namespace Picassi.Core.Accounts.DAL
     public interface IMigrator
     {
         void ApplyPendingMigrations();
+        void ApplyPendingMigrations(string databaseName);
     }
 
     public class Migrator : IMigrator
     {
         private readonly IOwinContext _context;
+        private const string DatabaseProvider = "System.Data.SqlClient";
 
         public Migrator(IOwinContext context)
         {
@@ -21,8 +23,20 @@ namespace Picassi.Core.Accounts.DAL
 
         public void ApplyPendingMigrations()
         {
-            var configuration = new Configuration();
-            configuration.TargetDatabase = new DbConnectionInfo(AccountsDatabaseProvider.BuildConnectionString(_context), "System.Data.SqlClient");
+            var configuration = new Configuration
+            {
+                TargetDatabase = new DbConnectionInfo(AccountsDatabaseProvider.BuildConnectionString(_context), DatabaseProvider)
+            };
+            var migrator = new DbMigrator(configuration);
+            migrator.Update();
+        }
+
+        public void ApplyPendingMigrations(string databaseName)
+        {
+            var configuration = new Configuration
+            {
+                TargetDatabase = new DbConnectionInfo(AccountsDatabaseProvider.BuildConnectionString(databaseName), DatabaseProvider)
+            };
             var migrator = new DbMigrator(configuration);
             migrator.Update();
         }

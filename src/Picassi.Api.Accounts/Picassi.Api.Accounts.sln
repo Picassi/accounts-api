@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Picassi.Core.Accounts", "Picassi.Core.Accounts\Picassi.Core.Accounts.csproj", "{AC94699B-B1AF-46EF-B657-FFEE06E52EA4}"
 EndProject
@@ -105,5 +105,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{3A4DFE41-BC06-48AA-8B7F-271D8009037F} = {E807A594-F4BB-4BE9-93CD-59BC607718C6}
 		{AAFC0A72-8292-489B-83A1-490D35FE7C62} = {E807A594-F4BB-4BE9-93CD-59BC607718C6}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {58920E74-00C9-400D-9044-8502822E7192}
 	EndGlobalSection
 EndGlobal

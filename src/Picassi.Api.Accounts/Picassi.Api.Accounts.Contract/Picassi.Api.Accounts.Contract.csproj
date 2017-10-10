@@ -40,6 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application\AdminUpgradeTask.cs" />
+    <Compile Include="Application\ApplicationSettings.cs" />
+    <Compile Include="Application\ApplicationInfo.cs" />
     <Compile Include="Calendar\CalendarCell.cs" />
     <Compile Include="Calendar\CalendarColumn.cs" />
     <Compile Include="Calendar\CalendarQuery.cs" />

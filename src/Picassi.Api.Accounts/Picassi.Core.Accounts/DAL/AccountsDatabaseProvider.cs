@@ -44,6 +44,12 @@ namespace Picassi.Core.Accounts.DAL
             if (principal == null) throw new AccessViolationException("User has not been authenticated");
 
             var databaseName = principal.Claims.Single(x => x.Type == DbClaimType).Value;
+
+            return BuildConnectionString(databaseName);
+        }
+
+        public static string BuildConnectionString(string databaseName)
+        {
             var serverName = ConfigurationManager.AppSettings["db-server"] ?? "(local)";
 
             return $"Data Source={serverName};Initial Catalog={databaseName};Integrated Security=True;MultipleActiveResultSets=True;";
