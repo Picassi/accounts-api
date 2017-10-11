@@ -14,7 +14,7 @@ namespace Picassi.Core.Accounts.DAL
     public class Migrator : IMigrator
     {
         private readonly IOwinContext _context;
-        private const string DatabaseProvider = "System.Data.SqlClient";
+        public const string DatabaseProvider = "System.Data.SqlClient";
 
         public Migrator(IOwinContext context)
         {

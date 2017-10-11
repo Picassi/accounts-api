@@ -10,35 +10,47 @@ namespace Picassi.Api.Accounts.Controllers
     public class ApplicationController : ApiController
     {
         private readonly IMigrator _migrator;
+        private readonly IDbVersionProvider _dbVersionProvider;
 
-        public ApplicationController(IMigrator migrator)
+        public ApplicationController(IMigrator migrator, IDbVersionProvider dbVersionProvider)
         {
             _migrator = migrator;
+            _dbVersionProvider = dbVersionProvider;
         }
 
         [HttpGet]
         [Route("application/info")]
         public ApplicationInfo GetApplicationInfo()
-        {
+        {                    
             return new ApplicationInfo
             {
-                Version = ConfigurationManager.AppSettings["application-version"]
+                Version = _dbVersionProvider.GetLatestVersion()
             };
         }
 
         [HttpPost]
         [Route("application/{userId}/tasks/upgrade")]
-        public void UpgradeAppForUser(AdminUpgradeTask task)
+        public ApplicationInfo UpgradeAppForUser(AdminUpgradeTask task)
         {
             _migrator.ApplyPendingMigrations(task.DatabaseName);
+
+            return new ApplicationInfo
+            {
+                Version = _dbVersionProvider.GetVersionForDatabase(task.DatabaseName)
+            };
         }
 
         [HttpPost]
         [PicassiApiAuthorise]
         [Route("application/tasks/upgrade")]
-        public void Upgrade()
+        public ApplicationInfo Upgrade()
         {
             _migrator.ApplyPendingMigrations();
+
+            return new ApplicationInfo
+            {
+                Version = _dbVersionProvider.GetVersionForActiveUser()
+            };
         }
     }
 }

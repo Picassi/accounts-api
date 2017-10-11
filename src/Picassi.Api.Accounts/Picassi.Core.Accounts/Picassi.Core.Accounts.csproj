@@ -97,6 +97,7 @@
     <Compile Include="Bus\MessagePublisher.cs" />
     <Compile Include="DAL\AccountsDataContext.cs" />
     <Compile Include="DAL\AccountsDatabaseProvider.cs" />
+    <Compile Include="DAL\DbVersionProvider.cs" />
     <Compile Include="DAL\Entities\AssignmentRule.cs" />
     <Compile Include="DAL\Entities\Tag.cs" />
     <Compile Include="DAL\IEntity.cs" />
