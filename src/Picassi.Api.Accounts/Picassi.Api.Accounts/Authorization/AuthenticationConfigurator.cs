@@ -27,7 +27,8 @@ namespace Picassi.Api.Accounts.Authorization
             {
                 Authority = _settings.AuthenticationAuthority,
                 RequiredScopes = _settings.Resources,
-                EnableValidationResultCache = true
+                //EnableValidationResultCache = true,
+                DelayLoadMetadata = true
             });
         }
     }
