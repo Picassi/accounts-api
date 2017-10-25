@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IdentityModel.Tokens;
+using IdentityServer3.AccessTokenValidation;
 using Owin;
-using Thinktecture.IdentityServer.AccessTokenValidation;
 
 namespace Picassi.Api.Accounts.Authorization
 {
