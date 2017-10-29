@@ -11,10 +11,14 @@ namespace Picassi.Core.Accounts.DAL.Entities
 
         public DateTime? CreatedDate { get; set; }
 
+        public bool Completed { get; set; }
+
         public DateTime? DueDate { get; set; }
+
+        public DateTime? CompletedDate { get; set; }
 
         public int Ordinal { get; set; }
 
-        public TaskPriority Priorty { get; set; }
+        public TaskPriority Priority { get; set; }
     }
 }

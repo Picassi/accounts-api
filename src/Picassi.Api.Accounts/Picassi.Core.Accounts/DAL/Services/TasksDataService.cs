@@ -20,7 +20,7 @@ namespace Picassi.Core.Accounts.DAL.Services
 
         public IEnumerable<TaskModel> Query(int pageNumber, int pageSize)
         {
-            var queryResults = DbProvider.GetDataContext().Tasks.AsQueryable();
+            var queryResults = DbProvider.GetDataContext().Tasks.Where(t => !t.Completed).AsQueryable();
 
             return queryResults.Select(ModelMapper.Map);
         }

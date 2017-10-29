@@ -125,6 +125,10 @@
     <Compile Include="Migrations\201710291048062_AddNotesAndTasks.Designer.cs">
       <DependentUpon>201710291048062_AddNotesAndTasks.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710291407569_AddCompletedToTask.cs" />
+    <Compile Include="Migrations\201710291407569_AddCompletedToTask.Designer.cs">
+      <DependentUpon>201710291407569_AddCompletedToTask.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Notes\NoteModel.cs" />
     <Compile Include="Models\Notes\NoteModelMapper.cs" />
     <Compile Include="Models\Notes\NotesQueryModel.cs" />
@@ -302,6 +306,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710291048062_AddNotesAndTasks.resx">
       <DependentUpon>201710291048062_AddNotesAndTasks.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710291407569_AddCompletedToTask.resx">
+      <DependentUpon>201710291407569_AddCompletedToTask.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
