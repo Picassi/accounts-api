@@ -121,6 +121,10 @@
     <Compile Include="Migrations\201710012105121_AddedTypeToRule.Designer.cs">
       <DependentUpon>201710012105121_AddedTypeToRule.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710291048062_AddNotesAndTasks.cs" />
+    <Compile Include="Migrations\201710291048062_AddNotesAndTasks.Designer.cs">
+      <DependentUpon>201710291048062_AddNotesAndTasks.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Notes\NoteModel.cs" />
     <Compile Include="Models\Notes\NoteModelMapper.cs" />
     <Compile Include="Models\Notes\NotesQueryModel.cs" />
@@ -295,6 +299,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710012105121_AddedTypeToRule.resx">
       <DependentUpon>201710012105121_AddedTypeToRule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710291048062_AddNotesAndTasks.resx">
+      <DependentUpon>201710291048062_AddNotesAndTasks.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
