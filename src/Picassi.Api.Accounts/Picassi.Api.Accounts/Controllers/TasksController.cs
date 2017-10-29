@@ -22,7 +22,12 @@ namespace Picassi.Api.Accounts.Controllers
         [Route("tasks")]
         public IEnumerable<TaskModel> GetTasks([FromUri]TasksQueryModel query)
         {
-            return _dataService.Query(query?.PageNumber ?? 1, query?.PageSize ?? 20).ToList();
+            return _dataService.Query(
+                query?.PageNumber ?? 1, 
+                query?.PageSize ?? 20, 
+                sortBy: query?.SortBy ?? "CreatedDate",
+                sortAscending: query?.SortAscending != false,
+                includePriorities: query?.IncludePriorities).ToList();            
         }
 
         [HttpPost]
