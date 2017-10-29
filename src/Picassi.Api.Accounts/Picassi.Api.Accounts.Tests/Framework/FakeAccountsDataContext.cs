@@ -15,8 +15,10 @@ namespace Picassi.Api.Accounts.Tests.Framework
         public IDbSet<Event> Events { get; set; }
         public IDbSet<Goal> Goals { get; set; }
         public IDbSet<ModelledTransaction> ModelledTransactions { get; set; }
+        public IDbSet<Note> Notes { get; set; }
         public IDbSet<ScheduledTransaction> ScheduledTransactions { get; set; }
         public IDbSet<Tag> Tags { get; set; }
+        public IDbSet<Task> Tasks { get; set; }
         public IDbSet<Transaction> Transactions { get; set; }
         public Database Database { get; }
 

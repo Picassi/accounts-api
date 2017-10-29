@@ -1,13 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using Picassi.Core.Accounts.DAL.Services;
-using Picassi.Core.Accounts.Models.Accounts;
 using Picassi.Core.Accounts.Models.AssignmentRules;
-using Picassi.Core.Accounts.Services;
-using Picassi.Core.Accounts.Time;
 
 namespace Picassi.Api.Accounts.Controllers
 {

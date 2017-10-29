@@ -1,5 +1,4 @@
-﻿using System.Configuration;
-using System.Web.Http;
+﻿using System.Web.Http;
 using System.Web.Http.Cors;
 using Picassi.Api.Accounts.Contract.Application;
 using Picassi.Core.Accounts.DAL;

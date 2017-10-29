@@ -98,10 +98,14 @@
     <Compile Include="DAL\AccountsDatabaseProvider.cs" />
     <Compile Include="DAL\DbVersionProvider.cs" />
     <Compile Include="DAL\Entities\AssignmentRule.cs" />
+    <Compile Include="DAL\Entities\Note.cs" />
+    <Compile Include="DAL\Entities\Task.cs" />
     <Compile Include="DAL\Entities\Tag.cs" />
     <Compile Include="DAL\IEntity.cs" />
     <Compile Include="DAL\Migrator.cs" />
     <Compile Include="DAL\Services\AssignmentRulesDataService.cs" />
+    <Compile Include="DAL\Services\NotesDataService.cs" />
+    <Compile Include="DAL\Services\TasksDataService.cs" />
     <Compile Include="Events\DefaultEventBus.cs" />
     <Compile Include="Events\HandlerResolver.cs" />
     <Compile Include="Extensions\SortExtensions.cs" />
@@ -117,6 +121,12 @@
     <Compile Include="Migrations\201710012105121_AddedTypeToRule.Designer.cs">
       <DependentUpon>201710012105121_AddedTypeToRule.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Notes\NoteModel.cs" />
+    <Compile Include="Models\Notes\NoteModelMapper.cs" />
+    <Compile Include="Models\Notes\NotesQueryModel.cs" />
+    <Compile Include="Models\Tasks\TaskModel.cs" />
+    <Compile Include="Models\Tasks\TaskModelMapper.cs" />
+    <Compile Include="Models\Tasks\TasksQueryModel.cs" />
     <Compile Include="Models\AssignmentRules\AssignmentRuleQueryModel.cs" />
     <Compile Include="Models\AssignmentRules\AssignmentRuleModel.cs" />
     <Compile Include="Models\AssignmentRules\AssignmentRuleModelMapper.cs" />

@@ -4,7 +4,6 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using Picassi.Api.Accounts.Contract;
 using Picassi.Core.Accounts.DAL.Services;
-using Picassi.Core.Accounts.Models;
 using Picassi.Core.Accounts.Models.Transactions;
 using Picassi.Core.Accounts.Services.Transactions;
 

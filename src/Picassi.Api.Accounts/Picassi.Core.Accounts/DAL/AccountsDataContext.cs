@@ -13,8 +13,10 @@ namespace Picassi.Core.Accounts.DAL
         IDbSet<Event> Events { get; set; }
         IDbSet<Goal> Goals { get; set; }
         IDbSet<ModelledTransaction> ModelledTransactions { get; set; }
+        IDbSet<Note> Notes { get; set; }
         IDbSet<ScheduledTransaction> ScheduledTransactions { get; set; }
         IDbSet<Tag> Tags { get; set; }
+        IDbSet<Task> Tasks { get; set; }
         IDbSet<Transaction> Transactions { get; set; }
         Database Database { get; }
         IDbSet<TModel> GetDbSet<TModel>() where TModel : class;
@@ -30,8 +32,10 @@ namespace Picassi.Core.Accounts.DAL
         public IDbSet<Event> Events { get; set; }
         public IDbSet<Goal> Goals { get; set; }
         public IDbSet<ModelledTransaction> ModelledTransactions { get; set; }
+        public IDbSet<Note> Notes { get; set; }
         public IDbSet<ScheduledTransaction> ScheduledTransactions { get; set; }
         public IDbSet<Tag> Tags { get; set; }
+        public IDbSet<Task> Tasks { get; set; }
         public IDbSet<Transaction> Transactions { get; set; }
 
         public AccountsDataContext() : base("Accounts")
