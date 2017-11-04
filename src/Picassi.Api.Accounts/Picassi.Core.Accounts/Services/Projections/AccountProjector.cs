@@ -10,7 +10,7 @@ namespace Picassi.Core.Accounts.Services.Projections
 {
     public interface IAccountProjector
     {
-        bool ProjectAccounts(ProjectionGenerationParameters projectionGenerationParameters);
+        bool ProjectAccounts(DateTime start, DateTime end);
     }
 
     public class AccountProjector : IAccountProjector
@@ -28,11 +28,8 @@ namespace Picassi.Core.Accounts.Services.Projections
             _projectionBalanceService = projectionBalanceService;
         }
 
-        public bool ProjectAccounts(ProjectionGenerationParameters parms)
+        public bool ProjectAccounts(DateTime start, DateTime end)
         {
-            var start = parms?.Start ?? DateTime.Now;
-            var end = parms?.End ?? DateTime.Now.AddYears(1);
-
             RemovePreviouslyCalculatedTransactions();
             AddUpdatedTransactions(start, end);
             UpdateBalances(start);
@@ -58,7 +55,6 @@ namespace Picassi.Core.Accounts.Services.Projections
             foreach (var t in transactions)
             {
                 _dataContext.GetDataContext().ModelledTransactions.Add(t);
-
             }
             _dataContext.GetDataContext().SaveChanges();
         }

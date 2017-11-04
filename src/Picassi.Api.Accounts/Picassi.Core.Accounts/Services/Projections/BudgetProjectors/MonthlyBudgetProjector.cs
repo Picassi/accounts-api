@@ -34,7 +34,7 @@ namespace Picassi.Core.Accounts.Services.Projections.BudgetProjectors
                 Amount = -monthlyBudget.Amount - existingAmount,
                 Date = date,
                 Description = "Budget",
-                ScheduledTransactionId = monthlyBudget.Id,
+                BudgetId = monthlyBudget.Id,
                 AccountId = monthlyBudget.AccountId,
                 CategoryId = monthlyBudget.CategoryId
             };
