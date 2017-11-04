@@ -24,6 +24,16 @@ namespace Picassi.Core.Accounts.DAL.Services
         {
         }
 
+        public override CategoryModel Get(int id)
+        {
+            var entity = DbProvider.GetDataContext().Categories
+                .Include("Parent")
+                .SingleOrDefault(x => x.Id == id);
+            if (entity == null) throw new EntityNotFoundException<Transaction>(id);
+
+            return ModelMapper.Map(entity);
+        }
+
         public IEnumerable<CategoryModel> Query(CategoriesQueryModel query)
         {
             var queryResults = DbProvider.GetDataContext().Categories.AsQueryable();

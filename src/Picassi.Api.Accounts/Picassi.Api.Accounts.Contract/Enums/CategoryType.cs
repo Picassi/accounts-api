@@ -4,6 +4,7 @@
     {
         Income,
         Expenditure,
+        Disposable,
         Savings
     }
 }

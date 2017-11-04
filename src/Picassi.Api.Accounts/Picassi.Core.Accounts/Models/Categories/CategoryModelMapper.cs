@@ -12,7 +12,9 @@ namespace Picassi.Core.Accounts.Models.Categories
             return new Category
             {
                 Id = model.Id,
-                Name = model.Name
+                Name = model.Name,
+                ParentId = model.ParentId,
+                CategoryType = model.CategoryType
             };
         }
 
@@ -21,13 +23,18 @@ namespace Picassi.Core.Accounts.Models.Categories
             return new CategoryModel
             {
                 Id = model.Id,
-                Name = model.Name
+                Name = model.Name,
+                ParentId = model.ParentId,
+                ParentName = model.Parent?.Name,
+                CategoryType = model.CategoryType
             };
         }
 
         public void Patch(CategoryModel model, Category entity)
         {
             entity.Name = model.Name;
+            entity.ParentId = model.ParentId;
+            entity.CategoryType = model.CategoryType;
         }
 
         public IEnumerable<CategoryModel> MapList(IEnumerable<Category> results)

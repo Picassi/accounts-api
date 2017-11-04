@@ -9,7 +9,7 @@ namespace Picassi.Core.Accounts.DAL.Entities
 
         public string Name { get; set; }
 
-        public string ParentId { get; set; }
+        public int? ParentId { get; set; }
 
         public CategoryType CategoryType { get; set; }
 

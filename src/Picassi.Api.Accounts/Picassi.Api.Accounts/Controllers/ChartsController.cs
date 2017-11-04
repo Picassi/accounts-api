@@ -39,8 +39,9 @@ namespace Picassi.Api.Accounts.Controllers
 	    public LineChartModel GetCategories([FromBody]TransactionChartRequest query)
 	    {
 	        var dateFrom = query?.DateFrom ?? DateTime.Today.AddMonths(-1);
-	        var dateTo = query?.DateFrom ?? DateTime.Today;
-            var dataPoints = _chartCompiler.GetTransactionSeriesData(dateFrom, dateTo, PeriodType.Week, 
+	        var dateTo = query?.DateTo ?? DateTime.Today;
+	        var groupBy = query?.GroupBy ?? PeriodType.Week;
+            var dataPoints = _chartCompiler.GetTransactionSeriesData(dateFrom, dateTo, groupBy, 
                 GroupingType.Categories, query?.Accounts, query?.Categories).ToList();
 	        return new LineChartModel
 	        {
