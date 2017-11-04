@@ -78,7 +78,7 @@ namespace Picassi.Core.Accounts.Services.Charts
             {
                 for (var dt = from; dt <= transaction.Date; dt = iterator(dt))
                 {
-
+                    from = dt;
                     if (currentSummary.PeriodStart != dt)
                     {
                         currentSummary = new TransactionPeriodSummary
@@ -93,7 +93,6 @@ namespace Picassi.Core.Accounts.Services.Charts
                     if (transaction.Amount > 0) currentSummary.TotalIncome += transaction.Amount;
                     if (transaction.Amount < 0) currentSummary.TotalSpending -= transaction.Amount;
                 }
-                from = transaction.Date;
             }
 
             for (var dt = from; dt <= to; dt = iterator(dt))
