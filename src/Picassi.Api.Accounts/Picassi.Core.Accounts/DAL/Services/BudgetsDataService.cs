@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using Picassi.Core.Accounts.DAL.Entities;
+using Picassi.Core.Accounts.Exceptions;
 using Picassi.Core.Accounts.Models.Budgets;
 using Picassi.Core.Accounts.Services;
 
@@ -20,10 +22,23 @@ namespace Picassi.Core.Accounts.DAL.Services
 
         public IEnumerable<BudgetModel> Query(BudgetsQueryModel query)
         {
-            var queryResults = DbProvider.GetDataContext().Budgets.AsQueryable();
+            var queryResults = DbProvider.GetDataContext().Budgets
+                .Include("Account").Include("Category").AsQueryable();
 
-            return queryResults.Select(ModelMapper.Map);
+            return queryResults.ToList().Select(ModelMapper.Map);
         }
+
+        public override BudgetModel Get(int id)
+        {
+            var entity = DbProvider.GetDataContext().Budgets
+                .Include("Account")
+                .Include("Category")
+                .SingleOrDefault(x => x.Id == id);
+            if (entity == null) throw new EntityNotFoundException<Transaction>(id);
+
+            return ModelMapper.Map(entity);
+        }
+
 
     }
 }
