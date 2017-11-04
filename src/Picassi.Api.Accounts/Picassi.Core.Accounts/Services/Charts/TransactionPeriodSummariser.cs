@@ -89,7 +89,7 @@ namespace Picassi.Core.Accounts.Services.Charts
                     }
 
                     currentSummary.EndBalance = transaction.Balance;
-                    if (transaction.Date < dt) continue;
+                    if (transaction.Date < dt || transaction.Date >= iterator(dt)) continue;
                     if (transaction.Amount > 0) currentSummary.TotalIncome += transaction.Amount;
                     if (transaction.Amount < 0) currentSummary.TotalSpending -= transaction.Amount;
                 }
