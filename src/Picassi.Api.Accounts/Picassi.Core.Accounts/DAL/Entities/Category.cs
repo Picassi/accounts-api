@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Picassi.Api.Accounts.Contract.Enums;
 
 namespace Picassi.Core.Accounts.DAL.Entities
 {
@@ -7,6 +8,12 @@ namespace Picassi.Core.Accounts.DAL.Entities
         public int Id { get; set; }
 
         public string Name { get; set; }
+
+        public string ParentId { get; set; }
+
+        public CategoryType CategoryType { get; set; }
+
+        public virtual Category Parent { get; set; }
 
         public virtual ICollection<Budget> Budget { get; set; }
 

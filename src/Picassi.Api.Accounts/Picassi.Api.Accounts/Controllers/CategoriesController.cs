@@ -26,6 +26,13 @@ namespace Picassi.Api.Accounts.Controllers
         }
 
         [HttpGet]
+        [Route("category-groups")]
+        public IEnumerable<CategoryGroupModel> GetCategoryGroups([FromUri]CategoriesQueryModel query)
+        {
+            return _dataService.GetCategoryGroups(query);
+        }
+
+        [HttpGet]
         [Route("categories")]
         public IEnumerable<CategoryModel> GetCategories([FromUri]CategoriesQueryModel query)
         {

@@ -49,6 +49,11 @@ namespace Picassi.Core.Accounts.Services.Budgets
                 categoriesQuery = categoriesQuery.Where(x => x.Budget.Any());
             }
 
+            if (query?.CategoryType != null)
+            {
+                categoriesQuery = categoriesQuery.Where(x => x.CategoryType == query.CategoryType);
+            }
+
             var categories = categoriesQuery.ToList();
             return categories;
         }

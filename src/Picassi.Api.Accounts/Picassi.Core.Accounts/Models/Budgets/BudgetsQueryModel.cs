@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Picassi.Api.Accounts.Contract.Enums;
 
 namespace Picassi.Core.Accounts.Models.Budgets
 {
@@ -12,5 +13,6 @@ namespace Picassi.Core.Accounts.Models.Budgets
         public string PageSize { get; set; }
         public string PageNumber { get; set; }
         public bool IncludeUnset { get; set; }
+        public CategoryType? CategoryType { get; set; }
     }
 }

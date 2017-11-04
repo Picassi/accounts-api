@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using Picassi.Api.Accounts.Contract.Enums;
 using Picassi.Core.Accounts.DAL.Entities;
 using Picassi.Core.Accounts.Exceptions;
 using Picassi.Core.Accounts.Models.Categories;
@@ -12,6 +14,7 @@ namespace Picassi.Core.Accounts.DAL.Services
     public interface ICategoriesDataService : IGenericDataService<CategoryModel>
     {
         IEnumerable<CategoryModel> Query(CategoriesQueryModel query);
+        IEnumerable<CategoryGroupModel> GetCategoryGroups(CategoriesQueryModel query);
     }
 
     public class CategoriesDataService : GenericDataService<CategoryModel, Category>, ICategoriesDataService
@@ -37,6 +40,14 @@ namespace Picassi.Core.Accounts.DAL.Services
 
             queryResults = query == null ? queryResults : OrderResults(queryResults, query.SortBy, query.SortAscending);
             return ModelMapper.MapList(queryResults);
+        }
+
+        public IEnumerable<CategoryGroupModel> GetCategoryGroups(CategoriesQueryModel query)
+        {
+            return Enum.GetValues(typeof(CategoryType)).Cast<CategoryType>().Select(c => new CategoryGroupModel
+            {
+                Name = c.ToString()
+            });
         }
 
         public override bool Delete(int id)

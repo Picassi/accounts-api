@@ -129,6 +129,11 @@
     <Compile Include="Migrations\201710291407569_AddCompletedToTask.Designer.cs">
       <DependentUpon>201710291407569_AddCompletedToTask.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711041600444_AddParentsAndGroupsToCategories.cs" />
+    <Compile Include="Migrations\201711041600444_AddParentsAndGroupsToCategories.Designer.cs">
+      <DependentUpon>201711041600444_AddParentsAndGroupsToCategories.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Categories\CategoryGroupModel.cs" />
     <Compile Include="Models\Notes\NoteModel.cs" />
     <Compile Include="Models\Notes\NoteModelMapper.cs" />
     <Compile Include="Models\Notes\NotesQueryModel.cs" />
@@ -309,6 +314,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710291407569_AddCompletedToTask.resx">
       <DependentUpon>201710291407569_AddCompletedToTask.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711041600444_AddParentsAndGroupsToCategories.resx">
+      <DependentUpon>201711041600444_AddParentsAndGroupsToCategories.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
