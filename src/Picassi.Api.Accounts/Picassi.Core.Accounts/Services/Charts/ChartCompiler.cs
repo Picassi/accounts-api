@@ -8,7 +8,6 @@ using Picassi.Core.Accounts.DAL.Services;
 using Picassi.Core.Accounts.Models;
 using Picassi.Core.Accounts.Models.Accounts;
 using Picassi.Core.Accounts.Models.Categories;
-using Picassi.Core.Accounts.Models.Transactions;
 using Picassi.Core.Accounts.Time.Periods;
 
 namespace Picassi.Core.Accounts.Services.Charts
@@ -46,7 +45,7 @@ namespace Picassi.Core.Accounts.Services.Charts
 
             return groups.Select(g => new PeriodSummaryDataSeries
             {
-                Name = g.Key.ToString(),
+                Name = g.Key,
                 Data = _transactionPeriodSummariser.GetDataPoints(from, to, period, g).ToList()
             });
         }
@@ -87,17 +86,17 @@ namespace Picassi.Core.Accounts.Services.Charts
             return new[] {spendingSeries, incomeSeries};
         }
 
-        private IEnumerable<IGrouping<int?, TransactionModel>> GroupTransactions(
+        private IEnumerable<IGrouping<string, TransactionModel>> GroupTransactions(
             GroupingType groupingType, IEnumerable<TransactionModel> transactions, int[] accountIds, int[] categoryIds)
         {
             switch (groupingType)
             {
                 case GroupingType.Accounts:
-                    var accounts = _accountDataService.Query(new AccountQueryModel { Ids = accountIds }).Select(a => a.Id);
-                    return accounts.Select(a => new Grouping<int?, TransactionModel>(a, transactions.Where(t => t.AccountId == a)));
+                    var accounts = _accountDataService.Query(new AccountQueryModel { Ids = accountIds });
+                    return accounts.Select(a => new Grouping<string, TransactionModel>(a.Name, transactions.Where(t => t.AccountId == a.Id)));
                 case GroupingType.Categories:
-                    var categories = _categoriesDataService.Query(new CategoriesQueryModel { Ids = categoryIds }).Select(c => c.Id);
-                    return categories.Select(c => new Grouping<int?, TransactionModel>(c, transactions.Where(t => t.CategoryId == c)));
+                    var categories = _categoriesDataService.Query(new CategoriesQueryModel { Ids = categoryIds, IncludeSubCategories = true});
+                    return categories.Select(c => new Grouping<string, TransactionModel>(c.Name, transactions.Where(t => t.CategoryId == c.Id)));
                 default:
                     throw new InvalidEnumArgumentException();
             }

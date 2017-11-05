@@ -22,6 +22,7 @@ namespace Picassi.Core.Accounts.DAL.Services
             DateTime? dateTo = null,
             bool? showUncategorised = true,
             bool? showAllCategories = null,
+            bool? includeSubcategories = true,
             int? pageSize = null,
             int? pageNumber = null,
             string sortBy = null,
@@ -35,6 +36,7 @@ namespace Picassi.Core.Accounts.DAL.Services
             DateTime? dateTo = null,
             bool? showUncategorised = null,
             bool? showAllCategories = null,
+            bool? includeSubcategories = true,
             int? pageSize = null,
             int? pageNumber = null,
             string sortBy = null,
@@ -77,6 +79,7 @@ namespace Picassi.Core.Accounts.DAL.Services
             DateTime? dateTo = null,
             bool? showUncategorised = null,
             bool? showAllCategories = null,
+            bool? includeSubcategories = true,
             int? pageSize = null,
             int? pageNumber = null,
             string sortBy = null,
@@ -84,7 +87,7 @@ namespace Picassi.Core.Accounts.DAL.Services
         {
             var transactions = DbProvider.GetDataContext().Transactions.Include(x => x.Category);
             var results = FilterTransactions(text, accounts, categories, dateFrom, dateTo, showUncategorised, 
-                showAllCategories, pageSize, pageNumber, sortBy, sortAscending == true, transactions).ToList();
+                showAllCategories, includeSubcategories, pageSize, pageNumber, sortBy, sortAscending == true, transactions).ToList();
 
             return ModelMapper.MapList(results);
         }
@@ -97,6 +100,7 @@ namespace Picassi.Core.Accounts.DAL.Services
             DateTime? dateTo = null,
             bool? showUncategorised = null,
             bool? showAllCategories = null,
+            bool? includeSubcategories = true,
             int? pageSize = null,
             int? pageNumber = null,
             string sortBy = null,
@@ -104,10 +108,10 @@ namespace Picassi.Core.Accounts.DAL.Services
         {
             var transactions = DbProvider.GetDataContext().Transactions.Include(x => x.Category).Include(x => x.Account);
             var results = FilterTransactions(text, accounts, categories, dateFrom, dateTo, 
-                showUncategorised != false, showAllCategories ?? categories == null, pageSize, pageNumber, 
-                sortBy, sortAscending != false, transactions).ToList();
+                showUncategorised != false, showAllCategories ?? categories == null, includeSubcategories != false, 
+                pageSize, pageNumber, sortBy, sortAscending != false, transactions).ToList();
             var count = FilterTransactionsWithoutPaging(text, accounts, categories, dateFrom, dateTo, 
-                showUncategorised != false, showAllCategories ?? categories == null, transactions).Count();
+                showUncategorised != false, showAllCategories ?? categories == null, includeSubcategories != false, transactions).Count();
 
             return new TransactionsResultsViewModel
             {
@@ -168,22 +172,22 @@ namespace Picassi.Core.Accounts.DAL.Services
         }
 
         private static IEnumerable<Transaction> FilterTransactions(string text, int[] accounts, int[] categories,
-            DateTime? dateFrom, DateTime? dateTo, bool? showUncategorised, bool? showAllCategories, int? pageSize, int? pageNumber,
-            string sortBy, bool sortAscending, IQueryable <Transaction> transactions)
+            DateTime? dateFrom, DateTime? dateTo, bool? showUncategorised, bool? showAllCategories, bool? includeSubcategories,
+            int? pageSize, int? pageNumber, string sortBy, bool sortAscending, IQueryable <Transaction> transactions)
         {
             transactions = FilterTransactionsWithoutPaging(text, accounts, categories, dateFrom, dateTo, 
-                ShouldShouldUncategorised(showUncategorised, categories), showAllCategories ?? categories == null, transactions);
+                ShouldShouldUncategorised(showUncategorised, categories), showAllCategories ?? categories == null, includeSubcategories != false, transactions);
             transactions = OrderResults(transactions, sortBy, sortAscending);
             transactions = PageResults(transactions, pageNumber, pageSize);
             return transactions;
         }
 
         private static IQueryable<Transaction> FilterTransactionsWithoutPaging(string text, int[] accounts, int[] categories,
-            DateTime? dateFrom, DateTime? dateTo, bool showUncategorised, bool showAllCategories, IQueryable<Transaction> transactions)
+            DateTime? dateFrom, DateTime? dateTo, bool showUncategorised, bool showAllCategories, bool includeSubcategories, IQueryable<Transaction> transactions)
         {
             transactions = FilterText(transactions, text);
             transactions = FilterAccounts(transactions, accounts);
-            transactions = FilterCategories(transactions, categories, showUncategorised, showAllCategories);
+            transactions = FilterCategories(transactions, categories, showUncategorised, showAllCategories, includeSubcategories);
             transactions = FilterDate(transactions, dateFrom, dateTo);
             return transactions;
         }
@@ -205,13 +209,15 @@ namespace Picassi.Core.Accounts.DAL.Services
                 : transactions.Where(x => accountIds.Contains((int) x.AccountId));
         }
 
-        private static IQueryable<Transaction> FilterCategories(IQueryable<Transaction> transactions, int[] categoryIds, bool showUncategorised, bool showAllCategories)
+        private static IQueryable<Transaction> FilterCategories(IQueryable<Transaction> transactions, 
+            int[] categoryIds, bool showUncategorised, bool showAllCategories, bool includeSubcategories)
         {
             if (categoryIds == null) categoryIds = new int[0];
             return transactions.Where(x =>
                 (showUncategorised && x.CategoryId == null) ||
                 (showAllCategories && x.CategoryId != null) ||
-                (x.CategoryId != null && categoryIds.Contains((int)x.CategoryId)));
+                (x.CategoryId != null && categoryIds.Contains((int)x.CategoryId)) ||
+                (includeSubcategories && x.Category != null && x.Category.ParentId != null && categoryIds.Contains((int)x.Category.ParentId)));
 
         }
 

@@ -36,11 +36,14 @@ namespace Picassi.Core.Accounts.DAL.Services
 
         public IEnumerable<CategoryModel> Query(CategoriesQueryModel query)
         {
-            var queryResults = DbProvider.GetDataContext().Categories.AsQueryable();
+            var queryResults = DbProvider.GetDataContext().Categories
+                .Include("Parent")
+                .AsQueryable();
 
             if (query?.Ids != null && query.Ids.Length > 0)
-            {
-                queryResults = queryResults.Where(x => query.Ids.Contains(x.Id));
+            {                
+                queryResults = queryResults.Where(x => query.Ids.Contains(x.Id) || 
+                    (query.IncludeSubCategories == true && x.ParentId != null && query.Ids.Contains((int)x.ParentId)));
             }
 
             if (query?.Name != null)

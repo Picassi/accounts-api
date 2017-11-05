@@ -11,6 +11,7 @@ namespace Picassi.Api.Accounts.Contract.Transactions
         public int[] Categories { get; set; }
         public bool? ShowAllCategorised { get; set; }
         public bool? ShowUncategorised { get; set; }
+        public bool? ShowSubcategories { get; set; }
         public DateTime? DateFrom { get; set; }
         public DateTime? DateTo { get; set; }
         public string SortBy { get; set; }

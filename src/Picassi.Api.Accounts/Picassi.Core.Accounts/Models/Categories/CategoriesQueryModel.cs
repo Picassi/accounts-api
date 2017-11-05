@@ -18,5 +18,6 @@ namespace Picassi.Core.Accounts.Models.Categories
         public string SortBy { get; set; }
         public bool SortAscending { get; set; }
         public bool AllAccounts { get; set; }
+        public bool? IncludeSubCategories { get; set; }
     }
 }
