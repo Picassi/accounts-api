@@ -46,6 +46,13 @@ namespace Picassi.Api.Accounts.Controllers
             return _categorySummariser.GetCategorySummaries(query?.DateFrom, query?.DateTo);
         }
 
+        [HttpGet]
+        [Route("categories/{id}/spending-summary")]
+        public CategorySpendingSummaryViewModel GetCategorySpendingSumary(int id, [FromUri]CategoriesQueryModel query)
+        {
+            return _categorySummariser.GetCategorySpendingSummary(id, query?.DateFrom, query?.DateTo);
+        }
+
         [HttpPost]
         [Route("categories")]
         public CategoryModel CreateCategory([FromBody]CategoryModel model)

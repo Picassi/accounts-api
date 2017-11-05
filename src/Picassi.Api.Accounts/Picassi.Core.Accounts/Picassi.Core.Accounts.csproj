@@ -138,6 +138,7 @@
       <DependentUpon>201711041744069_ConvertParentIdToInt.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Categories\CategoryGroupModel.cs" />
+    <Compile Include="Models\Categories\CategorySpendingSummaryViewModel.cs" />
     <Compile Include="Models\Notes\NoteModel.cs" />
     <Compile Include="Models\Notes\NoteModelMapper.cs" />
     <Compile Include="Models\Notes\NotesQueryModel.cs" />

@@ -13,6 +13,7 @@ namespace Picassi.Core.Accounts.Services.Reports
         CategorySummaryViewModel GetCategorySummary(int categoryId, DateTime? from, DateTime? to);
 
         IEnumerable<CategorySummaryViewModel> GetCategorySummaries(DateTime? from, DateTime? to);
+        CategorySpendingSummaryViewModel GetCategorySpendingSummary(int id, DateTime? queryDateFrom, DateTime? queryDateTo);
     }
 
     public class CategorySummariser : ICategorySummariser
@@ -40,6 +41,20 @@ namespace Picassi.Core.Accounts.Services.Reports
             return categories.Select(c => GetCategorySummaryModel(c.Id, from, to, transactions.Where(t => t.CategoryId == c.Id).ToList()));
         }
 
+        public CategorySpendingSummaryViewModel GetCategorySpendingSummary(int id, DateTime? from, DateTime? to)
+        {
+            var categoryIds = new[] { id };
+            var transactions = _transactionsDataService
+                .Query(categories: categoryIds, dateFrom: from, dateTo: to, showUncategorised: false)
+                .OrderBy(t => t.Date)
+                .ToList();
+
+            var dateFrom = from ?? (transactions.Any() ? transactions.First().Date : DateTime.Today.AddMonths(-1));
+            var dateTo = to ?? (transactions.Any() ? transactions.Last().Date : DateTime.Today);
+
+            return GetCategorySpendingSummaryModel(id, dateFrom, dateTo, transactions);
+        }
+
         private static CategorySummaryViewModel GetCategorySummaryModel(int? categoryId, DateTime? from, DateTime? to, IList<TransactionModel> transactions)
         {
             var credit = transactions.Where(x => x.Amount > 0).Select(x => x.Amount).DefaultIfEmpty(0).Sum();
@@ -56,5 +71,24 @@ namespace Picassi.Core.Accounts.Services.Reports
                 TotalChange = credit - debit
             };
         }
+
+        private CategorySpendingSummaryViewModel GetCategorySpendingSummaryModel(int id, DateTime from, DateTime to, IEnumerable<TransactionModel> transactions)
+        {
+            var total = transactions.Select(x => x.Amount).DefaultIfEmpty(0).Sum();
+            var period = (to - from).TotalDays;
+            var weeks = (decimal) (period / 7);
+            var months = (decimal) (period * 12 / 365.25);
+
+            return new CategorySpendingSummaryViewModel
+            {
+                CategoryId = id,
+                From = from,
+                To = to,
+                Total = total,
+                WeeklyAverage = Math.Round(total / weeks, 2),
+                MonthlyAverage = Math.Round(total / months, 2)
+            };
+        }
+
     }
 }
