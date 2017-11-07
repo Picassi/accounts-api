@@ -43,6 +43,10 @@ namespace Picassi.Core.Accounts.Services.Budgets
             {
                 categoriesQuery = categoriesQuery.Where(x => query.Categories.Contains(x.Id));
             }
+            else
+            {
+                categoriesQuery = categoriesQuery.Where(x => x.ParentId == null);
+            }
 
             if (query?.IncludeUnset != true)
             {
