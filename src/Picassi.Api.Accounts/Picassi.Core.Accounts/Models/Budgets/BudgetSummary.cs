@@ -13,5 +13,7 @@ namespace Picassi.Core.Accounts.Models.Budgets
         public decimal? BudgetAmount { get; set; }
         public PeriodType? BudgetPeriod { get; set; }
         public int? BudgetAggregationPeriod { get; set; }
+        public decimal WeeklyAverage { get; set; }
+        public decimal MonthlyAverage { get; set; }
     }
 }

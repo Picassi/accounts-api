@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using Picassi.Api.Accounts.Contract.Enums;
 using Picassi.Core.Accounts.DAL;
 using Picassi.Core.Accounts.DAL.Entities;
 using Picassi.Core.Accounts.Models.Budgets;
@@ -37,15 +38,14 @@ namespace Picassi.Core.Accounts.Services.Budgets
 
         private IEnumerable<Category> GetCategories(BudgetsQueryModel query)
         {
-            var categoriesQuery = _databaseProvider.GetDataContext().Categories.Include("Budget").AsQueryable();
+            var categoriesQuery = _databaseProvider.GetDataContext()
+                .Categories
+                .Where(x => x.ParentId == null)
+                .Include("Budget").AsQueryable();
 
             if (query?.Categories != null && query.Categories.Count > 0)
             {
                 categoriesQuery = categoriesQuery.Where(x => query.Categories.Contains(x.Id));
-            }
-            else
-            {
-                categoriesQuery = categoriesQuery.Where(x => x.ParentId == null);
             }
 
             if (query?.IncludeUnset != true)
@@ -73,7 +73,7 @@ namespace Picassi.Core.Accounts.Services.Budgets
             }
 
             var transactions = transactionsQuery
-                .GroupBy(x => x.CategoryId)
+                .GroupBy(x => x.Category.ParentId ?? x.CategoryId)
                 .ToList();
             return transactions;
         }
@@ -82,8 +82,10 @@ namespace Picassi.Core.Accounts.Services.Budgets
         {
             foreach (var c in categories)
             {
-                var transactionsForCategory = transactions.FirstOrDefault(t => t.Key == c.Id)
-                                                  ?.Select(t => t).ToList() ?? new List<Transaction>();
+                var transactionsForCategory = transactions
+                    .FirstOrDefault(t => t.Key == c.Id)?
+                    .Select(t => t).ToList() ?? new List<Transaction>();
+
                 if (c.Budget.Any())
                 {
                     foreach (var b in c.Budget)
@@ -100,16 +102,20 @@ namespace Picassi.Core.Accounts.Services.Budgets
 
         private BudgetSummary MapToBudgetSummary(Category category, Budget budget, IEnumerable<Transaction> transactions, DateTime from, DateTime to)
         {
+            var total = transactions.Sum(x => x.Amount);
+
             return new BudgetSummary
             {
                 BudgetId = budget?.Id,
                 CategoryId = category.Id,
                 CategoryName = category.Name,
                 Budget = budget == null ? null : (decimal?)GetBudgetAmount(budget, from, to),
-                Spent = transactions.Sum(x => x.Amount),
+                Spent = total,
                 BudgetAggregationPeriod = budget?.AggregationPeriod,
                 BudgetAmount = budget?.Amount,
-                BudgetPeriod = budget?.Period
+                BudgetPeriod = budget?.Period,
+                WeeklyAverage = GetAverageForPeriod(PeriodType.Week, total, from, to),
+                MonthlyAverage = GetAverageForPeriod(PeriodType.Month, total, from, to)
             };
         }
 
@@ -120,5 +126,12 @@ namespace Picassi.Core.Accounts.Services.Budgets
                 new DateRange(from, to));
             return decimal.Round(budget.Amount * numberOfPeriods, 2, MidpointRounding.AwayFromZero);
         }
+
+        private decimal GetAverageForPeriod(PeriodType type, decimal total, DateTime @from, DateTime to)
+        {
+            var numberOfPeriods = _periodCalculator.GetNumberOfPeriods(new PeriodDefinition(type, 1), new DateRange(from, to));
+            return decimal.Round(total / numberOfPeriods, 2, MidpointRounding.AwayFromZero);
+        }
+
     }
 }
