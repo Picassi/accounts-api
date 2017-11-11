@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Picassi.Api.Accounts.Contract.Enums;
+using Picassi.Core.Accounts.DAL.Entities;
 using Picassi.Core.Accounts.DAL.Services;
 using Picassi.Core.Accounts.Models.AssignmentRules;
 
@@ -14,7 +15,8 @@ namespace Picassi.Core.Accounts.Services.AssignmentRules
 
     public class AssignmentRuleProvider : IAssignmentRuleProvider
     {
-        private IAssignmentRulesDataService _assignmentRulesDataService;
+        private readonly IAssignmentRulesDataService _assignmentRulesDataService;
+        private IEnumerable<AssignmentRuleModel> _rules = null;
 
         public AssignmentRuleProvider(IAssignmentRulesDataService assignmentRulesDataService)
         {
@@ -23,9 +25,12 @@ namespace Picassi.Core.Accounts.Services.AssignmentRules
 
         public IEnumerable<IAssignmentRuleHandler> GetAssignmentRules()
         {
-            var rules = _assignmentRulesDataService.GetRules(enabled: true);
+            if (_rules == null)
+            {
+                _rules = _assignmentRulesDataService.GetRules(enabled: true);
+            }
 
-            return rules.Select(BuildRuleHandler);
+            return _rules.Select(BuildRuleHandler);
         }
 
         private IAssignmentRuleHandler BuildRuleHandler(AssignmentRuleModel arg)

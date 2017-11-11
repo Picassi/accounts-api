@@ -1,5 +1,4 @@
 ﻿using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using Picassi.Core.Accounts.DAL.Entities;
 
 namespace Picassi.Core.Accounts.DAL
@@ -21,6 +20,7 @@ namespace Picassi.Core.Accounts.DAL
         Database Database { get; }
         IDbSet<TModel> GetDbSet<TModel>() where TModel : class;
         int SaveChanges();
+        System.Threading.Tasks.Task<int> ExecuteSqlCommand(string command, params object[] parameters);
     }
 
     public class AccountsDataContext : DbContext, IAccountsDataContext
@@ -56,6 +56,11 @@ namespace Picassi.Core.Accounts.DAL
         public IDbSet<TModel> GetDbSet<TModel>() where TModel : class
         {
             return Set<TModel>();
+        }
+
+        public async System.Threading.Tasks.Task<int> ExecuteSqlCommand(string command, params object[] parameters)
+        {
+            return await Database.ExecuteSqlCommandAsync(command, parameters);
         }
     }
 }

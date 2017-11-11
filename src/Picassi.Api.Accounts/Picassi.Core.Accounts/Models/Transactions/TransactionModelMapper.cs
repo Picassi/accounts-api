@@ -26,7 +26,8 @@ namespace Picassi.Core.Accounts.Models.Transactions
                 Balance = model.Balance,
                 Id = model.Id,
                 Ordinal = model.Ordinal,
-                ScheduledTransactionId = model.ScheduledTransactionId
+                ScheduledTransactionId = model.ScheduledTransactionId,
+                StatementTransactionNumber = model.StatementTransactionNumber
             };
         }
 
@@ -46,7 +47,8 @@ namespace Picassi.Core.Accounts.Models.Transactions
                 Balance = entity.Balance,
                 Id = entity.Id,
                 Ordinal = entity.Ordinal,
-                ScheduledTransactionId = entity.ScheduledTransactionId
+                ScheduledTransactionId = entity.ScheduledTransactionId,
+                StatementTransactionNumber = entity.StatementTransactionNumber
             };
         }
 

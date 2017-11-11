@@ -219,7 +219,6 @@
     <Compile Include="Controllers\CalendarController.cs" />
     <Compile Include="Controllers\ChartsController.cs" />
     <Compile Include="Controllers\ModelledTransactionsController.cs" />
-    <Compile Include="Controllers\AccountTransactionsController.cs" />
     <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Controllers\ProjectionsController.cs" />
     <Compile Include="Controllers\SearchController.cs" />

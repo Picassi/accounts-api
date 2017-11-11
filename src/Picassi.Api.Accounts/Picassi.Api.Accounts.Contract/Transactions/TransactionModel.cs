@@ -2,7 +2,7 @@ using System;
 
 namespace Picassi.Api.Accounts.Contract.Transactions
 {
-    public class TransactionModel
+    public class TransactionModel : ITransactionInformation
     {
 		public int Id { get; set; }
         public int Ordinal { get; set; }
@@ -17,5 +17,6 @@ namespace Picassi.Api.Accounts.Contract.Transactions
         public decimal Balance { get; set; }
         public DateTime Date { get; set; }
         public int? ScheduledTransactionId { get; set; }
+        public int StatementTransactionNumber { get; set; }
     }
 }

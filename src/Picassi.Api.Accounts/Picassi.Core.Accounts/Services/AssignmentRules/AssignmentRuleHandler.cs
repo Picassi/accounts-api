@@ -6,9 +6,9 @@ namespace Picassi.Core.Accounts.Services.AssignmentRules
     {
         int? Priority { get; }
 
-        bool Matches(TransactionModel model);
+        bool Matches(ITransactionInformation model);
 
-        void Assign(TransactionModel model);
+        void Assign(ITransactionInformation model);
 
     }
 }

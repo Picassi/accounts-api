@@ -5,6 +5,8 @@ using System.Linq;
 using Picassi.Api.Accounts.Contract.Enums;
 using Picassi.Api.Accounts.Contract.Transactions;
 using Picassi.Core.Accounts.DAL.Entities;
+using Picassi.Core.Accounts.Events;
+using Picassi.Core.Accounts.Events.Messages;
 using Picassi.Core.Accounts.Exceptions;
 using Picassi.Core.Accounts.Models.Transactions;
 using Picassi.Core.Accounts.Services;
@@ -43,6 +45,10 @@ namespace Picassi.Core.Accounts.DAL.Services
             bool? sortAscending = null);
 
         IEnumerable<TransactionModel> SetTransactionRecurrences(IList<int> transactionIds, PeriodType? recurrence);
+
+        void MoveTransactionUp(int accountId, int transactionId);
+
+        void MoveTransactionDown(int accountId, int transactionId);
     }
 
     public class TransactionsDataService : GenericDataService<TransactionModel, Transaction>, ITransactionsDataService
@@ -178,7 +184,10 @@ namespace Picassi.Core.Accounts.DAL.Services
             transactions = FilterTransactionsWithoutPaging(text, accounts, categories, dateFrom, dateTo, 
                 ShouldShouldUncategorised(showUncategorised, categories), showAllCategories ?? categories == null, includeSubcategories != false, transactions);
             transactions = OrderResults(transactions, sortBy, sortAscending);
-            transactions = PageResults(transactions, pageNumber, pageSize);
+            if (pageNumber != null && pageSize != null)
+            {
+                transactions = PageResults(transactions, (int)pageNumber, (int)pageSize);
+            }
             return transactions;
         }
 
@@ -221,9 +230,10 @@ namespace Picassi.Core.Accounts.DAL.Services
 
         }
 
-        private static IQueryable<Transaction> PageResults(IQueryable<Transaction> transactions, int? pageNumber, int? pageSize)
+        private static IQueryable<Transaction> PageResults(IQueryable<Transaction> transactions, int pageNumber, int pageSize)
         {
-            return pageSize < 0 ? transactions : transactions.Skip(((pageNumber ?? 1) - 1) * (pageSize ?? 20)).Take(pageSize ?? 20);
+
+            return pageSize < 0 ? transactions : transactions.Skip((pageNumber - 1) * pageSize).Take(pageSize);
         }
 
         private static IQueryable<Transaction> OrderResults(IQueryable<Transaction> transactions, string field, bool ascending)
@@ -242,6 +252,53 @@ namespace Picassi.Core.Accounts.DAL.Services
             return (showUncategorised == null && categories == null) || showUncategorised == true;
         }
 
+        public void InsertTransactionAt(int id, int position)
+        {
+            DbProvider.GetDataContext().Database.ExecuteSqlCommand($"Update accounts.transactions set ordinal = ordinal + 1 where ordinal >= {position}");
+            DbProvider.GetDataContext().Database.ExecuteSqlCommand($"Update accounts.transactions set ordinal = {position} where id = {id}");
+        }
+
+        public void MoveTransactionUp(int accountId, int transactionId)
+        {
+            var transaction = DbProvider.GetDataContext().Transactions.Find(transactionId);
+            var targetTransaction = GetNextTransactionOnSameDay(accountId, transaction);
+            MoveOrdinalFromAtoB(transactionId, transaction.Ordinal, targetTransaction?.Ordinal ?? transaction.Ordinal + 1);
+            EventBus.Instance.Publish(new TransactionMoved(accountId, transaction.Date));
+        }
+
+        public void MoveTransactionDown(int accountId, int transactionId)
+        {
+            var transaction = DbProvider.GetDataContext().Transactions.Find(transactionId);
+            var targetTransaction = GetPreviousTransactionOnSameDay(accountId, transaction);
+            MoveOrdinalFromAtoB(transactionId, transaction.Ordinal, targetTransaction?.Ordinal ?? transaction.Ordinal + 1);
+            EventBus.Instance.Publish(new TransactionMoved(accountId, transaction.Date));
+        }
+
+        private Transaction GetNextTransactionOnSameDay(int accountId, Transaction transaction)
+        {
+            var targetTransaction = DbProvider.GetDataContext().Transactions
+                .Where(x => x.AccountId == accountId && x.Date == transaction.Date && x.Ordinal > transaction.Ordinal)
+                .OrderBy(x => x.Ordinal)
+                .FirstOrDefault();
+            return targetTransaction;
+        }
+
+        private Transaction GetPreviousTransactionOnSameDay(int accountId, Transaction transaction)
+        {
+            var targetTransaction = DbProvider.GetDataContext().Transactions
+                .Where(x => x.AccountId == accountId && x.Date == transaction.Date && x.Ordinal < transaction.Ordinal)
+                .OrderByDescending(x => x.Ordinal).FirstOrDefault();
+            return targetTransaction;
+        }
+
+        private void MoveOrdinalFromAtoB(int id, int start, int end)
+        {
+            var update = start > end
+                ? $"Update accounts.transactions set ordinal = ordinal + 1 where ordinal < {start} and ordinal >= {end}"
+                : $"Update accounts.transactions set ordinal = ordinal - 1 where ordinal > {start} and ordinal <= {end}";
+            DbProvider.GetDataContext().Database.ExecuteSqlCommand(update);
+            DbProvider.GetDataContext().Database.ExecuteSqlCommand($"Update accounts.transactions set ordinal = {end} where id = {id}");
+        }
     }
 }
 

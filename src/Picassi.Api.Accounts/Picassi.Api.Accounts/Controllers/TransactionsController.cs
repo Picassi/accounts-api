@@ -1,10 +1,14 @@
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using Picassi.Api.Accounts.Contract;
 using Picassi.Api.Accounts.Contract.Transactions;
 using Picassi.Core.Accounts.DAL.Services;
-using Picassi.Core.Accounts.Services.AssignmentRules;
+using Picassi.Core.Accounts.Models.Transactions;
+using Picassi.Core.Accounts.Services.Transactions;
+using Picassi.Core.Accounts.Services.Transactions.Pipeplines;
 
 namespace Picassi.Api.Accounts.Controllers
 {
@@ -13,12 +17,16 @@ namespace Picassi.Api.Accounts.Controllers
     public class TransactionsController : ApiController
 	{
 	    private readonly ITransactionsDataService _dataService;
-	    private readonly IAssignmentRuleGenerator _assignmentRuleGenerator; 
+	    private readonly ITransactionCreatePipeline _transactionCreatePipeline;
+	    private readonly ITransactionUpdatePipeline _transactionUpdatePipeline;
+	    private readonly ITransactionUploadPipeline _transactionUploadPipeline;
 
-	    public TransactionsController(ITransactionsDataService dataService, IAssignmentRuleGenerator assignmentRuleGenerator)
+	    public TransactionsController(ITransactionsDataService dataService, ITransactionCreatePipeline transactionCreatePipeline, ITransactionUpdatePipeline transactionUpdatePipeline, ITransactionUploadPipeline transactionUploadPipeline)
 	    {
 	        _dataService = dataService;
-	        _assignmentRuleGenerator = assignmentRuleGenerator;
+	        _transactionCreatePipeline = transactionCreatePipeline;
+	        _transactionUpdatePipeline = transactionUpdatePipeline;
+	        _transactionUploadPipeline = transactionUploadPipeline;
 	    }
 
 	    [HttpGet]
@@ -31,13 +39,9 @@ namespace Picassi.Api.Accounts.Controllers
 
         [HttpPost]
         [Route("transactions")]
-        public TransactionModel CreateTransaction([FromBody]TransactionModel transactionModel, [FromUri]TransactionUpdateOptions options)
+        public async Task<TransactionModel> CreateTransaction([FromBody]TransactionModel transactionModel, [FromUri]TransactionUpdateOptions options)
         {
-            if (options?.AutoGenerateRules == true)
-            {
-                _assignmentRuleGenerator.GenerateRule(transactionModel, options);
-            }
-            return _dataService.Create(transactionModel);
+            return await _transactionCreatePipeline.CreateTransaction(transactionModel, options);
         }
 
         [HttpGet]
@@ -49,13 +53,9 @@ namespace Picassi.Api.Accounts.Controllers
 
         [HttpPut]
         [Route("transactions/{id}")]
-        public TransactionModel UpdateTransaction(int id, [FromBody]TransactionModel transactionModel, [FromUri]TransactionUpdateOptions options)
+        public async Task<TransactionModel> UpdateTransaction(int id, [FromBody]TransactionModel transactionModel, [FromUri]TransactionUpdateOptions options)
         {
-            if (options?.AutoGenerateRules == true)
-            {
-                _assignmentRuleGenerator.GenerateRule(transactionModel, options);
-            }
-            return _dataService.Update(id, transactionModel);
+            return await _transactionUpdatePipeline.UpdateTransaction(id, transactionModel, options);
         }
 
         [HttpDelete]
@@ -71,5 +71,27 @@ namespace Picassi.Api.Accounts.Controllers
 	    {
 	        return _dataService.SetTransactionRecurrences(model.TransactionIds, model.Recurrence);
 	    }
+
+	    [HttpPost]
+	    [Route("accounts/{accountId}/transactions/upload")]
+	    public async Task<IList<TransactionUploadRecord>> UploadProcessedTransactions(int accountId, [FromBody]TransactionUploadModel[] transactions)
+	    {
+	        return await _transactionUploadPipeline.UploadTransactions(accountId, transactions.ToList());
+	    }
+
+	    [HttpPost]
+	    [Route("accounts/{accountId}/transactions/moveup")]
+	    public void MoveTransactionUp(int accountId, [FromBody]int transactionId)
+	    {
+	        _dataService.MoveTransactionUp(accountId, transactionId);
+	    }
+
+	    [HttpPost]
+	    [Route("accounts/{accountId}/transactions/movedown")]
+	    public void MoveTransactionDown(int accountId, [FromBody]int transactionId)
+	    {
+	        _dataService.MoveTransactionDown(accountId, transactionId);
+	    }
+
     }
 }

@@ -18,13 +18,13 @@ namespace Picassi.Core.Accounts.Services.AssignmentRules
             _categoryId = assignmentRuleModel.CategoryId;
         }
 
-        public bool Matches(TransactionModel model)
+        public bool Matches(ITransactionInformation model)
         {
             return model.Description != null &&
                    model.Description.Equals(_text, StringComparison.CurrentCultureIgnoreCase);
         }
 
-        public void Assign(TransactionModel model)
+        public void Assign(ITransactionInformation model)
         {
             model.CategoryId = _categoryId;
         }

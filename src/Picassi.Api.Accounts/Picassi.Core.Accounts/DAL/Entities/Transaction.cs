@@ -7,6 +7,8 @@ namespace Picassi.Core.Accounts.DAL.Entities
     {
         public int Id { get; set; }
 
+        public int StatementTransactionNumber { get; set; }
+
         public int Ordinal { get; set; }
 
         public string Description { get; set; }

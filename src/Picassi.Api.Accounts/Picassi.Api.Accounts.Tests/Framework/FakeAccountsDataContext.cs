@@ -48,6 +48,11 @@ namespace Picassi.Api.Accounts.Tests.Framework
         {
             return 0;
         }
+
+        public System.Threading.Tasks.Task<int> ExecuteSqlCommand(string command, params object[] parameters)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class FakeDatabaseProvider : IAccountsDatabaseProvider

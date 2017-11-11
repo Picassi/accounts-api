@@ -1,13 +1,11 @@
 ﻿using System.Linq;
 using Picassi.Api.Accounts.Contract.Transactions;
-using Picassi.Core.Accounts.DAL.Services;
-using Picassi.Core.Accounts.Models.AssignmentRules;
 
 namespace Picassi.Core.Accounts.Services.AssignmentRules
 {
     public interface IAssignmentRuleMatcher
     {
-        IAssignmentRuleHandler FindRule(TransactionModel transactions);
+        IAssignmentRuleHandler FindRule(ITransactionInformation transactions);
     }
 
     public class AssignmentRuleMatcher : IAssignmentRuleMatcher
@@ -19,7 +17,7 @@ namespace Picassi.Core.Accounts.Services.AssignmentRules
             _assignmentRuleProvider = assignmentRuleProvider;
         }
 
-        public IAssignmentRuleHandler FindRule(TransactionModel transactions)
+        public IAssignmentRuleHandler FindRule(ITransactionInformation transactions)
         {
             var assignmentRules = _assignmentRuleProvider.GetAssignmentRules();
 

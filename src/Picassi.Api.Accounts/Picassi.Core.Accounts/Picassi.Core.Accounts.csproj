@@ -108,6 +108,8 @@
     <Compile Include="DAL\Services\TasksDataService.cs" />
     <Compile Include="Events\DefaultEventBus.cs" />
     <Compile Include="Events\HandlerResolver.cs" />
+    <Compile Include="Exceptions\InvalidRequestException.cs" />
+    <Compile Include="Exceptions\PicassiException.cs" />
     <Compile Include="Extensions\SortExtensions.cs" />
     <Compile Include="Migrations\201709191739331_Initialise.cs" />
     <Compile Include="Migrations\201709191739331_Initialise.Designer.cs">
@@ -137,6 +139,10 @@
     <Compile Include="Migrations\201711041744069_ConvertParentIdToInt.Designer.cs">
       <DependentUpon>201711041744069_ConvertParentIdToInt.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711080747568_AddStatementTransactionNumber.cs" />
+    <Compile Include="Migrations\201711080747568_AddStatementTransactionNumber.Designer.cs">
+      <DependentUpon>201711080747568_AddStatementTransactionNumber.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Categories\CategoryGroupModel.cs" />
     <Compile Include="Models\Categories\CategorySpendingSummaryViewModel.cs" />
     <Compile Include="Models\Notes\NoteModel.cs" />
@@ -163,7 +169,6 @@
     <Compile Include="DAL\Services\TagsDataService.cs" />
     <Compile Include="DAL\StoreProcedures\GetTransactionTotals.cs" />
     <Compile Include="DAL\StoreProcedures\IStoredProcedure.cs" />
-    <Compile Include="DAL\Services\AccountTransactionsDataService.cs" />
     <Compile Include="Exceptions\EntityNotFoundException.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="DAL\Entities\Account.cs" />
@@ -222,7 +227,23 @@
     <Compile Include="Services\Projections\BudgetProjectors\IBudgetProjector.cs" />
     <Compile Include="Services\Projections\BudgetProjectors\MonthlyBudgetProjector.cs" />
     <Compile Include="Services\Projections\BudgetProjectors\WeeklyBudgetProjector.cs" />
+    <Compile Include="Services\Transactions\AccountStatementIntegrity.cs" />
+    <Compile Include="Services\Transactions\AccountTransactionUpdatePipeline.cs" />
+    <Compile Include="Services\Transactions\BalanceCalculator.cs" />
+    <Compile Include="Services\Transactions\CreateTransactionContextBuilder.cs" />
     <Compile Include="Services\Transactions\CategoryAssignmentService.cs" />
+    <Compile Include="Services\Transactions\CheckForDuplicates.cs" />
+    <Compile Include="Services\Transactions\CreateTransactionContext.cs" />
+    <Compile Include="Services\Transactions\CreateTransactionOperation.cs" />
+    <Compile Include="Services\Transactions\CreateTransactionRequest.cs" />
+    <Compile Include="Services\Transactions\Pipeplines\TransactionCreatePipeline.cs" />
+    <Compile Include="Services\Transactions\ScheduledTransactionLinks.cs" />
+    <Compile Include="Services\Transactions\TransactionBalanceAdjuster.cs" />
+    <Compile Include="Services\Transactions\TransactionSorter.cs" />
+    <Compile Include="Services\Transactions\Pipeplines\TransactionUpdatePipeline.cs" />
+    <Compile Include="Services\Transactions\TransactionUploadRecord.cs" />
+    <Compile Include="Services\Transactions\Pipeplines\TransactionUploadPipeline.cs" />
+    <Compile Include="Services\Transactions\UploadSorter.cs" />
     <Compile Include="Services\UserIdentityProvider.cs" />
     <Compile Include="Services\UserTracking.cs" />
     <Compile Include="Services\Projections\AccountProjector.cs" />
@@ -243,7 +264,6 @@
     <Compile Include="Services\GenericDataService.cs" />
     <Compile Include="Services\IModelMapper.cs" />
     <Compile Include="Services\Meta\MetaDataService.cs" />
-    <Compile Include="Services\Transactions\TransactionUploadService.cs" />
     <Compile Include="Services\Transactions\TransactionUtils.cs" />
     <Compile Include="Time\DateRange.cs" />
     <Compile Include="Time\DateUtilities.cs" />
@@ -287,12 +307,9 @@
     <Compile Include="Models\Statements\StatementQueryModel.cs" />
     <Compile Include="Models\Accounts\AccountModelMapper.cs" />
     <Compile Include="Models\Transactions\TransactionModelMapper.cs" />
-    <Compile Include="Models\Transactions\AccountTransactionModelMapper.cs" />
     <Compile Include="Models\Transactions\SimpleTransactionQueryModel.cs" />
-    <Compile Include="Models\Transactions\AccountTransactionsQueryModel.cs" />
     <Compile Include="Models\Transactions\TransactionSummaryModel.cs" />
     <Compile Include="Models\Transactions\TransactionUploadModel.cs" />
-    <Compile Include="Models\Transactions\AccountTransactionModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -326,7 +343,11 @@
     <EmbeddedResource Include="Migrations\201711041744069_ConvertParentIdToInt.resx">
       <DependentUpon>201711041744069_ConvertParentIdToInt.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711080747568_AddStatementTransactionNumber.resx">
+      <DependentUpon>201711080747568_AddStatementTransactionNumber.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
