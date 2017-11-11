@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using Picassi.Api.Accounts.Contract.Enums;
 using Picassi.Core.Accounts.DAL.Entities;
 using Picassi.Core.Accounts.Exceptions;
 using Picassi.Core.Accounts.Models.AssignmentRules;
@@ -10,7 +11,8 @@ namespace Picassi.Core.Accounts.DAL.Services
 {
     public interface IAssignmentRulesDataService : IGenericDataService<AssignmentRuleModel>
     {
-        IEnumerable<AssignmentRuleModel> Query(int pageNumber = 1, int pageSize = 20);
+        IEnumerable<AssignmentRuleModel> Query(int pageNumber = 1, int pageSize = 20, string search = null, 
+            AssignmentRuleType[] types = null, int[] accountIds = null, int[] categoryIds = null);
         IEnumerable<AssignmentRuleModel> GetRules(bool? enabled = null);
     }
 
@@ -31,7 +33,8 @@ namespace Picassi.Core.Accounts.DAL.Services
 
         }
 
-        public IEnumerable<AssignmentRuleModel> Query(int pageNumber = 1, int pageSize = 20)
+        public IEnumerable<AssignmentRuleModel> Query(int pageNumber = 1, int pageSize = 20, string search = null, 
+            AssignmentRuleType[] types = null, int[] accountIds = null, int[] categoryIds = null)
         {
             var skip = (pageNumber - 1) * pageSize;
             var queryResults = DbProvider.GetDataContext().AssignmentRules
@@ -39,7 +42,23 @@ namespace Picassi.Core.Accounts.DAL.Services
                 .OrderBy(x => x.Priority)
                 .ThenBy(x => x.CreatedDate)
                 .Skip(skip).Take(pageSize).AsQueryable();
-            return queryResults.ToList().Select(ModelMapper.Map);
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                queryResults = queryResults.Where(x => x.DescriptionRegex.Contains(search));
+            }
+
+            if (types != null && types.Length > 0)
+            {
+                queryResults = queryResults.Where(x => types.Contains(x.Type));
+            }
+
+            if (categoryIds != null && categoryIds.Length > 0)
+            {
+                queryResults = queryResults.Where(x => x.CategoryId != null && categoryIds.Contains((int)x.CategoryId));
+            }
+
+            return queryResults.OrderBy(q => q.DescriptionRegex).ToList().Select(ModelMapper.Map);
         }
 
         public IEnumerable<AssignmentRuleModel> GetRules(bool? enabled = null)

@@ -22,7 +22,8 @@ namespace Picassi.Api.Accounts.Controllers
         [Route("rules")]
         public IEnumerable<AssignmentRuleModel> GetAssignmentRules([FromUri]AssignmentRuleQueryModel query)
         {
-            return _dataService.Query(query?.PageNumber ?? 1, query?.PageSize ?? 20).ToList();
+            return _dataService.Query(query?.PageNumber ?? 1, query?.PageSize ?? 20, 
+                search: query?.Text, types: query?.Types, accountIds: query?.Accounts, categoryIds: query?.Categories).ToList();
         }
 
         [HttpPost]
