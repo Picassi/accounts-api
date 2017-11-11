@@ -38,5 +38,17 @@ namespace Picassi.Api.Accounts.Controllers
 
         }
 
+        [HttpPost]
+        [Route("profile/tools/delete-all-rules")]
+        public void DeleteAllRules()
+        {
+            foreach (var transaction in _accountsDatabaseProvider.GetDataContext().AssignmentRules.ToList())
+            {
+                _accountsDatabaseProvider.GetDataContext().AssignmentRules.Remove(transaction);
+            }
+            _accountsDatabaseProvider.GetDataContext().SaveChanges();
+
+        }
+
     }
 }
