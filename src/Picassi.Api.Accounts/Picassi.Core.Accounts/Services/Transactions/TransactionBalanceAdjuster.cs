@@ -29,7 +29,7 @@ namespace Picassi.Core.Accounts.Services.Transactions
             var query = $@"update t set t.Balance = 
                            (select @p0 - ISNULL(sum(Amount), 0) from accounts.Transactions tt 
                            where tt.AccountId = @p1
-                           and tt.StatementTransactionNumber < @p2
+                           and tt.StatementTransactionNumber <= @p2
                            and tt.StatementTransactionNumber >= t.StatementTransactionNumber) 
                            from accounts.Transactions t where t.StatementTransactionNumber < @p2";
 
