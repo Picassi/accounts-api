@@ -22,14 +22,14 @@ namespace Picassi.Api.Accounts.Controllers
         [Route("accounts/{accountId}/projected-transactions")]
         public ResultsViewModel<ModelledTransactionModel> GetTransactionsForAccount(int accountId, [FromUri]ModelledTransactionQueryModel query)
         {
-            return _transactionDataService.Query(accountId, query);
+            return _transactionDataService.Query(accounts: new [] { accountId}, pageNumber: query?.PageNumber, pageSize: query?.PageSize);
         }
 
 	    [HttpGet]
 	    [Route("accounts/{accountId}/projected-transactions/weekly")]
 	    public IEnumerable<TransactionCategoriesGroupedByPeriodModel> GetWeeklyTransactionsForAccount(int accountId, [FromUri]ModelledTransactionQueryModel query)
 	    {
-	        return _transactionDataService.QueryGrouped(query);
+	        return _transactionDataService.QueryGrouped(query.DateFrom, query.DateTo, accounts: new[] { accountId }, pageNumber: query?.PageNumber, pageSize: query?.PageSize);
 	    }
 
 

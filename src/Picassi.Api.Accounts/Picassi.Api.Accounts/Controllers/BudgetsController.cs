@@ -4,6 +4,7 @@ using System.Web.Http.Cors;
 using Picassi.Core.Accounts.DAL.Services;
 using Picassi.Core.Accounts.Models.Budgets;
 using Picassi.Core.Accounts.Services.Budgets;
+using Picassi.Core.Accounts.Services.Budgets.Pipelines;
 
 namespace Picassi.Api.Accounts.Controllers
 {
@@ -13,11 +14,13 @@ namespace Picassi.Api.Accounts.Controllers
     {
         private readonly IBudgetsDataService _dataService;
         private readonly IBudgetReportsCompiler _budgetReportsCompiler;
+        private readonly IDeleteBudgetPipeline _deleteBudgetPipeline;
 
-        public BudgetsController(IBudgetsDataService dataService, IBudgetReportsCompiler budgetReportsCompiler)
+        public BudgetsController(IBudgetsDataService dataService, IBudgetReportsCompiler budgetReportsCompiler, IDeleteBudgetPipeline deleteBudgetPipeline)
         {
             _dataService = dataService;
             _budgetReportsCompiler = budgetReportsCompiler;
+            _deleteBudgetPipeline = deleteBudgetPipeline;
         }
 
         [HttpGet]
@@ -50,9 +53,9 @@ namespace Picassi.Api.Accounts.Controllers
 
         [HttpDelete]
         [Route("budgets/{id}")]
-        public bool DeleteAccount(int id)
+        public bool DeleteBudget(int id)
         {
-            return _dataService.Delete(id);
+            return _deleteBudgetPipeline.Delete(id);
         }
 
         [HttpPost]

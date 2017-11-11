@@ -28,12 +28,8 @@ namespace Picassi.Core.Accounts.Services.Calendar
             var rowStart = CalendarUtilities.GetStartOfPeriod(start, query?.RowPeriod ?? ReportingPeriod.Week);
             var rowEnd = CalendarUtilities.GetEndDate(end, query?.RowPeriod ?? ReportingPeriod.Week);
 
-            return _modelledTransactionsDataService.QueryGrouped(
-                new ModelledTransactionQueryModel
-                {
-                    DateFrom = rowStart,
-                    DateTo = rowEnd
-                });
+            return _modelledTransactionsDataService.QueryGrouped(rowStart, rowEnd);
+
         }
     }
 }

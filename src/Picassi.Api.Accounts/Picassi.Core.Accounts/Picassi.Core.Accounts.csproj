@@ -217,6 +217,7 @@
     <Compile Include="Services\AssignmentRules\FuzzyMatchRuleHandler.cs" />
     <Compile Include="Services\AssignmentRules\RegexMatchRuleHandler.cs" />
     <Compile Include="Services\Budgets\BudgetReportsCompiler.cs" />
+    <Compile Include="Services\Budgets\Pipelines\DeleteBudgetPipeline.cs" />
     <Compile Include="Services\Calendar\CalendarCompiler.cs" />
     <Compile Include="Services\Calendar\CalendarPaymentsCompiler.cs" />
     <Compile Include="Services\Calendar\CalendarReportsCompiler.cs" />

@@ -4,7 +4,6 @@ using System.Data.Entity;
 using System.Linq;
 using Picassi.Api.Accounts.Contract;
 using Picassi.Core.Accounts.DAL.Entities;
-using Picassi.Core.Accounts.Models;
 using Picassi.Core.Accounts.Models.ModelledTransactions;
 using Picassi.Core.Accounts.Services;
 
@@ -12,8 +11,35 @@ namespace Picassi.Core.Accounts.DAL.Services
 {
     public interface IModelledTransactionsDataService : IGenericDataService<ModelledTransactionModel>
     {
-        ResultsViewModel<ModelledTransactionModel> Query(int accountId, ModelledTransactionQueryModel query);
-        IList<TransactionCategoriesGroupedByPeriodModel> QueryGrouped(ModelledTransactionQueryModel query);
+        ResultsViewModel<ModelledTransactionModel> Query(
+            string text = null,
+            int[] accounts = null,
+            int[] categories = null,
+            int[] budgets = null,
+            DateTime? dateFrom = null,
+            DateTime? dateTo = null,
+            bool? showUncategorised = true,
+            bool? showAllCategories = null,
+            bool? includeSubcategories = true,
+            int? pageSize = null,
+            int? pageNumber = null,
+            string sortBy = null,
+            bool? sortAscending = true);
+
+        IList<TransactionCategoriesGroupedByPeriodModel> QueryGrouped(
+            DateTime dateFrom,
+            DateTime dateTo,
+            string text = null,
+            int[] accounts = null,
+            int[] categories = null,
+            int[] budgets = null,
+            bool? showUncategorised = true,
+            bool? showAllCategories = null,
+            bool? includeSubcategories = true,
+            int? pageSize = null,
+            int? pageNumber = null,
+            string sortBy = null,
+            bool? sortAscending = true);
     }
 
     public class ModelledTransactionsDataService : GenericDataService<ModelledTransactionModel, ModelledTransaction>, IModelledTransactionsDataService
@@ -26,13 +52,41 @@ namespace Picassi.Core.Accounts.DAL.Services
             _modelMapper = modelMapper;
         }
 
-        public ResultsViewModel<ModelledTransactionModel> Query(int accountId, ModelledTransactionQueryModel query)
+        public ResultsViewModel<ModelledTransactionModel> Query(
+            string text = null,
+            int[] accounts = null,
+            int[] categories = null,
+            int[] budgets = null,
+            DateTime? dateFrom = null,
+            DateTime? dateTo = null,
+            bool? showUncategorised = true,
+            bool? showAllCategories = null,
+            bool? includeSubcategories = true,
+            int? pageSize = null,
+            int? pageNumber = null,
+            string sortBy = null,
+            bool? sortAscending = true)
         {
-            var queryResults = GetBaseTransactions(accountId);
+            var queryResults = GetBaseTransactions();
+            if (accounts != null && accounts.Length > 0)
+            {
+                queryResults = queryResults.Where(t => accounts.Contains(t.AccountId));
+            }
+
+            if (budgets != null && budgets.Length > 0)
+            {
+                queryResults = queryResults.Where(t => t.BudgetId != null && budgets.Contains((int)t.BudgetId));
+            }
+
             var orderedResults = queryResults.OrderBy(t => t.Date).ThenBy(t => t.Ordinal).AsQueryable();
             var allResults = queryResults.Count();
 
-            var actualResults = PageResults(query.PageNumber, query.PageSize, orderedResults).ToList();
+            if (pageNumber != null && pageSize != null)
+            {
+                orderedResults = PageResults((int)pageNumber, (int)pageSize, orderedResults);
+            }
+
+            var actualResults = orderedResults.ToList();
 
             return new ResultsViewModel<ModelledTransactionModel>
             {
@@ -41,25 +95,38 @@ namespace Picassi.Core.Accounts.DAL.Services
             };
         }
 
-        public IList<TransactionCategoriesGroupedByPeriodModel> QueryGrouped(ModelledTransactionQueryModel query)
+        public IList<TransactionCategoriesGroupedByPeriodModel> QueryGrouped(
+            DateTime dateFrom,
+            DateTime dateTo,
+            string text = null,
+            int[] accounts = null,
+            int[] categories = null,
+            int[] budgets = null,
+            bool? showUncategorised = true,
+            bool? showAllCategories = null,
+            bool? includeSubcategories = true,
+            int? pageSize = null,
+            int? pageNumber = null,
+            string sortBy = null,
+            bool? sortAscending = true)
         {
-            var modelledResults = GetModelledTransactions(query);
-            var recordedResults = GetRecordedTansactions(query);
+            var modelledResults = GetModelledTransactions(dateFrom, dateTo);
+            var recordedResults = GetRecordedTansactions(dateFrom, dateTo);
             var queryResults = modelledResults.Union(recordedResults);
 
-            var results = GetPeriodSummaries(queryResults, query.DateFrom);
-            var resultsWithDefaults = GetResultsWithDefaults(results, query.DateFrom, results.Select(r => r.StartDate).DefaultIfEmpty(query.DateTo).Max());
+            var results = GetPeriodSummaries(queryResults, dateFrom);
+            var resultsWithDefaults = GetResultsWithDefaults(results, dateFrom, results.Select(r => r.StartDate).DefaultIfEmpty(dateTo).Max());
 
-            var startingBalance = GetBalance(query.DateFrom);
+            var startingBalance = GetBalance(dateFrom);
             AssignBalances(startingBalance, resultsWithDefaults);
             return resultsWithDefaults;
         }
 
-        private IQueryable<ProjectedTransaction> GetModelledTransactions(ModelledTransactionQueryModel query)
+        private IQueryable<ProjectedTransaction> GetModelledTransactions(DateTime dateFrom, DateTime dateTo)
         {
             var modelledResults = DbProvider.GetDataContext().ModelledTransactions
                 .Include("Category")
-                .Where(x => x.Date >= query.DateFrom && x.Date <= query.DateTo)
+                .Where(x => x.Date >= dateFrom && x.Date <= dateTo)
                 .Select(t => new ProjectedTransaction
                 {
                     Amount = t.Amount,
@@ -70,11 +137,11 @@ namespace Picassi.Core.Accounts.DAL.Services
             return modelledResults;
         }
 
-        private IQueryable<ProjectedTransaction> GetRecordedTansactions(ModelledTransactionQueryModel query)
+        private IQueryable<ProjectedTransaction> GetRecordedTansactions(DateTime dateFrom, DateTime dateTo)
         {
             var recordedResults = DbProvider.GetDataContext().Transactions
                 .Include("Category")
-                .Where(x => x.Date >= query.DateFrom && x.Date <= query.DateTo)
+                .Where(x => x.Date >= dateFrom && x.Date <= dateTo)
                 .Select(t => new ProjectedTransaction
                 {
                     Amount = t.Amount,
@@ -105,17 +172,14 @@ namespace Picassi.Core.Accounts.DAL.Services
             return resultsToReturn;
         }
 
-        private IQueryable<ModelledTransaction> GetBaseTransactions(int accountId)
+        private IQueryable<ModelledTransaction> GetBaseTransactions()
         {
-            var queryResults = DbProvider.GetDataContext().ModelledTransactions.Include("Category")
-                .Where(t => t.AccountId == accountId);
-            return queryResults;
+            return DbProvider.GetDataContext().ModelledTransactions.Include("Category");                
         }
 
-        private static IQueryable<T> PageResults<T>(int? pageNumber, int? size, IQueryable<T> queryResults)
+        private static IQueryable<T> PageResults<T>(int pageNumber, int pageSize, IQueryable<T> queryResults)
         {
-            var pageSize = size ?? 20;
-            var skip = ((pageNumber ?? 1) - 1) * pageSize;
+            var skip = (pageNumber - 1) * pageSize;
             var actualResults = queryResults.Skip(skip).Take(pageSize);
             return actualResults;
         }
@@ -183,3 +247,4 @@ namespace Picassi.Core.Accounts.DAL.Services
         public decimal Amount { get; set; }
     }
 }
+
