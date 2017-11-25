@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Linq;
 using Picassi.Api.Accounts.Contract.Enums;
@@ -73,6 +74,39 @@ namespace Picassi.Core.Accounts.DAL.Services
             {
                 Name = c.ToString()
             });
+        }
+
+        public override CategoryModel Update(int id, CategoryModel model)
+        {
+            var entity = DbProvider.GetDataContext().Categories.Find(id);
+            if (entity == null) throw new EntityNotFoundException<Category>(id);
+
+            ModelMapper.Patch(model, entity);
+            if (model.ParentId != null) ValidateCategoryType((int)model.ParentId, model.CategoryType);
+            DbProvider.GetDataContext().SaveChanges();
+
+            UpdateChildCategoriesWithType(model.Id, model.CategoryType);
+
+            return Get(id);
+        }
+
+        private void ValidateCategoryType(int categoryId, CategoryType type)
+        {
+            var category = DbProvider.GetDataContext().Categories.Find(categoryId);
+            if (category.CategoryType != type) throw new ValidationException();
+        }
+
+        private void UpdateChildCategoriesWithType(int modelId, CategoryType type)
+        {
+            var childCategories = DbProvider.GetDataContext().Categories
+                .Where(c => c.ParentId == modelId && c.CategoryType != type).ToList();
+
+            foreach (var category in childCategories)
+            {
+                category.CategoryType = type;
+                DbProvider.GetDataContext().SaveChanges();
+                UpdateChildCategoriesWithType(category.Id, type);
+            }
         }
 
         public override bool Delete(int id)
