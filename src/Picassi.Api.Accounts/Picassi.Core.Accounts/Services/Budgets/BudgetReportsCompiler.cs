@@ -41,7 +41,10 @@ namespace Picassi.Core.Accounts.Services.Budgets
             var categoriesQuery = _databaseProvider.GetDataContext()
                 .Categories
                 .Where(x => x.ParentId == null)
-                .Include("Budget").AsQueryable();
+                .Include("Budget")
+                .Include("Parent")
+                .Include("Children")
+                .AsQueryable();
 
             if (query?.Categories != null && query.Categories.Count > 0)
             {

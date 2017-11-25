@@ -23,5 +23,7 @@ namespace Picassi.Core.Accounts.DAL.Entities
 
         public virtual ICollection<ModelledTransaction> ModelledTransactions { get; set; }
 
+        public virtual ICollection<Category> Children { get; set; }
+
     }
 }

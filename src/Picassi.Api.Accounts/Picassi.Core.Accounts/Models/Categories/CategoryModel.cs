@@ -12,6 +12,8 @@ namespace Picassi.Core.Accounts.Models.Categories
 
         public string ParentName { get; set; }
 
+        public bool HasChildren { get; set; }
+
         public CategoryType CategoryType { get; set; }
     }
 }

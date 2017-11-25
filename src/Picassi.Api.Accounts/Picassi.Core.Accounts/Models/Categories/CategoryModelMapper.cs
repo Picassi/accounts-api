@@ -26,7 +26,8 @@ namespace Picassi.Core.Accounts.Models.Categories
                 Name = model.Name,
                 ParentId = model.ParentId,
                 ParentName = model.Parent?.Name,
-                CategoryType = model.CategoryType
+                CategoryType = model.CategoryType,
+                HasChildren = model.Children != null && model.Children.Any()
             };
         }
 

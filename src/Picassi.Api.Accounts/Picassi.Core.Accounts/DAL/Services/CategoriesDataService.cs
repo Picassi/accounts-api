@@ -28,6 +28,7 @@ namespace Picassi.Core.Accounts.DAL.Services
         {
             var entity = DbProvider.GetDataContext().Categories
                 .Include("Parent")
+                .Include("Children")
                 .SingleOrDefault(x => x.Id == id);
             if (entity == null) throw new EntityNotFoundException<Transaction>(id);
 
@@ -38,6 +39,7 @@ namespace Picassi.Core.Accounts.DAL.Services
         {
             var queryResults = DbProvider.GetDataContext().Categories
                 .Include("Parent")
+                .Include("Children")
                 .AsQueryable();
 
             if (query?.Ids != null && query.Ids.Length > 0)
@@ -49,6 +51,16 @@ namespace Picassi.Core.Accounts.DAL.Services
             if (query?.Name != null)
             {
                 queryResults = queryResults.Where(x => x.Name.Contains(query.Name));
+            }
+
+            if (query?.CategoryType != null)
+            {
+                queryResults = queryResults.Where(x => x.CategoryType == query.CategoryType);
+            }
+
+            if (query?.ParentId != null)
+            {
+                queryResults = queryResults.Where(x => x.ParentId == query.ParentId);
             }
 
             queryResults = query == null ? queryResults : OrderResults(queryResults, query.SortBy, query.SortAscending);

@@ -143,6 +143,10 @@
     <Compile Include="Migrations\201711080747568_AddStatementTransactionNumber.Designer.cs">
       <DependentUpon>201711080747568_AddStatementTransactionNumber.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711251615581_ReferenceChildCategories.cs" />
+    <Compile Include="Migrations\201711251615581_ReferenceChildCategories.Designer.cs">
+      <DependentUpon>201711251615581_ReferenceChildCategories.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Categories\CategoryGroupModel.cs" />
     <Compile Include="Models\Categories\CategorySpendingSummaryViewModel.cs" />
     <Compile Include="Models\Notes\NoteModel.cs" />
@@ -346,6 +350,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711080747568_AddStatementTransactionNumber.resx">
       <DependentUpon>201711080747568_AddStatementTransactionNumber.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711251615581_ReferenceChildCategories.resx">
+      <DependentUpon>201711251615581_ReferenceChildCategories.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

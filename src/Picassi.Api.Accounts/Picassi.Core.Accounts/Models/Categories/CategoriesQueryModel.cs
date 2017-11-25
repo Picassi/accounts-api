@@ -19,5 +19,7 @@ namespace Picassi.Core.Accounts.Models.Categories
         public bool SortAscending { get; set; }
         public bool AllAccounts { get; set; }
         public bool? IncludeSubCategories { get; set; }
+        public int? ParentId { get; set; }
+        public CategoryType? CategoryType { get; set; }
     }
 }
