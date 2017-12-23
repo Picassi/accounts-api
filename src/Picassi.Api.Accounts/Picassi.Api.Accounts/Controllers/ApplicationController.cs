@@ -39,6 +39,18 @@ namespace Picassi.Api.Accounts.Controllers
             };
         }
 
+        [HttpGet]
+        [PicassiApiAuthorise]
+        [Route("application/user/info")]
+        public UserApplicationInfo GetUserApplicationInfo()
+        {
+            return new UserApplicationInfo
+            {
+                ApplicationVersion = _dbVersionProvider.GetLatestVersion(),
+                UserVersion = _dbVersionProvider.GetVersionForActiveUser()
+            };
+        }
+
         [HttpPost]
         [PicassiApiAuthorise]
         [Route("application/tasks/upgrade")]
