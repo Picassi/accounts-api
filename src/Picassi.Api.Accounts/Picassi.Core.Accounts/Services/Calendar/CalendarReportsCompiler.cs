@@ -25,11 +25,7 @@ namespace Picassi.Core.Accounts.Services.Calendar
             var start = CalendarUtilities.GetStartOfPeriod(query?.Start ?? DateTime.UtcNow, query?.PanelPeriod ?? ReportingPeriod.Month);
             var end = CalendarUtilities.GetEndDate(start, query?.PanelPeriod ?? ReportingPeriod.Month);
 
-            var rowStart = CalendarUtilities.GetStartOfPeriod(start, query?.RowPeriod ?? ReportingPeriod.Week);
-            var rowEnd = CalendarUtilities.GetEndDate(end, query?.RowPeriod ?? ReportingPeriod.Week);
-
-            return _modelledTransactionsDataService.QueryGrouped(rowStart, rowEnd);
-
+            return _modelledTransactionsDataService.QueryGrouped(start, end, query?.PanelPeriod ?? ReportingPeriod.Month);
         }
     }
 }

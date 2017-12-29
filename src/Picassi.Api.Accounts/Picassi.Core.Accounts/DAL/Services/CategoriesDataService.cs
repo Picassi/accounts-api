@@ -120,6 +120,9 @@ namespace Picassi.Core.Accounts.DAL.Services
             var budgets = DbProvider.GetDataContext().Budgets.Where(t => t.CategoryId == id);
             foreach (var b in budgets) DbProvider.GetDataContext().Budgets.Remove(b);
 
+            var rules = DbProvider.GetDataContext().AssignmentRules.Where(t => t.CategoryId == id);
+            foreach (var r in rules) DbProvider.GetDataContext().AssignmentRules.Remove(r);
+
             DbProvider.GetDataContext().Categories.Remove(entity);
             DbProvider.GetDataContext().SaveChanges();
             return true;

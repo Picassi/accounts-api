@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using Picassi.Api.Accounts.Contract;
+using Picassi.Api.Accounts.Contract.Calendar;
 using Picassi.Core.Accounts.DAL.Services;
 using Picassi.Core.Accounts.Models.ModelledTransactions;
 
@@ -29,7 +30,7 @@ namespace Picassi.Api.Accounts.Controllers
 	    [Route("accounts/{accountId}/projected-transactions/weekly")]
 	    public IEnumerable<TransactionCategoriesGroupedByPeriodModel> GetWeeklyTransactionsForAccount(int accountId, [FromUri]ModelledTransactionQueryModel query)
 	    {
-	        return _transactionDataService.QueryGrouped(query.DateFrom, query.DateTo, accounts: new[] { accountId }, pageNumber: query?.PageNumber, pageSize: query?.PageSize);
+	        return _transactionDataService.QueryGrouped(query.DateFrom, query.DateTo, ReportingPeriod.Week, accounts: new[] { accountId }, pageNumber: query?.PageNumber, pageSize: query?.PageSize);
 	    }
 
 

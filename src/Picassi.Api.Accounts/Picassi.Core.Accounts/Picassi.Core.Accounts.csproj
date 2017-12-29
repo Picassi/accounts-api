@@ -106,6 +106,9 @@
     <Compile Include="DAL\Services\AssignmentRulesDataService.cs" />
     <Compile Include="DAL\Services\NotesDataService.cs" />
     <Compile Include="DAL\Services\TasksDataService.cs" />
+    <Compile Include="DAL\Transforms\MonthlyTransactionCategoriesByPeriodTransform.cs" />
+    <Compile Include="DAL\Transforms\TransactionCategoriesByPeriodTransform.cs" />
+    <Compile Include="DAL\Transforms\WeeklyTransactionCategoriesByPeriodTransform.cs" />
     <Compile Include="Events\DefaultEventBus.cs" />
     <Compile Include="Events\HandlerResolver.cs" />
     <Compile Include="Exceptions\InvalidRequestException.cs" />
@@ -149,6 +152,7 @@
     </Compile>
     <Compile Include="Models\Categories\CategoryGroupModel.cs" />
     <Compile Include="Models\Categories\CategorySpendingSummaryViewModel.cs" />
+    <Compile Include="Models\ModelledTransactions\TransactionsGroupedByPeriodModel.cs" />
     <Compile Include="Models\Notes\NoteModel.cs" />
     <Compile Include="Models\Notes\NoteModelMapper.cs" />
     <Compile Include="Models\Notes\NotesQueryModel.cs" />
