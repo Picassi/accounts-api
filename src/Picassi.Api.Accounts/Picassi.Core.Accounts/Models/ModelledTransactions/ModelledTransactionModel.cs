@@ -16,6 +16,8 @@ namespace Picassi.Core.Accounts.Models.ModelledTransactions
 
         public int? CategoryId { get; set; }
 
+        public string CategoryName { get; set; }
+
         public int? EventId { get; set; }
 
         public int? ScheduledTransactionId { get; set; }

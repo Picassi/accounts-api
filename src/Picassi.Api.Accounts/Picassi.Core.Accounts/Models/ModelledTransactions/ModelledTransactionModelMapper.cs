@@ -34,6 +34,7 @@ namespace Picassi.Core.Accounts.Models.ModelledTransactions
                 Date = entity.Date,
                 ToId = entity.ToId,
                 CategoryId = entity.CategoryId,
+                CategoryName = entity.Category?.Name,
                 Description = entity.Description,
                 Balance = entity.Balance,
                 Id = entity.Id,

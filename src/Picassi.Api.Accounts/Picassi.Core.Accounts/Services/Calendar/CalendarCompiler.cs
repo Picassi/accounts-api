@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Picassi.Api.Accounts.Contract.Calendar;
+using Picassi.Core.Accounts.DAL.Services;
+using Picassi.Core.Accounts.Models.ModelledTransactions;
 
 namespace Picassi.Core.Accounts.Services.Calendar
 {
@@ -12,6 +14,13 @@ namespace Picassi.Core.Accounts.Services.Calendar
 
     public class CalendarCompiler : ICalendarCompiler
     {
+        private readonly IModelledTransactionsDataService _modelledTransactionsDataService;
+
+        public CalendarCompiler(IModelledTransactionsDataService modelledTransactionsDataService)
+        {
+            _modelledTransactionsDataService = modelledTransactionsDataService;
+        }
+
         public CalendarViewModel Compile(CalendarQuery query)
         {
             var start = CalendarUtilities.GetStartOfPeriod(query.Start ?? DateTime.UtcNow, query.PanelPeriod);
@@ -27,21 +36,33 @@ namespace Picassi.Core.Accounts.Services.Calendar
 
         private IEnumerable<CalendarCell> CompileCells(DateTime start, DateTime end, Func<DateTime, DateTime> iterationFunc)
         {
+            var transactions = _modelledTransactionsDataService.Query(dateFrom: start, dateTo: end).Lines.ToList();
+            var groupedTransactions = transactions.GroupBy(c => new { c.CategoryId, c.CategoryName, c.Date }).ToList();
+
             while (start < end)
             {
                 var endPeriod = iterationFunc(start);
-                var cell = CompileCell(start, endPeriod);                
+                var transactionsForPeriod = groupedTransactions
+                    .Where(grp => grp.Key.Date >= start && grp.Key.Date < endPeriod)
+                    .Select(grp => new CalendarTransaction
+                    {
+                        Amount = grp.Select(t => t.Amount).DefaultIfEmpty(0).Sum(),
+                        Description = grp.Key.CategoryName
+                    }).ToList();
+
+                var cell = CompileCell(start, endPeriod, transactionsForPeriod);
                 start = endPeriod;
                 yield return cell;
             }
         }
 
-        private CalendarCell CompileCell(DateTime start, DateTime endPeriod)
+        private CalendarCell CompileCell(DateTime start, DateTime endPeriod, IList<CalendarTransaction> transactionModels)
         {
             return new CalendarCell
             {
                 Name = start.Day.ToString(),
-                Date = start
+                Date = start,
+                Transactions = transactionModels
             };
         }
 

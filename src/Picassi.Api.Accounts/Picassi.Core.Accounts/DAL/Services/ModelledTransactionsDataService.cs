@@ -76,6 +76,17 @@ namespace Picassi.Core.Accounts.DAL.Services
             bool? sortAscending = true)
         {
             var queryResults = GetBaseTransactions();
+
+            if (dateFrom != null)
+            {
+                queryResults = queryResults.Where(t => t.Date >= dateFrom);
+            }
+
+            if (dateTo != null)
+            {
+                queryResults = queryResults.Where(t => t.Date < dateTo);
+            }
+
             if (accounts != null && accounts.Length > 0)
             {
                 queryResults = queryResults.Where(t => accounts.Contains(t.AccountId));
