@@ -12,7 +12,7 @@ namespace Picassi.Core.Accounts.DAL.Transforms
         ReportingPeriod Period { get; }
 
         List<TransactionCategoriesGroupedByPeriodModel> GetPeriodSummaries(
-            IQueryable<ProjectedTransaction> queryResults, DateTime baseDate);
+            IQueryable<ProjectedTransaction> queryResults, DateTime startTime, DateTime endDate);
     }
 
     public abstract class AbstractTransactionCategoriesByPeriodTransform : ITransactionCategoriesByPeriodTransform
@@ -24,18 +24,12 @@ namespace Picassi.Core.Accounts.DAL.Transforms
             Period = period;
         }
 
-        public List<TransactionCategoriesGroupedByPeriodModel> GetPeriodSummaries(IQueryable<ProjectedTransaction> queryResults, DateTime baseDate)
+        public List<TransactionCategoriesGroupedByPeriodModel> GetPeriodSummaries(
+            IQueryable<ProjectedTransaction> queryResults, DateTime startDate, DateTime endDate)
         {
-            var groupedTransactions = GetGroupedTransactions(queryResults, baseDate);
+            var groupedTransactions = GetGroupedTransactions(queryResults, startDate);
+            return AddDefaults(groupedTransactions, startDate, endDate).OrderBy(x => x.StartDate).ToList();
 
-            return groupedTransactions.Select(grp => new TransactionCategoriesGroupedByPeriodModel
-            {
-                StartDate = GetStartDate(grp.Key, baseDate),
-                Description = GetDescription(grp.Key, baseDate),
-                Credit = grp.Credit,
-                Debit = grp.Debit,
-                Transactions = grp.Transactions
-            }).OrderBy(x => x.StartDate).ToList();
         }
 
         protected abstract string GetDescription(int key, DateTime baseDate);
@@ -45,11 +39,11 @@ namespace Picassi.Core.Accounts.DAL.Transforms
         protected abstract IQueryable<IGrouping<int, ProjectedTransaction>> GroupTransactions(
             IQueryable<ProjectedTransaction> queryResults, DateTime baseDate);
 
-        private IEnumerable<GroupedTransactions> GetGroupedTransactions(IQueryable<ProjectedTransaction> queryResults, DateTime baseDate)
+        private IList<GroupedTransactions> GetGroupedTransactions(IQueryable<ProjectedTransaction> queryResults, DateTime baseDate)
         {
             var groupedByPeriod = GroupTransactions(queryResults, baseDate);
 
-            var results = groupedByPeriod.Select(grp => new GroupedTransactions
+            return groupedByPeriod.Select(grp => new GroupedTransactions
             {
                 Key = grp.Key,
                 Credit = grp.Where(transaction => transaction.Amount > 0)
@@ -73,10 +67,12 @@ namespace Picassi.Core.Accounts.DAL.Transforms
                         }
                     )
             }).ToList();
-            return results;
         }
 
-        private class GroupedTransactions
+        protected abstract List<TransactionCategoriesGroupedByPeriodModel> AddDefaults(
+            IList<GroupedTransactions> results, DateTime start, DateTime end);
+
+        protected class GroupedTransactions
         {
             public IEnumerable<TransactionsGroupedByCategoryModel> Transactions { get; set; }
 

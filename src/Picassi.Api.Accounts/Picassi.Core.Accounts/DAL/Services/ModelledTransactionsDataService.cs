@@ -123,8 +123,7 @@ namespace Picassi.Core.Accounts.DAL.Services
             var recordedResults = GetRecordedTansactions(dateFrom, dateTo);
             var queryResults = modelledResults.Union(recordedResults);
 
-            var results = GetPeriodSummaries(dateFrom, period, queryResults);
-            var resultsWithDefaults = GetResultsWithDefaults(results, dateFrom, results.Select(r => r.StartDate).DefaultIfEmpty(dateTo).Max());
+            var resultsWithDefaults = GetPeriodSummaries(dateFrom, dateTo, period, queryResults);
 
             var startingBalance = GetBalance(dateFrom);
             AssignBalances(startingBalance, resultsWithDefaults);
@@ -135,7 +134,7 @@ namespace Picassi.Core.Accounts.DAL.Services
         {
             var modelledResults = DbProvider.GetDataContext().ModelledTransactions
                 .Include("Category")
-                .Where(x => x.Date >= dateFrom && x.Date <= dateTo)
+                .Where(x => x.Date >= dateFrom && x.Date < dateTo)
                 .Select(t => new ProjectedTransaction
                 {
                     Amount = t.Amount,
@@ -150,7 +149,7 @@ namespace Picassi.Core.Accounts.DAL.Services
         {
             var recordedResults = DbProvider.GetDataContext().Transactions
                 .Include("Category")
-                .Where(x => x.Date >= dateFrom && x.Date <= dateTo)
+                .Where(x => x.Date >= dateFrom && x.Date < dateTo)
                 .Select(t => new ProjectedTransaction
                 {
                     Amount = t.Amount,
@@ -159,26 +158,6 @@ namespace Picassi.Core.Accounts.DAL.Services
                     Date = t.Date
                 });
             return recordedResults;
-        }
-
-        private List<TransactionCategoriesGroupedByPeriodModel> GetResultsWithDefaults(IList<TransactionCategoriesGroupedByPeriodModel> results, DateTime start, DateTime end)
-        {
-            var resultsToReturn = new List<TransactionCategoriesGroupedByPeriodModel>();
-            var week = 0;
-            for (var date = start; date <= end; date = date.AddDays(7))
-            {
-                week++;
-                var groupedModel = results.FirstOrDefault(r => r.StartDate == date) ?? new TransactionCategoriesGroupedByPeriodModel
-                {
-                    Description = "Week " + week,
-                    Credit = 0,
-                    Debit = 0,
-                    StartDate = date,
-                    Transactions = new List<TransactionsGroupedByCategoryModel>()
-                };
-                resultsToReturn.Add(groupedModel);
-            }
-            return resultsToReturn;
         }
 
         private IQueryable<ModelledTransaction> GetBaseTransactions()
@@ -193,10 +172,10 @@ namespace Picassi.Core.Accounts.DAL.Services
             return actualResults;
         }
 
-        private List<TransactionCategoriesGroupedByPeriodModel> GetPeriodSummaries(DateTime dateFrom, ReportingPeriod period, IQueryable<ProjectedTransaction> queryResults)
+        private List<TransactionCategoriesGroupedByPeriodModel> GetPeriodSummaries(DateTime start, DateTime end, ReportingPeriod period, IQueryable<ProjectedTransaction> queryResults)
         {
             var transform = _transactionCategoryPeriodTransforms.Single(t => t.Period == period);
-            return transform.GetPeriodSummaries(queryResults, dateFrom);
+            return transform.GetPeriodSummaries(queryResults, start, end);
         }
 
         private static void AssignBalances(decimal startingBalance, List<TransactionCategoriesGroupedByPeriodModel> results)

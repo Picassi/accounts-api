@@ -28,5 +28,31 @@ namespace Picassi.Core.Accounts.DAL.Transforms
         {
             return baseDate.AddDays(key * 7);
         }
+
+        protected override List<TransactionCategoriesGroupedByPeriodModel> AddDefaults(
+            IList<GroupedTransactions> results, DateTime start, DateTime end)
+        {
+            var resultsToReturn = new List<TransactionCategoriesGroupedByPeriodModel>();
+            var week = 0;
+            for (var date = start; date <= end; date = date.AddDays(7))
+            {
+                week++;
+                var groupedModel = BuildTransactionCategoryModel(results.FirstOrDefault(r => r.Key == week), week, date);
+                resultsToReturn.Add(groupedModel);
+            }
+            return resultsToReturn;
+        }
+
+        private TransactionCategoriesGroupedByPeriodModel BuildTransactionCategoryModel(GroupedTransactions transactionModel, int week, DateTime start)
+        {
+            return new TransactionCategoriesGroupedByPeriodModel
+            {
+                Description = GetDescription(week, start),
+                StartDate = start,
+                Credit = transactionModel?.Credit ?? 0,
+                Debit = transactionModel?.Debit ?? 0,
+                Transactions = transactionModel?.Transactions ?? new List<TransactionsGroupedByCategoryModel>()
+            };
+        }
     }
 }
