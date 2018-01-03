@@ -37,17 +37,16 @@ namespace Picassi.Core.Accounts.Services.Calendar
         private IEnumerable<CalendarCell> CompileCells(DateTime start, DateTime end, Func<DateTime, DateTime> iterationFunc)
         {
             var transactions = _modelledTransactionsDataService.Query(dateFrom: start, dateTo: end).Lines.ToList();
-            var groupedTransactions = transactions.GroupBy(c => new { c.CategoryId, c.CategoryName, c.Date }).ToList();
 
             while (start < end)
             {
                 var endPeriod = iterationFunc(start);
-                var transactionsForPeriod = groupedTransactions
-                    .Where(grp => grp.Key.Date >= start && grp.Key.Date < endPeriod)
-                    .Select(grp => new CalendarTransaction
+                var transactionsForPeriod = transactions
+                    .Where(trans => trans.Date >= start && trans.Date < endPeriod)
+                    .Select(trans => new CalendarTransaction
                     {
-                        Amount = grp.Select(t => t.Amount).DefaultIfEmpty(0).Sum(),
-                        Description = grp.Key.CategoryName
+                        Amount = trans.Amount,
+                        Description = trans.Description ?? "(" + trans.CategoryName + ")"
                     }).ToList();
 
                 var cell = CompileCell(start, endPeriod, transactionsForPeriod);

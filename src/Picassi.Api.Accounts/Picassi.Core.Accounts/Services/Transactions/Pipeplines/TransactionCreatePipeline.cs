@@ -32,7 +32,7 @@ namespace Picassi.Core.Accounts.Services.Transactions.Pipeplines
                 _assignmentRuleGenerator.GenerateRule(transactionModel, options);
             }
 
-            await _accounStatementIntegrityService.OnTransactionsCreated(transactionModel.AccountId, transactionModel);
+            await _accounStatementIntegrityService.OnTransactionsCreated(updatedTransaction.AccountId, updatedTransaction);
 
             return updatedTransaction;
         }

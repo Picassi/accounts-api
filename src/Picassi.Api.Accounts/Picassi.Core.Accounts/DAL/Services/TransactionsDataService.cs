@@ -142,6 +142,7 @@ namespace Picassi.Core.Accounts.DAL.Services
                         var scheduledTransaction = new ScheduledTransaction
                         {
                             AccountId = transaction.AccountId,
+                            Description = transaction.Description,
                             ToId = transaction.ToId,
                             Amount = transaction.Amount,
                             CategoryId = transaction.CategoryId,
