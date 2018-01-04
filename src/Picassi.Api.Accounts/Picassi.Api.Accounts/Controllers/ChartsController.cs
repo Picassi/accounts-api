@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
@@ -26,9 +27,14 @@ namespace Picassi.Api.Accounts.Controllers
         public LineChartModel GetAccounts([FromBody]TransactionChartRequest query)
         {
             var dataPoints = _chartCompiler.GetTransactionSeriesData(query.DateFrom, query.DateTo, PeriodType.Day, GroupingType.Accounts).ToList();
+            var grouped = dataPoints.SelectMany(x => x.Data)
+                .Select(x => new { Start = x.PeriodStart, Transaction = x})
+                .GroupBy(x => x.Start)
+                .ToList();
             return new LineChartModel
             {
-                Labels = dataPoints[0].Data.Select(x => x.PeriodStart.ToString("dd/MM/yyyy")).ToList(),
+                Labels = grouped.Select(x => x.Key.ToString("dd MMM")).ToList(),
+                Total = grouped.Select(grp => CompiledTransactions(grp.Key, grp.Select(x => x.Transaction).ToList())),
                 Series = dataPoints,
                 Type = "spline"
             };
@@ -67,6 +73,17 @@ namespace Picassi.Api.Accounts.Controllers
 	    public LineChartModel GetSpendingVersusBudget([FromBody]TransactionChartRequest query)
 	    {
             throw new NotImplementedException();
+	    }
+
+	    private static TransactionPeriodSummary CompiledTransactions(DateTime start, IList<TransactionPeriodSummary> transactions)
+	    {
+	        return new TransactionPeriodSummary
+	        {
+	            EndBalance = transactions.Sum(t => t.EndBalance),
+	            PeriodStart = start,
+	            TotalIncome = transactions.Sum(t => t.TotalIncome),
+	            TotalSpending = transactions.Sum(t => t.TotalSpending)
+	        };
 	    }
     }
 }
