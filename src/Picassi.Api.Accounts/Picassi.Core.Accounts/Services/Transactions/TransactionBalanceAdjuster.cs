@@ -31,7 +31,7 @@ namespace Picassi.Core.Accounts.Services.Transactions
                            where tt.AccountId = @p1
                            and tt.StatementTransactionNumber <= @p2
                            and tt.StatementTransactionNumber > t.StatementTransactionNumber) 
-                           from accounts.Transactions t where t.StatementTransactionNumber < @p2";
+                           from accounts.Transactions t where t.StatementTransactionNumber < @p2 and t.AccountId = @p1";
 
             var result = await _dbProvider.GetDataContext().ExecuteSqlCommand(query, balance, accountId, statementTransactionNumber);
 
@@ -45,7 +45,7 @@ namespace Picassi.Core.Accounts.Services.Transactions
                            where tt.AccountId = @p1
                            and tt.StatementTransactionNumber > @p2
                            and tt.StatementTransactionNumber <= t.StatementTransactionNumber) 
-                           from accounts.Transactions t where t.StatementTransactionNumber >= @p2";
+                           from accounts.Transactions t where t.StatementTransactionNumber >= @p2 and t.AccountId = @p1";
 
             var result = await _dbProvider.GetDataContext().ExecuteSqlCommand(query, balance, accountId, statementTransactionNumber);
 
