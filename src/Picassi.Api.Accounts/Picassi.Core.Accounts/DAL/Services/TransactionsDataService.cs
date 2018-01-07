@@ -151,7 +151,6 @@ namespace Picassi.Core.Accounts.DAL.Services
                             RecurrenceDayOfWeek = recurrence == PeriodType.Week ? transaction.Date.DayOfWeek : (DayOfWeek?)null
                         };
                         DbProvider.GetDataContext().ScheduledTransactions.Add(scheduledTransaction);
-                        //DbProvider.GetDataContext().SaveChanges();
                         transaction.ScheduledTransaction = scheduledTransaction;
                     }
                     else

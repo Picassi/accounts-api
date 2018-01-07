@@ -160,7 +160,6 @@
     <Compile Include="Models\Tasks\TaskModelMapper.cs" />
     <Compile Include="Models\Tasks\TasksQueryModel.cs" />
     <Compile Include="Models\AssignmentRules\AssignmentRuleQueryModel.cs" />
-    <Compile Include="Models\AssignmentRules\AssignmentRuleModel.cs" />
     <Compile Include="Models\AssignmentRules\AssignmentRuleModelMapper.cs" />
     <Compile Include="Models\Budgets\BudgetSummary.cs" />
     <Compile Include="Models\Categories\CategoryModelMapper.cs" />

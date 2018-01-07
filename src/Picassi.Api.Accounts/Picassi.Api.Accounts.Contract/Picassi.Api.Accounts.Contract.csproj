@@ -58,6 +58,8 @@
     <Compile Include="Enums\ReportType.cs" />
     <Compile Include="Enums\SummaryReportType.cs" />
     <Compile Include="Enums\TaskPriority.cs" />
+    <Compile Include="Rules\AssignmentRuleModel.cs" />
+    <Compile Include="Rules\AssignmentRulesResultsViewModel.cs" />
     <Compile Include="Transactions\ITransactionInformation.cs" />
     <Compile Include="ResultsViewModel.cs" />
     <Compile Include="SetTransactionRecurrenceRequest.cs" />

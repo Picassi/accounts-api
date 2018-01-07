@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using Picassi.Api.Accounts.Contract.Rules;
+using Picassi.Api.Accounts.Contract.Transactions;
 using Picassi.Core.Accounts.DAL.Services;
 using Picassi.Core.Accounts.Models.AssignmentRules;
 
@@ -20,10 +22,10 @@ namespace Picassi.Api.Accounts.Controllers
 
 	    [HttpGet]
         [Route("rules")]
-        public IEnumerable<AssignmentRuleModel> GetAssignmentRules([FromUri]AssignmentRuleQueryModel query)
+        public AssignmentRulesResultsViewModel GetAssignmentRules([FromUri]AssignmentRuleQueryModel query)
         {
             return _dataService.Query(query?.PageNumber ?? 1, query?.PageSize ?? 20, 
-                search: query?.Text, types: query?.Types, accountIds: query?.Accounts, categoryIds: query?.Categories).ToList();
+                search: query?.Text, types: query?.Types, accountIds: query?.Accounts, categoryIds: query?.Categories);
         }
 
         [HttpPost]
