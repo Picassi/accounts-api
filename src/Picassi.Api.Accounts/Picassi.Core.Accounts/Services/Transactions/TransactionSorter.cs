@@ -21,11 +21,13 @@ namespace Picassi.Core.Accounts.Services.Transactions
         {
             var query = $@"update t set t.StatementTransactionNumber = 
                            (select count(*) + 1 from accounts.Transactions tt
-                           where tt.AccountId = @p0
-                           and tt.Date < t.Date 
-                           or (tt.Date = t.Date and tt.Ordinal < t.Ordinal)
-                           or (tt.Date = t.Date and tt.Ordinal = t.Ordinal and tt.Id < t.Id))
-                           from accounts.Transactions t";
+                           where tt.AccountId = @p0 and 
+                           (
+                                tt.Date < t.Date 
+                                or (tt.Date = t.Date and tt.Ordinal < t.Ordinal)
+                                or (tt.Date = t.Date and tt.Ordinal = t.Ordinal and tt.Id < t.Id)
+                           ))
+                           from accounts.Transactions t where t.AccountId = @p0";
 
             await _dbProvider.GetDataContext().ExecuteSqlCommand(query, accountId);
         }
