@@ -15,7 +15,7 @@ namespace Picassi.Core.Accounts.Services.Charts
     public interface IChartCompiler
     {
         IEnumerable<PeriodSummaryDataSeries> GetTransactionSeriesData(DateTime from, DateTime to, PeriodType period, 
-            GroupingType groupingType, int[] accounts = null, int[] categories = null);
+            GroupingType groupingType, int[] accounts = null, int[] categories = null, bool includeSubcategories = false);
         IList<DataSeriesModel> GetSpendingByCategoryDataSeries(DateTime from, DateTime to);
     }
 
@@ -36,11 +36,12 @@ namespace Picassi.Core.Accounts.Services.Charts
 
 
         public IEnumerable<PeriodSummaryDataSeries> GetTransactionSeriesData(DateTime from, DateTime to, PeriodType period, 
-            GroupingType groupingType, int[] accounts = null, int[] categories = null)
+            GroupingType groupingType, int[] accounts = null, int[] categories = null, bool includeSubcategories = false)
         {
             var transactions = _transactionsDataService.Query(dateFrom: from, dateTo: to, pageSize: -1, 
                 accounts: accounts?.Length > 0 ? accounts : null,
-                categories: categories?.Length > 0 ? categories : null);
+                categories: categories?.Length > 0 ? categories : null,
+                includeSubcategories: includeSubcategories);
             var groups = GroupTransactions(groupingType, transactions, accounts, categories);
 
             return groups.Select(g => new PeriodSummaryDataSeries

@@ -114,10 +114,10 @@ namespace Picassi.Core.Accounts.DAL.Services
         {
             var transactions = DbProvider.GetDataContext().Transactions.Include(x => x.Category).Include(x => x.Account);
             var results = FilterTransactions(text, accounts, categories, dateFrom, dateTo, 
-                showUncategorised != false, showAllCategories ?? categories == null, includeSubcategories != false, 
+                showUncategorised != false, showAllCategories, includeSubcategories != false, 
                 pageSize, pageNumber, sortBy, sortAscending != false, transactions).ToList();
             var count = FilterTransactionsWithoutPaging(text, accounts, categories, dateFrom, dateTo, 
-                showUncategorised != false, showAllCategories ?? categories == null, includeSubcategories != false, transactions).Count();
+                showUncategorised != false, showAllCategories ?? false, includeSubcategories != false, transactions).Count();
 
             return new TransactionsResultsViewModel
             {
@@ -182,7 +182,7 @@ namespace Picassi.Core.Accounts.DAL.Services
             int? pageSize, int? pageNumber, string sortBy, bool sortAscending, IQueryable <Transaction> transactions)
         {
             transactions = FilterTransactionsWithoutPaging(text, accounts, categories, dateFrom, dateTo, 
-                ShouldShouldUncategorised(showUncategorised, categories), showAllCategories ?? categories == null, includeSubcategories != false, transactions);
+                ShouldShouldUncategorised(showUncategorised, categories), showAllCategories ?? false, includeSubcategories != false, transactions);
             transactions = OrderResults(transactions, sortBy, sortAscending);
             if (pageNumber != null && pageSize != null)
             {

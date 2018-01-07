@@ -48,7 +48,7 @@ namespace Picassi.Api.Accounts.Controllers
 	        var dateTo = query?.DateTo ?? DateTime.Today;
 	        var groupBy = query?.GroupBy ?? PeriodType.Week;
             var dataPoints = _chartCompiler.GetTransactionSeriesData(dateFrom, dateTo, groupBy, 
-                GroupingType.Categories, query?.Accounts, query?.Categories).ToList();
+                GroupingType.Categories, query?.Accounts, query?.Categories, query?.IncludeSubcategories == true).ToList();
 	        return new LineChartModel
 	        {
 	            Labels = dataPoints[0].Data.Select(x => x.PeriodStart.ToString("dd/MM/yyyy")).ToList(),

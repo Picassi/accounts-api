@@ -10,5 +10,6 @@ namespace Picassi.Api.Accounts.Contract
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
         public PeriodType? GroupBy { get; set; }
+        public bool? IncludeSubcategories { get; set; }
     }
 }
