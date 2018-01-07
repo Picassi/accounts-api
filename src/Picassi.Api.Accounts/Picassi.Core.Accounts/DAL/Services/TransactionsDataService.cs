@@ -114,10 +114,10 @@ namespace Picassi.Core.Accounts.DAL.Services
         {
             var transactions = DbProvider.GetDataContext().Transactions.Include(x => x.Category).Include(x => x.Account);
             var results = FilterTransactions(text, accounts, categories, dateFrom, dateTo, 
-                showUncategorised != false, showAllCategories, includeSubcategories != false, 
+                showUncategorised ?? false, showAllCategories, includeSubcategories != false, 
                 pageSize, pageNumber, sortBy, sortAscending != false, transactions).ToList();
             var count = FilterTransactionsWithoutPaging(text, accounts, categories, dateFrom, dateTo, 
-                showUncategorised != false, showAllCategories ?? false, includeSubcategories != false, transactions).Count();
+                showUncategorised ?? false, showAllCategories ?? false, includeSubcategories != false, transactions).Count();
 
             return new TransactionsResultsViewModel
             {
